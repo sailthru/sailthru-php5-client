@@ -193,7 +193,20 @@ class Sailthru_Client {
         return $this->apiPost('blast', $data);
     }
 
-
+    /**
+     *
+     * @param string/integer $blast_id
+     * @param string $name
+     * @param string $list
+     * @param string $schedule_time
+     * @param string $from_name
+     * @param string $from_email
+     * @param string $subject
+     * @param string $content_html
+     * @param string $content_text
+     * @param array $options
+     * @return <type>
+     */
     public function updateBlast($blast_id,
             $name,
             $list,
@@ -220,15 +233,31 @@ class Sailthru_Client {
     }
 
 
+    /**
+     * Get Blast information
+     * @param string/integer $blast_id
+     * @return array response from server
+     */
     public function getBlast($blast_id) {
         return $this->apiGet('blast', array('blast_id' => $blast_id));
     }
 
 
+    /**
+     * Delete Blast
+     * @param ineteger/string $blast_id
+     * @return array response from server
+     */
     public function deleteBlast($blast_id) {
         return $this->apiDelete('blast', array('blast_id' => $blast_id));
     }
 
+
+    /**
+     * Cancel scheduled Blast
+     * @param ineteger/string $blast_id
+     * @return array response from server
+     */
     public function cancelBlast($blast_id) {
         $data = array(
             'blast_id' => $blast_id,
