@@ -267,6 +267,30 @@ class Sailthru_Client {
     }
 
     /**
+     * Get a template.
+     *
+     * @param string $template_name
+     * @return array
+     */
+    function getTemplate($template_name) {
+        return $this->apiGet('template', array('template' => $template_name));
+    }
+
+    /**
+     * Save a template.
+     *
+     * @param string $template_name
+     * @param array $template_fields
+     * @return array
+     */
+    public function saveTemplate($template_name, $template_fields) {
+        $data = $template_fields;
+        $data['template'] = $template_name;
+        return $this->apiPost('template', $data);
+    }
+
+
+    /**
      * Perform an HTTP request using the curl extension
      *
      * @param string $url
