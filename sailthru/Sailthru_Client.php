@@ -194,7 +194,7 @@ class Sailthru_Client {
     }
 
     /**
-     *
+     * updates existing blast
      * @param string/integer $blast_id
      * @param string $name
      * @param string $list
@@ -205,29 +205,44 @@ class Sailthru_Client {
      * @param string $content_html
      * @param string $content_text
      * @param array $options
-     * @return <type>
+     * @return array response from server
      */
     public function updateBlast($blast_id,
-            $name,
-            $list,
-            $schedule_time,
-            $from_name,
-            $from_email,
-            $subject,
-            $content_html,
-            $content_text,
+            $name = null,
+            $list = null,
+            $schedule_time = null,
+            $from_name = null,
+            $from_email = null,
+            $subject = null,
+            $content_html = null,
+            $content_text = null,
             $options = array()) {
-
         $data = $options;
         $data['blast_id'] = $blast_id;
-        $data['name'] = $name;
-        $data['list'] = $list;
-        $data['schedule_time'] = $schedule_time;
-        $data['from_name'] = $from_name;
-        $data['from_email'] = $from_email;
-        $data['subject'] = $subject;
-        $data['content_html'] = $content_html;
-        $data['content_text'] = $content_text;
+        if (!is_null($name)) {
+            $data['name'] = $name;
+        }
+        if (!is_null($list)) {
+            $data['list'] = $list;
+        }
+        if (!is_null($schedule_time)) {
+            $data['schedule_time'] = $schedule_time;
+        }
+        if (!is_null($from_name))  {
+            $data['from_name'] = $from_name;
+        }
+        if (!is_null($from_email)) {
+            $data['from_email'] = $from_email;
+        }
+        if (!is_null($subject)) {
+            $data['subject'] = $subject;
+        }
+        if (!is_null($content_html)) {
+            $data['content_html'] = $content_html;
+        }
+        if (!is_null($content_text)) {
+            $data['content_text'] = $content_text;
+        }
 
         return $this->apiPost('blast', $data);
     }
@@ -283,7 +298,7 @@ class Sailthru_Client {
      * @param array $template_fields
      * @return array
      */
-    public function saveTemplate($template_name, $template_fields) {
+    public function saveTemplate($template_name, $template_fields = array()) {
         $data = $template_fields;
         $data['template'] = $template_name;
         return $this->apiPost('template', $data);
