@@ -416,6 +416,25 @@ class Sailthru_Client {
 
 
     /**
+     * Record that a user has made a purchase, or has added items to their purchase total.
+     * @link http://docs.sailthru.com/api/purchase
+     */
+    public function purchase($email, array $items, $incomplete = null, $message_id = null) {
+        $data = array(
+            'email' => $email,
+            'items' => $items
+        );
+        if (!is_null($incomplete)) {
+            $data['incomplete'] = (int)$incomplete;
+        }
+        if (!is_null($message_id)) {
+            $data['incomplete'] = $message_id;
+        }
+        return $this->apiPost('purchase', $data);
+    }
+
+
+    /**
      * Remove an alert from a user's settings.
      * @link http://docs.sailthru.com/api/alert
      * @param <type> $email
