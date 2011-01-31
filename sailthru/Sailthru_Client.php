@@ -605,6 +605,126 @@ class Sailthru_Client {
 
 
     /**
+     *
+     * Returns true if the incoming request is an authenticated verify post.
+     * @link https://github.com/sailthru/sailthru/blob/master/www/clients/sailthru.php
+     * @return boolean
+     */
+    public function receiveVerifyPost() {
+        $params = $_POST;
+        foreach (array('action', 'email', 'send_id', 'sig') as $k) {
+            if (!isset($params[$k])) {
+                return false;
+            }
+        }
+
+        if ($params['action'] != 'verify') {
+            return false;
+        }
+        $sig = $params['sig'];
+        unset($params['sig']);
+        if ($sig != self::getSignatureHash($params, $this->secret)) {
+            return false;
+        }
+        $send = $this->getSend($params['send_id']);
+        if (!isset($send['email'])) {
+            return false;
+        }
+        if ($send['email'] != $params['email']) {
+            return false;
+        }
+        return true;
+    }
+
+
+    /**
+     *
+     * Optout postbacks
+     * @return boolean
+     * @link http://docs.sailthru.com/api/postbacks
+     */
+    public function receiveOptoutPost() {
+         $params = $_POST;
+        foreach (array('action', 'email', 'sig') as $k) {
+            if (!isset($params[$k])) {
+                return false;
+            }
+        }
+
+        if ($params['action'] != 'optout') {
+            return false;
+        }
+        $sig = $params['sig'];
+        unset($params['sig']);
+        if ($sig != self::getSignatureHash($params, $this->secret)) {
+            return false;
+        }
+        return true;
+    }
+
+
+    /**
+     *
+     * Get horizon data
+     * @param string $email horizon user email
+     * @param boolean $hid_only if true, server will only return Horizon Id of the user
+     * @link http://docs.sailthru.com/api/horizon
+     */
+    public function getHorizon($email, $hid_only = false) {
+        $data = array('email' => $email);
+        if ($hid_only === true) {
+            $data['hid_only'] = 1;
+        }
+        return $this->apiGet('horizon', $data);
+    }
+
+
+    /**
+     *
+     * Set horizon user data
+     * @param string $email
+     * @param Mixed $tags Null for empty values, or String or arrays
+     */
+    public function setHorizon($email, $tags = null) {
+        $data = array('email' => $email);
+        if (!is_null($tags)) {
+            $data['tags'] = is_array($tags) ? implode(",", $tags) : $tags;
+        }
+        return $this->apiPost('horizon', $data);
+    }
+
+
+    /**
+     *
+     * Set Horizon cookie
+     *
+     * @param string $email horizon user email
+     * @param string $domain
+     * @param integer $duration
+     * @param boolean $secure
+     * @return boolean
+     */
+    public function setHorizonCookie($email, $domain = null, $duration = null, $secure = false) {
+        $data = $this->getHorizon($email, true);
+        if (!isset($data['hid'])) {
+            return false;
+        }
+        if (!$domain) {
+            $domain_parts = explode('.', $_SERVER['HTTP_HOST']);
+            $domain = $domain_parts[sizeof($domain_parts)-2] . '.' . $domain_parts[sizeof($domain_parts)-1];
+        }
+        if ($duration === null) {
+            $expire = time() + 31556926;
+        } else if ($duration) {
+            $expire = time() + $duration;
+        } else {
+            $expire = 0;
+        }
+        return setcookie('sailthru_hid', $data['hid'], $expire, '/', $domain, $secure);
+    }
+
+
+    /**
      * Perform an HTTP request using the curl extension
      *
      * @param string $url
