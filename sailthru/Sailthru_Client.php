@@ -1,11 +1,47 @@
 <?php
-
+/**
+ *
+ * Makes HTTP Request to Sailthru API server
+ * Response from server depends on the format being queried
+ * if 'json' format is requested, client will recieve JSON object and 'php' is requested, client will recieve PHP array
+ * XML format is also available but not has not been tested thoroughly
+ *
+ */
 class Sailthru_Client {
+    /**
+     *
+     * Sailthru API Key
+     * @var string
+     */
     private $api_key;
+
+    /**
+     *
+     * SAilthru Secret
+     * @var string
+     */
     private $secret;
+
+    /**
+     *
+     * Sailthru API URL, can be different for different users according to their settings
+     * @var string
+     */
     private $api_uri = 'https://api.sailthru.com';
+
+    /**
+     *
+     * cURL or non-cURL request
+     * @var string
+     */
     private $http_request_type;
 
+    /**
+     *
+     * User agent making request to Sailthru API server
+     * Even, if you modify user-agent, please try to include 'PHP5' somewhere in the user-agent
+     * @var String
+     */
     protected $user_agent_string;
 
 
@@ -15,7 +51,6 @@ class Sailthru_Client {
      * @param string $api_key
      * @param string $secret
      * @param string $api_uri
-     * @return Sailthru_Client
      */
     public function  __construct($api_key, $secret, $api_uri = false) {
         $this->api_key = $api_key;
@@ -43,7 +78,7 @@ class Sailthru_Client {
      * @param array $vars
      * @param array $options
      * @param string $schedule_time
-     * @return array
+     * @link http://docs.sailthru.com/api/send
      */
     public function send($template, $email, $vars = array(), $options = array(), $schedule_time = null) {
         $post = array();
@@ -68,7 +103,7 @@ class Sailthru_Client {
      * @param array $vars
      * @param array $evars
      * @param array $options
-     * @return array
+     * @link http://docs.sailthru.com/api/send
      */
     public function multisend($template_name, $emails, $vars = array(), $evars = array(), $options = array()) {
         $post['template'] = $template_name;
@@ -85,7 +120,7 @@ class Sailthru_Client {
      * Get the status of a send.
      *
      * @param string $send_id
-     * @return array
+     * @link http://docs.sailthru.com/api/send
      */
     public function getSend($send_id) {
         return $this->apiGet('send', array('send_id' => $send_id));
@@ -96,7 +131,7 @@ class Sailthru_Client {
      * Cancel a send that was scheduled for a future time.
      *
      * @param string $send_id
-     * @return array
+     * @link http://docs.sailthru.com/api/send
      */
     public function cancelSend($send_id) {
         return $this->apiPost('send', array('send_id' => $send_id), 'DELETE');
@@ -107,7 +142,7 @@ class Sailthru_Client {
      * Return information about an email address, including replacement vars and lists.
      *
      * @param string $email
-     * @return array
+     * @link http://docs.sailthru.com/api/email
      */
     public function getEmail($email) {
         return $this->apiGet('email', array('email' => $email));
@@ -124,11 +159,11 @@ class Sailthru_Client {
      * @param array $lists
 
      * @param array $templates
-     * @param integer $verified
+     * @param integer $verified 1 or 0
      * @param string $optout
      * @param string $send
      * @param array $send_vars
-     * @return array
+     * @link http://docs.sailthru.com/api/email
      */
     public function setEmail($email, $vars = array(), $lists = array(), $templates = array(), $verified = 0, $optout = null, $send = null, $send_vars = array()) {
         $data = array('email' => $email);
@@ -159,16 +194,30 @@ class Sailthru_Client {
     /**
      * Schedule a mass mail blast
      *
-     * @param string $name
-     * @param string $list
-     * @param string $schedule_time
-     * @param string $from_name
-     * @param string $from_email
-     * @param string $subject
-     * @param string $content_html
-     * @param string $content_text
-     * @param array $options
-     * @return array
+     * @param string $name the name to give to this new blast
+     * @param string $list the mailing list name to send to
+     * @param string $schedule_time when the blast should send. Dates in the past will be scheduled for immediate delivery. Any English textual datetime format known to PHP's strtotime function is acceptable, such as 2009-03-18 23:57:22 UTC, now (immediate delivery), +3 hours (3 hours from now), or February 14, 9:30 EST. Be sure to specify a timezone if you use an exact time.
+     * @param string $from_name the name appearing in the "From" of the email
+     * @param string $from_email The email address to use as the "from" – choose from any of your verified emails
+     * @param string $subject the subject line of the email
+     * @param string $content_html the HTML-format version of the email
+     * @param string $content_text the text-format version of the email
+     * @param array $options associative array
+     * 		blast_id
+     * 		copy_blast
+     * 		copy_template
+     * 		replyto
+     *		report_email
+     *		is_link_tracking
+     *		is_google_analytics
+     *		is_public
+     *		suppress_list
+     *		test_vars
+     *		email_hour_range
+     *		abtest
+     *		test_percent
+     *		data_feed_url
+     * @link http://docs.sailthru.com/api/blast
      */
     public function scheduleBlast($name,
             $list,
@@ -195,6 +244,7 @@ class Sailthru_Client {
 
     /**
      * updates existing blast
+     *
      * @param string/integer $blast_id
      * @param string $name
      * @param string $list
@@ -204,8 +254,22 @@ class Sailthru_Client {
      * @param string $subject
      * @param string $content_html
      * @param string $content_text
-     * @param array $options
-     * @return array response from server
+     * @param array $options associative array
+     * 		blast_id
+     * 		copy_blast
+     * 		copy_template
+     * 		replyto
+     *		report_email
+     *		is_link_tracking
+     *		is_google_analytics
+     *		is_public
+     *		suppress_list
+     *		test_vars
+     *		email_hour_range
+     *		abtest
+     *		test_percent
+     *		data_feed_url
+     * @link http://docs.sailthru.com/api/blast
      */
     public function updateBlast($blast_id,
             $name = null,
@@ -251,7 +315,7 @@ class Sailthru_Client {
     /**
      * Get Blast information
      * @param string/integer $blast_id
-     * @return array response from server
+     * @link http://docs.sailthru.com/api/blast
      */
     public function getBlast($blast_id) {
         return $this->apiGet('blast', array('blast_id' => $blast_id));
@@ -261,7 +325,7 @@ class Sailthru_Client {
     /**
      * Delete Blast
      * @param ineteger/string $blast_id
-     * @return array response from server
+     * @link http://docs.sailthru.com/api/blast
      */
     public function deleteBlast($blast_id) {
         return $this->apiDelete('blast', array('blast_id' => $blast_id));
@@ -269,9 +333,9 @@ class Sailthru_Client {
 
 
     /**
-     * Cancel scheduled Blast
+     * Cancel a scheduled Blast
      * @param ineteger/string $blast_id
-     * @return array response from server
+     * @link http://docs.sailthru.com/api/blast
      */
     public function cancelBlast($blast_id) {
         $data = array(
@@ -282,10 +346,10 @@ class Sailthru_Client {
     }
 
     /**
-     * Get a template.
+     * Fetch information about a template
      *
      * @param string $template_name
-     * @return array
+     * @link http://docs.sailthru.com/api/template
      */
     function getTemplate($template_name) {
         return $this->apiGet('template', array('template' => $template_name));
@@ -296,7 +360,7 @@ class Sailthru_Client {
      *
      * @param string $template_name
      * @param array $template_fields
-     * @return array
+     * @link http://docs.sailthru.com/api/template
      */
     public function saveTemplate($template_name, $template_fields = array()) {
         $data = $template_fields;
@@ -308,9 +372,11 @@ class Sailthru_Client {
 
     /**
      * Download a list. Obviously, this can potentially be a very large download.
+     * 'txt' is default format since, its more compact as compare to others
      * @param String $list
      * @param String $format
      * @return txt | json | xml
+     * @link http://docs.sailthru.com/api/list
      */
     public function getList($list, $format = "txt") {
         $data = array(
@@ -322,9 +388,10 @@ class Sailthru_Client {
 
 
     /**
-     * Create a list
+     * Upload a list. The list import job is queued and will happen shortly after the API request.
      * @param String $list
      * @param String $emails
+     * @link http://docs.sailthru.com/api/list
      */
     public function saveList($list, $emails) {
         $data = array(
@@ -338,7 +405,7 @@ class Sailthru_Client {
     /**
      * Deletes a list
      * @param String $list
-     * @return response from server
+	 * @link http://docs.sailthru.com/api/list
      */
     public function deleteList($list) {
         $data = array(
@@ -349,10 +416,13 @@ class Sailthru_Client {
 
 
     /**
-     * import contacts 
+     *
+     * Fetch email contacts from a user's address book on one of the major email websites. Currently supports AOL, Gmail, Hotmail, and Yahoo! Mail.
+     *
      * @param String $email
      * @param String $password
      * @param boolean $include_names
+     * @link http://docs.sailthru.com/api/contacts
      */
     public function importContacts($email, $password, $include_names = true) {
         $data = array(
@@ -367,13 +437,14 @@ class Sailthru_Client {
 
 
     /**
+     *
      * Push a new piece of content to Sailthru, triggering any applicable alerts.
-     * @link http://docs.sailthru.com/api/content
+     *
      * @param String $title
      * @param String $url
      * @param String $date
      * @param Mixed $tags Null for empty values, or String or arrays
-     * @vars array
+     * @link http://docs.sailthru.com/api/content
      */
     public function pushContent($title, $url, $date = null, $tags = null, $vars = array()) {
         $data = array();
@@ -393,7 +464,9 @@ class Sailthru_Client {
 
 
     /**
+     *
      * Retrieve a user's alert settings.
+     *
      * @link http://docs.sailthru.com/api/alert
      * @param String $email
      */
@@ -406,13 +479,36 @@ class Sailthru_Client {
 
 
     /**
-     * Add a new alert to a user.
+     *
+     * Add a new alert to a user. You can add either a realtime or a summary alert (daily/weekly).
+     * $when is only required when alert type is weekly or daily
+     *
+     * <code>
+     * <?php
+     * $options = array(
+     * 		'match' => array(
+     *   		'type' => array(
+     *   		'shoes', 'shirts'
+     *   	),
+     *   	'min' => array(
+     *   		 'price' => 3000
+     *   	),
+     *   	'tags' => array('blue', 'red')
+     * );
+     * $response = $sailthruClient->saveAlert("praj@sailthru.com", 'realtime', 'default', null, $options);
+     * ?>
+     * </code>
+     *
      * @link http://docs.sailthru.com/api/alert
      * @param String $email
      * @param String $type
      * @param String $template
      * @param String $when
-     * @param array $options
+     * @param array $options Associative array of additive nature
+     * 		match 		Exact-match a custom variable		match[type]=shoes
+     * 		min		 	Minimum-value variables				min[price]=30000
+     * 		max			Maximum-value match					max[price]=50000
+ 	 * 		tags		Tag-match							tags[]=blue
      */
     public function saveAlert($email, $type, $template, $when = null, $options = array()) {
         $data = $options;
