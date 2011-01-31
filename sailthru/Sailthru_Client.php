@@ -416,6 +416,21 @@ class Sailthru_Client {
 
 
     /**
+     * Remove an alert from a user's settings.
+     * @link http://docs.sailthru.com/api/alert
+     * @param <type> $email
+     * @param <type> $alert_id
+     */
+    public function deleteAlert($email, $alert_id) {
+        $data = array(
+            'email' => $email,
+            'alert_id' => $alert_id
+        );
+        return $this->apiDelete('alert', $data);
+    }
+
+
+    /**
      * Record that a user has made a purchase, or has added items to their purchase total.
      * @link http://docs.sailthru.com/api/purchase
      */
@@ -435,17 +450,50 @@ class Sailthru_Client {
 
 
     /**
-     * Remove an alert from a user's settings.
-     * @link http://docs.sailthru.com/api/alert
-     * @param <type> $email
-     * @param <type> $alert_id
+     * Retrieve information about your subscriber counts on a particular list, on a particular day.
+     * @link http://docs.sailthru.com/api/stats
+     * @param String $list
+     * @param String $date
      */
-    public function deleteAlert($email, $alert_id) {
-        $data = array(
-            'email' => $email,
-            'alert_id' => $alert_id
-        );
-        return $this->apiDelete('alert', $data);
+    public function stats_list($list = null, $date = null) {
+        $data = array();
+        if (!is_null($list)) {
+            $data['list'] = $list;
+        }
+
+        if (!is_null($date)) {
+            $data['date'] = $date;
+        }
+        $data['stat'] = 'list';
+        return $this->stats($data);
+    }
+
+
+    /**
+     * Retrieve information about a particular blast or aggregated information from all of blasts over a specified date range.
+     * @param array $data
+     */
+    public function stats_blast($blast_id = null, $start_date = null, $end_date = null, array $data = array()) {
+        $data['stat'] = 'blast';
+        if (!is_null($blast_id)) {
+            $data['blast_id'] = $blast_id;
+        }
+        if (!is_null($start_date)) {
+            $data['start_date'] = $start_date;
+        }
+        if (!is_null($end_date)) {
+            $data['end_date'] = $end_date;
+        }
+        return $this->stats($data);
+    }
+
+
+    /**
+     * Make Stats API Request
+     * @param array $data
+     */
+    protected function stats(array $data) {
+        return $this->apiGet('stats', $data);
     }
 
 
