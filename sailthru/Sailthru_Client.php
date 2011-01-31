@@ -688,7 +688,7 @@ class Sailthru_Client {
     public function setHorizon($email, $tags = null) {
         $data = array('email' => $email);
         if (!is_null($tags)) {
-            $data['tags'] = is_array($tags) ? implode(",", $tags) : $tags;
+            $data['tag'] = is_array($tags) ? implode(",", $tags) : $tags;
         }
         return $this->apiPost('horizon', $data);
     }
