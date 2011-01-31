@@ -371,12 +371,23 @@ class Sailthru_Client {
      * @link http://docs.sailthru.com/api/content
      * @param String $title
      * @param String $url
-     * @param array $options
+     * @param String $date
+     * @param Mixed $tags Null for empty values, or String or arrays
+     * @vars array
      */
-    public function pushContent($title, $url, $options = array()) {
-        $data = $options;
+    public function pushContent($title, $url, $date = null, $tags = null, $vars = array()) {
+        $data = array();
         $data['title'] = $title;
         $data['url'] = $url;
+        if (!is_null($tags)) {
+                $data['tags'] = is_array($tags) ? implode(",", $tags) : $tags;
+        }
+        if (!is_null($date)) {
+            $data['date'] = $date;
+        }
+        if (!empty($vars)) {
+            $data['vars'] = $vars;
+        }
         return $this->apiPost('content', $data);
     }
 
