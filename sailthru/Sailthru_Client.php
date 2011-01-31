@@ -367,6 +367,21 @@ class Sailthru_Client {
 
 
     /**
+     * Push a new piece of content to Sailthru, triggering any applicable alerts.
+     * @link http://docs.sailthru.com/api/content
+     * @param String $title
+     * @param String $url
+     * @param array $options
+     */
+    public function pushContent($title, $url, $options = array()) {
+        $data = $options;
+        $data['title'] = $title;
+        $data['url'] = $url;
+        return $this->apiPost('content', $data);
+    }
+
+
+    /**
      * Perform an HTTP request using the curl extension
      *
      * @param string $url
