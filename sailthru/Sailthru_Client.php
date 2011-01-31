@@ -607,7 +607,7 @@ class Sailthru_Client {
     /**
      *
      * Returns true if the incoming request is an authenticated verify post.
-     * @link https://github.com/sailthru/sailthru/blob/master/www/clients/sailthru.php
+     * @link http://docs.sailthru.com/api/postbacks
      * @return boolean
      */
     public function receiveVerifyPost() {
