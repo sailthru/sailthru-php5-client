@@ -305,6 +305,67 @@ class Sailthru_Client {
     }
 
 
+
+    /**
+     * Download a list. Obviously, this can potentially be a very large download.
+     * @param String $list
+     * @param String $format
+     * @return txt | json | xml
+     */
+    public function getList($list, $format = "txt") {
+        $data = array(
+            'list' => $list,
+            'format' => $format
+        );
+        return $this->apiGet('list', $data);
+    }
+
+
+    /**
+     * Create a list
+     * @param String $list
+     * @param String $emails
+     */
+    public function saveList($list, $emails) {
+        $data = array(
+            'list' => $list,
+            'emails' => $emails
+        );
+        return $this->apiPost('list', $data);
+    }
+
+
+    /**
+     * Deletes a list
+     * @param String $list
+     * @return response from server
+     */
+    public function deleteList($list) {
+        $data = array(
+            'list' => $list
+        );
+        return $this->apiDelete('list', $data);
+    }
+
+
+    /**
+     * import contacts 
+     * @param String $email
+     * @param String $password
+     * @param boolean $include_names
+     */
+    public function importContacts($email, $password, $include_names = true) {
+        $data = array(
+            'email' => $email,
+            'password' => $password
+        );
+        if ($include_names === true) {
+            $data['names'] = 1;
+        }
+        return $this->apiPost('contacts', $data);
+    }
+
+
     /**
      * Perform an HTTP request using the curl extension
      *
