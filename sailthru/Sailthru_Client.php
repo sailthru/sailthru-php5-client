@@ -382,6 +382,55 @@ class Sailthru_Client {
 
 
     /**
+     * Retrieve a user's alert settings.
+     * @link http://docs.sailthru.com/api/alert
+     * @param String $email
+     */
+    public function getAlert($email) {
+        $data = array(
+            'email' => $email
+        );
+        return $this->apiGet('alert', $data);
+    }
+
+
+    /**
+     * Add a new alert to a user.
+     * @link http://docs.sailthru.com/api/alert
+     * @param String $email
+     * @param String $type
+     * @param String $template
+     * @param String $when
+     * @param array $options
+     */
+    public function saveAlert($email, $type, $template, $when = null, $options = array()) {
+        $data = $options;
+        $data['email'] = $email;
+        $data['type'] = $type;
+        $data['template'] = $template;
+        if ($type == 'weekly' || $type == 'daily') {
+            $data['when'] = $when;
+        }
+        return $this->apiPost('alert', $data);
+    }
+
+
+    /**
+     * Remove an alert from a user's settings.
+     * @link http://docs.sailthru.com/api/alert
+     * @param <type> $email
+     * @param <type> $alert_id
+     */
+    public function deleteAlert($email, $alert_id) {
+        $data = array(
+            'email' => $email,
+            'alert_id' => $alert_id
+        );
+        return $this->apiDelete('alert', $data);
+    }
+
+
+    /**
      * Perform an HTTP request using the curl extension
      *
      * @param string $url
