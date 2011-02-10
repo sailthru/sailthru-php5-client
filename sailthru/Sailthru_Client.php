@@ -386,6 +386,14 @@ class Sailthru_Client {
         return $this->apiGet('list', $data);
     }
 
+    
+    /**
+     * Get all lists metadata of a user
+    **/
+    public function getLists() {
+        return $this->apiGet('list', array('list' => ""));
+    }
+
 
     /**
      * Upload a list. The list import job is queued and will happen shortly after the API request.

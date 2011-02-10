@@ -83,6 +83,9 @@ It can make requests to following [API calls](http://docs.sailthru.com/api):
 
 ### [list](http://docs.sailthru.com/api/list)
 
+    //get metadata for all lists
+    $lists_metadata = $sailthruClient->getLists();
+
 	//download a list
 	$list = 'default';
 	$response = $sailthruClient->getList($list, "txt");
