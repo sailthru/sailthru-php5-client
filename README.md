@@ -25,8 +25,7 @@ It can make requests to following [API calls](http://docs.sailthru.com/api):
 
  	$api_key = "api_key";
 	$api_secret = 'secret';
-	$api_url = "https://api.sailthru-sb.com";
- 	$sailthruClient = new Sailthru_Client($api_key, $api_secret, $api_url);
+ 	$sailthruClient = new Sailthru_Client($api_key, $api_secret);
 
 
 ### [send](http://docs.sailthru.com/api/send)
