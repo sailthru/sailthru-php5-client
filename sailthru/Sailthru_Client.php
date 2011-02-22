@@ -631,7 +631,7 @@ class Sailthru_Client {
         }
         $sig = $params['sig'];
         unset($params['sig']);
-        if ($sig != self::getSignatureHash($params, $this->secret)) {
+        if ($sig != Sailthru_Util::getSignatureHash($params, $this->secret)) {
             return false;
         }
         $send = $this->getSend($params['send_id']);
@@ -664,7 +664,7 @@ class Sailthru_Client {
         }
         $sig = $params['sig'];
         unset($params['sig']);
-        if ($sig != self::getSignatureHash($params, $this->secret)) {
+        if ($sig != Sailthru_Util::getSignatureHash($params, $this->secret)) {
             return false;
         }
         return true;
