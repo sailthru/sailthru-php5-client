@@ -69,6 +69,27 @@ It can make requests to following [API calls](http://docs.sailthru.com/api):
 
     $response = $sailthruClient->scheduleBlast($blast_name, $list, $schedule_time, $from_name, $from_email, $subject, $content_html, $content_text);
 
+    //schedule blast from template
+    $template = 'default';
+    $list = 'default';
+    $schedule_time = 'now';
+    $options  = array();
+    #$response = $sailthruClient->scheduleBlastFromTemplate($template, $list, $schedule_time, $options);
+
+    //schedule blast from previous blast
+    //Note: if blast_id is invalid, request won't work
+    $_blast_id = '110065';
+    $_schedule_time = 'now';
+    $_options = array(
+        'vars' => array(
+            'my_var' => '3y6366546363',
+            'my_var2' => array(7,8,9),
+            'my_var3' => array('president' => 'obama', 'nested' => array('vp' => 'palin'))),
+    );
+    $response = $sailthruClient->scheduleBlastFromBlast($_blast_id, $_schedule_time, $_options);
+
+
+
     //update blast
     $blast_id = 46513;
     $blast_name = 'test_blast88';
