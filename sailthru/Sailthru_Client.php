@@ -810,7 +810,7 @@ class Sailthru_Client {
      * @param array $data
      * @return array
      */
-    protected  function apiPost($action, $data, $method = 'POST') {
+    public  function apiPost($action, $data, $method = 'POST') {
         $data['api_key'] = $this->api_key;
         $data['format'] = isset($data['format']) ? $data['format'] : 'php';
         $data['sig'] = Sailthru_Util::getSignatureHash($data, $this->secret);
@@ -827,7 +827,7 @@ class Sailthru_Client {
      * @param array $data
      * @return array
      */
-    protected  function apiGet($action, $data) {
+    public  function apiGet($action, $data) {
         $data['api_key'] = $this->api_key;
         $data['format'] = isset($data['format']) ? $data['format'] : 'php';
         $data['sig'] = Sailthru_Util::getSignatureHash($data, $this->secret);
@@ -845,7 +845,7 @@ class Sailthru_Client {
      * @return array
 
      */
-    protected function apiDelete($action, $data) {
+    public function apiDelete($action, $data) {
         return $this->apiPost($action, $data, 'DELETE');
     }
 

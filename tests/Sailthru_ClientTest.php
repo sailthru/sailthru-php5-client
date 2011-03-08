@@ -10,7 +10,7 @@ class Sailthru_ClientTest extends PHPUnit_Framework_TestCase {
 
     public function testResponseFromServerIsOfArrayTypeWhenFormatIsPHP() {
         $response = $this->sailthru_client->getEmail("xyz@xyz.com");
-         $this->assertTrue(is_array($response));
+        $this->assertTrue(is_array($response));
     }
 
     public function testResponseFromServerIsOfJSONObjectTypeWhenFormatIsJSON() {
