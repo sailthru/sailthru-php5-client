@@ -243,6 +243,38 @@ class Sailthru_Client {
     }
 
     /**
+     * Schedule a mass mail from a template
+     *
+     * @param String $template
+     * @param String $list
+     * @param String $schedule_time
+     * @param Array $options
+     * @link http://docs.sailthru.com/api/blast
+     **/
+    public function scheduleBlastFromTemplate($template, $list, $schedule_time, $options = array()) {
+        $data = $options;
+        $data['copy_template'] = $template;
+        $data['list'] = $list;
+        $data['schedule_time'] = $schedule_time;
+        return $this->apiPost('blast', $data);
+    }
+
+    /**
+     * Schedule a mass mail blast from previous blast
+     *
+     * @param String|Integer $blast_id
+     * @param String $schedule_time
+     * @param array $options
+     * @link http://docs.sailthru.com/api/blast
+     **/
+    public function scheduleBlastFromBlast($blast_id, $schedule_time, $options = array()) {
+        $data = $options;
+        $data['copy_blast'] = $blast_id;
+        $data['schedule_time'] = $schedule_time;
+        return $this->apiPost('blast', $data);
+    }
+
+    /**
      * updates existing blast
      *
      * @param string/integer $blast_id
