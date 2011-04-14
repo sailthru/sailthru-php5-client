@@ -46,13 +46,15 @@ class Sailthru_Client {
 
 
     /**
-     * Instantiate a new client; constructor optionally takes overrides for api_uri.
+     * Instantiate a new client; constructor optionally takes overrides for api_uri and whether
+     * to share the version of PHP that is being used.
      *
      * @param string $api_key
      * @param string $secret
      * @param string $api_uri
+     * @param boolean $show_version
      */
-    public function  __construct($api_key, $secret, $api_uri = false) {
+    public function  __construct($api_key, $secret, $api_uri = false, $show_version = true) {
         $this->api_key = $api_key;
         $this->secret = $secret;
         if ($api_uri !== false) {
@@ -60,7 +62,10 @@ class Sailthru_Client {
         }
 
         $this->http_request_type = function_exists('curl_init') ? 'httpRequestCurl' : 'httpRequestWithoutCurl';
-        $this->user_agent_string = "Sailthru API PHP5 Client PHP Version: " . phpversion() ;
+        $this->user_agent_string = "Sailthru API PHP5 Client";
+        if ($show_version) {
+         $this->user_agent_string .= " PHP Version: " . phpversion();
+        }
     }
 
 
