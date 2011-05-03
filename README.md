@@ -57,6 +57,10 @@ It can make requests to following [API calls](http://docs.sailthru.com/api):
 
 ### [blast](http://docs.sailthru.com/api/blast)
 
+    //Get Blast information
+    $blast_id = 52424;
+    $response = $sailthruClient->getBlast($blast_id);
+
 	//schedule blast
 	$blast_name = 'test_blast1';
     $list = 'default';
