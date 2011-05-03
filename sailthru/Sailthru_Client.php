@@ -707,6 +707,44 @@ class Sailthru_Client {
         return true;
     }
 
+    /**
+     *
+     * Hard bounce postbacks
+     * @return boolean
+     * @link http://docs.sailthru.com/api/postbacks
+     */
+    public function receiveHardBouncePost(){
+        $params = $_POST;
+        foreach (array('action', 'email', 'sig') as $k) {
+            if (!isset($params[$k])) {
+                return false;
+            }
+        }
+        if ($params['action'] != 'hardbounce') {
+            return false;
+        }
+        $sig = $params['sig'];
+        unset($params['sig']);
+        if ($sig != Sailthru_Util::getSignatureHash($params, $this->secret)) {
+            return false;
+        }
+        if (isset($params['send_id'])) {
+            $send_id = $params['send_id'];
+            $send = $this->getSend($send_id);
+            if (!isset($send['email'])) {
+                return false;
+            }
+        }
+        else if (isset($params['blast_id'])) {
+            $blast_id = $params['blast_id'];
+            $blast = $this->getBlast($blast_id);
+            if (isset($blast['error'])) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 
     /**
      *
