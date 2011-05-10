@@ -405,6 +405,10 @@ class Sailthru_Client {
         return $this->apiPost('template', $data);
     }
 
+    public function deleteTemplate($template_name) {
+        return $this->apiDelete('template', array('template' => $template_name));
+    }
+
 
 
     /**
