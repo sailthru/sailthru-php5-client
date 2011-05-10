@@ -45,35 +45,5 @@ class Sailthru_Util {
             }
         }
     }
-
-
-    /**
-     * verify that purchase item has all required fields
-     * @param array $items
-     * @return boolean 
-     */
-    public static function verifyPurchaseItems(array $items) {
-        $required_item_fields = array('id', 'price', 'qty', 'title', 'url');    //Need to maintain order
-        $verified = true;
-        if (!empty($items)) {
-            foreach ($items as $item) {
-                if (is_array($item)) {
-                    $keys = array_keys($item);
-                    sort($keys);
-                    if ($keys !== $required_item_fields) {
-                        $verified = false;
-                        break;
-                    }
-                }
-                else {
-                    $verified = false;
-                }
-            }
-        }
-        else {
-            $verified = false;
-        }        
-        return $verified;
-    }
 }
 ?>
