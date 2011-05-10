@@ -43,6 +43,12 @@ class Sailthru_Client {
      * @var String
      */
     protected $user_agent_string;
+    
+    /**
+     * Get information regarding last response from server
+     * @var type 
+     */
+    private $lastResponseInfo = null;
 
 
     /**
@@ -835,6 +841,7 @@ class Sailthru_Client {
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array("User-Agent: {$this->user_agent_string}"));
         $data = curl_exec($ch);
+        $this->lastResponseInfo = curl_getinfo($ch);
         if (!$data) {
             throw new Sailthru_Client_Exception("Bad response received from $url");
         }
@@ -926,6 +933,16 @@ class Sailthru_Client {
      */
     public function apiDelete($action, $data) {
         return $this->apiPost($action, $data, 'DELETE');
+    }
+    
+    
+    /**
+     * get information from last server response when used with cURL
+     * returns associative array as per http://us.php.net/curl_getinfo
+     * @return array or null 
+     */
+    public function getLastResponseInfo() {
+        return $this->lastResponseInfo;
     }
 
 }
