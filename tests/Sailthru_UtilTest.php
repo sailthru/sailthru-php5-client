@@ -2,19 +2,33 @@
 require_once "_autoload.php";
 
 class Sailthru_UtilTest extends PHPUnit_Framework_TestCase {
-    public function testVerifyPurchaseItemsWhenAllRequiredItemFieldsExist() {
-        $items = array(
-            array('id' => 11, 'price' => 26262, 'qty' => '11', 'url' => 'http://xyx.com/abc', 'title' => 'some title'),
-            array('id' => 171, 'price' => 262, 'qty' => '18', 'url' => 'http://xyz.com/abc', 'title' => 'some title2')
+
+    public function setUp() {
+        $this->params = array(
+            'item1' => 'value1',
+            'item2' => 'value2',
+            'item3' => array('value3', 'value4'),
+            'item4' => false,
+            'item5' => true
         );
-        $this->assertTrue(Sailthru_Util::verifyPurchaseItems($items));
+    }
+    
+    public function testExtractParamValues() {
+        $expected = array('value1', 'value2', 'value3', 'value4', 0, 1);
+        $actual = array();
+        Sailthru_Util::extractParamValues($this->params, $actual);
+        $this->assertEquals(array_values($expected), $actual);
     }
 
-    public function testVerifyPurchaseItemsWhenOneofTheRequiredItemFieldDontExist() {
-        $items = array(
-            array('id' => 11, 'price' => 26262, 'qty' => '11', 'url' => 'http://xyx.com/abc'),  //title is missing
-            array('id' => 171, 'price' => 262, 'qty' => '18', 'url' => 'http://xyz.com/abc', 'title' => 'some title2')
-        );
-        $this->assertFalse(Sailthru_Util::verifyPurchaseItems($items), "aaa");
+    public function testGetSignatureString() {
+        $expected_arr = array('value1', 'value2', 'value3', 'value4', 0, 1);
+        $secret = "ABCXYZ";
+        $expected_str = $secret;
+        sort($expected_arr, SORT_STRING);
+        foreach ($expected_arr as $val) {
+            $expected_str .= $val;
+        }
+        $actual_signature_str = Sailthru_Util::getSignatureString($this->params, $secret);
+        $this->assertEquals($expected_str, $actual_signature_str);
     }
 }

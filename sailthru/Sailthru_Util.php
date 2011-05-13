@@ -41,6 +41,11 @@ class Sailthru_Util {
             if (is_array($v) || is_object($v)) {
                 self::extractParamValues($v, $values);
             } else {
+                if (is_bool($v))  {
+                    //if a value is set as false, invalid hash will generate
+                    //https://github.com/sailthru/sailthru-php5-client/issues/4
+                    $v = intval($v);
+                }
                 $values[] = $v;
             }
         }
