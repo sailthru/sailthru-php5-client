@@ -394,8 +394,17 @@ class Sailthru_Client {
      * @param string $template_name
      * @link http://docs.sailthru.com/api/template
      */
-    function getTemplate($template_name) {
+    public function getTemplate($template_name) {
         return $this->apiGet('template', array('template' => $template_name));
+    }
+    
+    
+    /**
+     * Fetch name of all existing templates
+     * @link http://docs.sailthru.com/api/template
+     */
+    public function getTemplates() {
+        return $this->apiGet('template', array());
     }
 
     /**
