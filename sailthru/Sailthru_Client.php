@@ -394,8 +394,9 @@ class Sailthru_Client {
      * @param string $template_name
      * @link http://docs.sailthru.com/api/template
      */
-    public function getTemplate($template_name) {
-        return $this->apiGet('template', array('template' => $template_name));
+    public function getTemplate($template_name, array $options = array()) {
+        $options['template'] = $template_name;
+        return $this->apiGet('template', $options);
     }
     
     
@@ -405,6 +406,11 @@ class Sailthru_Client {
      */
     public function getTemplates() {
         return $this->apiGet('template', array());
+    }
+    
+    
+    public function getTemplateRevision($revision_id) {
+        return $this->apiGet('template', array('revision' => (int)$revision_id));
     }
 
     /**
