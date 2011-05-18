@@ -409,7 +409,7 @@ class Sailthru_Client {
     }
     
     
-    public function getTemplateRevision($revision_id) {
+    public function getTemplateFromRevision($revision_id) {
         return $this->apiGet('template', array('revision' => (int)$revision_id));
     }
 
@@ -420,16 +420,35 @@ class Sailthru_Client {
      * @param array $template_fields
      * @link http://docs.sailthru.com/api/template
      */
-    public function saveTemplate($template_name, $template_fields = array()) {
+    public function saveTemplate($template_name, array $template_fields = array()) {
         $data = $template_fields;
         $data['template'] = $template_name;
         return $this->apiPost('template', $data);
     }
+    
+    /**
+     * Save a template from revision
+     *
+     * @param string $template_name
+     * @param numeric $revision
+     * @link http://docs.sailthru.com/api/template
+     */
+    public function saveTemplateFromRevision($template_name, $revision_id) {
+        $revision_id = (int)$revision_id;        
+        return $this->saveTemplate($template_name, array('revision' => $revision_id));
+    }
+    
 
+    /**
+     * Delete a template.
+     *
+     * @param string $template_name
+     * @param array $template_fields
+     * @link http://docs.sailthru.com/api/template
+     */
     public function deleteTemplate($template_name) {
         return $this->apiDelete('template', array('template' => $template_name));
     }
-
 
 
     /**
