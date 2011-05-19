@@ -819,6 +819,92 @@ class Sailthru_Client {
         }
         return $this->apiPost('horizon', $data);
     }
+    
+    /**
+     * Get status of a job
+     * @param String $job_id
+     */
+    public function getJobStatus($job_id) {
+        return $this->apiGet('job', array('job_id' => $job_id));
+    }
+    
+    /**
+     * process job api call
+     * @param String $job
+     * @param array $options
+     * @param String $report_email
+     * @param String $postback_url
+     * @param array $binary_data_param
+     */
+    protected function processJob($job, array $options = array(), $report_email = false, $postback_url = false, array $binary_data_param = array()) {
+        $data = $options;
+        $data['job'] = $job;
+        if ($report_email) {
+            $data['report_email'] = $report_email;
+        }
+        if ($postback_url) {
+            $data['postback_url'] = $postback_url;
+        }
+        return $this->apiPost('job', $data, $binary_data_param);
+    }
+    
+    
+    /**
+     * Process import job from given email string CSV
+     * @param String $list
+     * @param String $emails
+     * @param String $report_email
+     * @param String $postback_url
+     */
+    public function processImportJob($list, $emails, $report_email = false, $postback_url = false) {
+        $data = array(
+            'emails' => $emails, 
+            'list' => $list
+        );
+        return $this->processJob('import', $data, $report_email, $postback_url);
+    }
+    
+    
+    /**
+     * Process import job from given file path of a CSV or email per line file
+     * 
+     * @param String $list
+     * @param String $emails
+     * @param String $report_email
+     * @param String $postback_url
+     *
+     */
+    public function processImportJobFromFile($list, $file_path, $report_email = false, $postback_url = false) {
+        $data = array(
+            'file' => $file_path, 
+            'list' => $list
+        );
+        return $this->processJob('import', $data, $report_email, $postback_url, array('file'));
+    }
+    
+    
+    /**
+     * Process a snapshot job
+     * 
+     * @param array $query
+     * @param String $report_email
+     * @param String $postback_url
+     */
+    public function processSnapshotJob(array $query, $report_email = false, $postback_url = false) {
+        $data = array('query' => $query);
+        return $this->processJob('snaphot', $data, $report_email, $postback_url);
+    }
+    
+    /**
+     * Process a export list job
+     * @param String $list
+     * @param String $report_email
+     * @param String $postback_url
+     */
+    public function processExportListJob($list, $report_email = false, $postback_url = false) {
+        $data = array('list' => $list);
+        return $this->processJob('export_list_data', $data, $report_email, $postback_url);
+    }
 
 
     /**
@@ -859,11 +945,11 @@ class Sailthru_Client {
      * @param array $headers
      * @return string
      */
-    private function httpRequestCurl($url, $data, $method = 'POST') {
+    private function httpRequestCurl($url, array $data, $method = 'POST') {
         $ch = curl_init();
         if ($method == 'POST') {
             curl_setopt($ch, CURLOPT_POST, true);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data, '', '&'));
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
         } else {
             $url .= '?' . http_build_query($data, '', '&');
             if ($method != 'GET') {
@@ -930,11 +1016,23 @@ class Sailthru_Client {
      * @param array $data
      * @return array
      */
-    public  function apiPost($action, $data, $method = 'POST') {
+    public  function apiPost($action, $data, array $binary_data_param = array()) {
+        $binary_data = array();
+        if (!empty ($binary_data_param)) {
+            foreach ($binary_data_param as $param) {
+                if (isset($data[$param]) && file_exists($data[$param])) {
+                    $binary_data[$param] = "@{$data[$param]}";
+                    unset($data[$param]);
+                }
+            }    
+        }
+        
         $data['api_key'] = $this->api_key;
         $data['format'] = isset($data['format']) ? $data['format'] : 'php';
         $data['sig'] = Sailthru_Util::getSignatureHash($data, $this->secret);
-        $result = $this->httpRequest("$this->api_uri/$action", $data, $method);
+        
+        $data = array_merge($data, $binary_data);
+        $result = $this->httpRequest("$this->api_uri/$action", $data, 'POST');
         $unserialized = @unserialize($result);
         return $unserialized ? $unserialized : $result;
     }
@@ -978,6 +1076,6 @@ class Sailthru_Client {
     public function getLastResponseInfo() {
         return $this->lastResponseInfo;
     }
-
+    
 }
 ?>
