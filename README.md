@@ -206,6 +206,32 @@ It can make requests to following [API calls](http://docs.sailthru.com/api):
 	$email = 'praj@sailthru.com';
 	$sailthruClient->setHorizonCookie($email);
 
+### [job](http://docs.sailthru.com/api/job)
+
+    //get the status of a job
+    $job_id = '4dd58f036803fa3b5500000b';
+    $response = $sailthruClient->getJobStatus($job_id);
+
+    # process import job for email string
+    $list = 'test-list';
+    $emails = 'a@a.com,b@b.com';
+    $response = $sailthruClient->processImportJob($list, $emails)
+
+    # process import job from CSV or text file
+    $list = 'test-list';
+    $source_file = '/home/praj/Desktop/emails.txt';
+    $response = $sailthruClient->processImportJobFromFile($list, $source_file)
+
+    # process snapshot job
+    $query = array();
+    $report_email = 'praj@sailthru.com';
+    $postback_url = 'http://example.com/reports/snapshot_postback';
+    response = $sailthruClient->processSnapshotJob($query);
+
+    # process export list job
+    $list = 'test-list';
+    $response = $sailthruClient->processExportListJob($list);
+
 ### [postbacks](http://docs.sailthru.com/api/postbacks)
 
 	//recieve verify post
