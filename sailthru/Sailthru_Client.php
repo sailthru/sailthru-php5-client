@@ -51,6 +51,9 @@ class Sailthru_Client {
     private $lastResponseInfo = null;
     
     
+    /**
+     * File Upload Flag variable
+    */
     private $fileUpload = false;
 
 
@@ -987,6 +990,11 @@ class Sailthru_Client {
      * @return string
      */
     private function httpRequestWithoutCurl($url, $data, $method = 'POST') {
+        if ($this->fileUpload === true) {
+            $this->fileUpload = false;
+            throw new Sailthru_Client_Exception('cURL extension is required for the request with file upload');
+        }
+
         $params = array('http' => array('method' => $method));
         if ($method == 'POST') {
             $params['http']['content'] = is_array($data) ? http_build_query($data, '', '&') : $data;
