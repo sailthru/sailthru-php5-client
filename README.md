@@ -15,6 +15,7 @@ It can make requests to following [API calls](http://docs.sailthru.com/api):
 * [alert](http://docs.sailthru.com/api/alert)
 * [stats](http://docs.sailthru.com/api/stats)
 * [purchase](http://docs.sailthru.com/api/purchase)
+* [job](http://docs.sailthru.com/api/job)
 * [horizon](http://docs.sailthru.com/api/horizon)
 
 
@@ -215,12 +216,12 @@ It can make requests to following [API calls](http://docs.sailthru.com/api):
     # process import job for email string
     $list = 'test-list';
     $emails = 'a@a.com,b@b.com';
-    $response = $sailthruClient->processImportJob($list, $emails)
+    $response = $sailthruClient->processImportJob($list, $emails);
 
     # process import job from CSV or text file
     $list = 'test-list';
     $source_file = '/home/praj/Desktop/emails.txt';
-    $response = $sailthruClient->processImportJobFromFile($list, $source_file)
+    $response = $sailthruClient->processImportJobFromFile($list, $source_file);
 
     # process snapshot job
     $query = array();

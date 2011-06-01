@@ -49,6 +49,9 @@ class Sailthru_Client {
      * @var type 
      */
     private $lastResponseInfo = null;
+    
+    
+    private $fileUpload = false;
 
 
     /**
@@ -947,9 +950,15 @@ class Sailthru_Client {
      */
     private function httpRequestCurl($url, array $data, $method = 'POST') {
         $ch = curl_init();
+        //print_r($data);die();
         if ($method == 'POST') {
             curl_setopt($ch, CURLOPT_POST, true);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+            if ($this->fileUpload === true) {
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+            }
+            else {
+                curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data, '', '&'));
+            }            
         } else {
             $url .= '?' . http_build_query($data, '', '&');
             if ($method != 'GET') {
@@ -1023,6 +1032,7 @@ class Sailthru_Client {
                 if (isset($data[$param]) && file_exists($data[$param])) {
                     $binary_data[$param] = "@{$data[$param]}";
                     unset($data[$param]);
+                    $this->fileUpload = true;
                 }
             }    
         }
