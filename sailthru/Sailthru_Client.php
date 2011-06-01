@@ -950,11 +950,11 @@ class Sailthru_Client {
      */
     private function httpRequestCurl($url, array $data, $method = 'POST') {
         $ch = curl_init();
-        //print_r($data);die();
         if ($method == 'POST') {
             curl_setopt($ch, CURLOPT_POST, true);
             if ($this->fileUpload === true) {
                 curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+                $this->fileUpload = false;
             }
             else {
                 curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data, '', '&'));
