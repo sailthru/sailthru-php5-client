@@ -1029,6 +1029,7 @@ class Sailthru_Client {
 
     /**
      * Perform an API POST (or other) request, using the shared-secret auth hash.
+     * if binary_data_param is set, its appends '@' so that cURL can make binary POST request
      *
      * @param array $data
      * @return array
@@ -1044,15 +1045,11 @@ class Sailthru_Client {
                 }
             }    
         }
-        
-        $data['api_key'] = $this->api_key;
-        $data['format'] = isset($data['format']) ? $data['format'] : 'php';
-        $data['sig'] = Sailthru_Util::getSignatureHash($data, $this->secret);
-        
-        $data = array_merge($data, $binary_data);
-        $result = $this->httpRequest("$this->api_uri/$action", $data, 'POST');
-        $unserialized = @unserialize($result);
-        return $unserialized ? $unserialized : $result;
+        $payload = $this->prepareJsonPayload($data, $binary_data);
+        $result = $this->httpRequest("$this->api_uri/$action", $payload, 'POST');
+        #$unserialized = @unserialize($result);
+        #return $unserialized ? $unserialized : $result;
+        return json_decode($result, true);
     }
 
 
@@ -1063,13 +1060,9 @@ class Sailthru_Client {
      * @param array $data
      * @return array
      */
-    public  function apiGet($action, $data) {
-        $data['api_key'] = $this->api_key;
-        $data['format'] = isset($data['format']) ? $data['format'] : 'php';
-        $data['sig'] = Sailthru_Util::getSignatureHash($data, $this->secret);
-        $result = $this->httpRequest("$this->api_uri/$action", $data, 'GET');
-        $unserialized = @unserialize($result);
-        return $unserialized ? $unserialized : $result;
+    public  function apiGet($action, $data, $method = 'GET') {
+        $result = $this->httpRequest("{$this->api_uri}/{$action}", $this->prepareJsonPayload($data), $method);
+        return json_encode($result, true);
     }
 
 
@@ -1082,7 +1075,7 @@ class Sailthru_Client {
 
      */
     public function apiDelete($action, $data) {
-        return $this->apiPost($action, $data, 'DELETE');
+        return $this->apiGet($action, $data, 'DELETE');
     }
     
     
@@ -1094,6 +1087,21 @@ class Sailthru_Client {
     public function getLastResponseInfo() {
         return $this->lastResponseInfo;
     }
-    
+
+    /**
+     * Prepare JSON payload
+     */
+    protected function prepareJsonPayload(array $data, array $binary_data = array()) {
+        $payload =  array(
+            'api_key' => $this->api_key,
+            'format' => 'json', //fuck XML
+            'json' => json_encode($data)
+        );
+        $payload['sig'] = Sailthru_Util::getSignatureHash($payload, $this->secret);
+        if (!empty($binary_data)) {
+            $payload = array_merge($payload, $binary_data);
+        }
+        return $payload;
+    }
 }
 ?>
