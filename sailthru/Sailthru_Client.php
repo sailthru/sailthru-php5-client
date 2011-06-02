@@ -1062,7 +1062,7 @@ class Sailthru_Client {
      */
     public  function apiGet($action, $data, $method = 'GET') {
         $result = $this->httpRequest("{$this->api_uri}/{$action}", $this->prepareJsonPayload($data), $method);
-        return json_encode($result, true);
+        return json_decode($result, true);
     }
 
 

@@ -4,7 +4,7 @@ class Sailthru_ClientTest extends PHPUnit_Framework_TestCase {
     public function setUp() {
         $this->api_key = 'my_api_key';
         $this->secret = 'my_secret';
-        $this->api_url = 'http://api.sailthru-sb.com';
+        $this->api_url = 'http://api.sailthru.com';
         $this->sailthru_client = new Sailthru_Client($this->api_key, $this->secret, $this->api_url);
     }
 
@@ -15,7 +15,7 @@ class Sailthru_ClientTest extends PHPUnit_Framework_TestCase {
 
     public function testResponseFromServerIsOfJSONObjectTypeWhenFormatIsJSON() {
         $response = $this->sailthru_client->getList("some-list", "json");
-        json_decode($response);
+        json_encode($response);
          $this->assertTrue(is_int(json_last_error()));
     }
 
