@@ -201,7 +201,7 @@ It can make requests to following [API calls](http://docs.sailthru.com/api):
 	//sets horizon user data
 	$email = 'praj@sailthru.com';
 	$tags = array('blue', 'red', 'green');
-	$response = $sailthruClient->getHorizon($email, $tags);
+	$response = $sailthruClient->setHorizon($email, $tags);
 
 	//set horizon cookie
 	$email = 'praj@sailthru.com';
