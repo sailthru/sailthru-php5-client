@@ -911,6 +911,10 @@ class Sailthru_Client {
         $data = array('list' => $list);
         return $this->processJob('export_list_data', $data, $report_email, $postback_url);
     }
+    
+    public function processBlastQueryJob($blast_id, $report_email = false, $postback_url = false) {
+        return $this->processJob('blast_query', array('blast_id' => $blast_id), $report_email, $postback_url);
+    }
 
 
     /**
