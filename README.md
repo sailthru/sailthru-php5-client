@@ -122,10 +122,42 @@ It can make requests to following [API calls](http://docs.sailthru.com/api):
 	//delete a list
 	$response = $sailthruClient->deleteList($list);
 
+### [template](http://docs.sailthru.com/api/template)
+
+    //get meta-data of all exisiting templates
+    $response = $sailthruClient->getTemplates();
+
+    //get information of a given template
+    $template = 'welcome-template';
+    $response = $sailthruClient->getTemplate($template);
+
+    //get information of a template from it's revision id
+    $revision_id = 45204;
+    $response = $sailthruClient->getTemplateFromRevision($revision_id);
+
+    //create new template or update existing one
+    $template = 'new-template';
+    $options = array(
+        'from_name' => 'Sailthru Support',
+        'from_email' => 'support@sailthru.com',
+        'content_html' => '<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec qu</p>',
+        'subject' => 'Sailthru Support'
+    );
+    $response = $sailthruClient->saveTemplate($template, $options);
+
+    //save template from existing revision id
+    $template = 'welcome-template';
+    $revision_id = 45204;
+    $response = $sailthruClient->saveTemplateFromRevision($template, $revision_id);
+
+    //delete existing template
+    $template = 'welcome-template';
+    $response = $sailthruClient->deleteTemplate($template);
+
 ### [contacts](http://docs.sailthru.com/api/contacts)
 
 	//import contacts
-	$response = $sailthruClient->importContacts('some-email@gmail.com', "your-super-secret-password");
+	$response = $sailthruClient->importContacts('some-email@gmail.com', "your-super-secret-password-which-we-will-never-store");
 
 ### [content](http://docs.sailthru.com/api/content)
 
