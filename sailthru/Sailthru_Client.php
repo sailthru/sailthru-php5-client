@@ -369,6 +369,18 @@ class Sailthru_Client {
     public function getBlast($blast_id) {
         return $this->apiGet('blast', array('blast_id' => $blast_id));
     }
+    
+    /**
+    * Get info on multiple blasts
+    * @param array $options associative array
+    *       start_date (required)
+    *       end-date (required)
+    *       status
+    * @link http://docs.sailthru.com/api/blast
+    */
+    public function getBlasts($options) {
+        return $this->apiGet('blast', $options);
+    }
 
 
     /**
