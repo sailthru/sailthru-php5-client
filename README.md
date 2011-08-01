@@ -265,6 +265,14 @@ It can make requests to following [API calls](http://docs.sailthru.com/api):
     $list = 'test-list';
     $response = $sailthruClient->processExportListJob($list);
 
+    # process update job from emails CSV
+    $emails = "praj@sailthru.com,ian@sailthru.com";
+    $update = array(
+        'lists' => array('sailthru-list' => 1),
+        'vars' => array('location' => 'New York, NY')
+    );
+    $response = $sailthruClient->processUpdateJobFromEmails($emails, $update);
+
 ### [postbacks](http://docs.sailthru.com/api/postbacks)
 
 	//recieve verify post
