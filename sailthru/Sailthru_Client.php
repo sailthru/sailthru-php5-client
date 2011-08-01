@@ -924,10 +924,76 @@ class Sailthru_Client {
         return $this->processJob('export_list_data', $data, $report_email, $postback_url);
     }
     
+    /**
+     * Export blast data in CSV format
+     * @param integer $blast_id
+     * @param String $report_email
+     * @param String $postback_url
+     */
     public function processBlastQueryJob($blast_id, $report_email = false, $postback_url = false) {
         return $this->processJob('blast_query', array('blast_id' => $blast_id), $report_email, $postback_url);
     }
 
+    /**
+     * Perform a bulk update of any number of user profiles from given context: String CSV, file, URL or query
+     * @param String $context
+     * @param Array $update
+     * @param String $report_email
+     * @param String $postback_url
+     */
+    public function processUpdateJob($context, $value, array $update =  array(), $report_email = false, $postback_url = false, array $file_params = array()) {
+        $data = array(
+            $context => $value
+        );
+        if (count($update) > 0) {
+            $data['update'] = $update;
+        }
+        return $this->processJob('update', $data, $report_email, $postback_url, $file_params);
+    }
+
+    /**
+     * Perform a bulk update of any number of user profiles from given URL
+     * @param String $url
+     * @param Array $update
+     * @param String $report_email
+     * @param String $postback_url
+     */
+    public function processUpdateJobFromUrl($url, array $update = array(), $report_email = false, $postback_url = false) {
+        return $this->processUpdateJob('url', $url, $update, $report_email, $postback_url);
+    }
+    
+    /**
+     * Perform a bulk update of any number of user profiles from given file
+     * @param String $url
+     * @param Array $update
+     * @param String $report_email
+     * @param String $postback_url
+     */
+    public function processUpdateJobFromFile($file, array $update = array(), $report_email = false, $postback_url = false) {
+        return $this->processUpdateJob('file', $file, $update, $report_email, $postback_url, array('file'));
+    }
+
+    /**
+     * Perform a bulk update of any number of user profiles from a query
+     * @param Array $query
+     * @param Array $update
+     * @param String $report_email
+     * @param String $postback_url
+     */
+    public function processUpdateJobFromQuery($query, array $update = array(), $report_email = false, $postback_url = false) {
+        return $this->processUpdateJob('query', $query, $update, $report_email, $postback_url);
+    }
+
+    /**
+     * Perform a bulk update of any number of user profiles from emails CSV
+     * @param String $emails
+     * @param Array $update
+     * @param String $report_email
+     * @param String $postback_url
+     */
+    public function processUpdateJobFromEmails($emails, array $update = array(), $report_email = false, $postback_url = false) {
+        return $this->processUpdateJob('emails', $emails, $update, $report_email, $postback_url);
+    }
 
     /**
      *
