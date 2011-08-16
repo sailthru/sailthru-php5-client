@@ -3,6 +3,8 @@ sailthru-php5-client
 
 A simple client library to remotely access the `Sailthru REST API` as per [http://docs.sailthru.com/api](http://docs.sailthru.com/api)
 
+By default, it will make request in `JSON` format.
+
 It can make requests to following [API calls](http://docs.sailthru.com/api):
 
 * [email](http://docs.sailthru.com/api/email)
