@@ -31,6 +31,19 @@ It can make requests to following [API calls](http://docs.sailthru.com/api):
  	$sailthruClient = new Sailthru_Client($api_key, $api_secret);
 
 
+### Generic Example
+	try {
+		$response = $sailthruClient->getSend("TUMVqWdj2exnAAV-");
+		if ( !isset($response['error']) ) {
+			// everything OK
+			// do something here
+		} else {
+			// handle API error
+		}
+	} catch (Sailthru_Client_Exception $e) {
+		// deal with exceptions
+	}
+
 ### [send](http://docs.sailthru.com/api/send)
 
  	//send
