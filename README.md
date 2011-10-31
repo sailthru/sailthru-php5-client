@@ -229,6 +229,16 @@ It can make requests to following [API calls](http://docs.sailthru.com/api):
 	);
 	$response = $sailthruClient->purchase($email, $items);
 
+    //post purchase incomplete request
+    $email = 'praj@sailthru.com';
+    $items = array(
+		array('id' => 11, 'price' => 26262, 'qty' => '11', 'url' => 'http://example.com/234/high-impact-water-bottle', 'title' => 'High-Impact Water Bottle'),
+		array('id' => 171, 'price' => 262, 'qty' => '18', 'url' => 'http://xyz.com/abc', 'title' => 'some title2')
+	);
+    $message_id = '23423.231';
+    $response = $sailthruClient->purchaseIncomplete($email, $items, $message_id);
+
+
 ### [stats](http://docs.sailthru.com/api/stats)
 
 	//get list stats
