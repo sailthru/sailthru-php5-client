@@ -207,6 +207,16 @@ class Sailthru_Client {
         return $this->apiPost('email', $data);
     }
 
+    /**
+     * Update / add email address
+     *
+     * @link http://docs.sailthru.com/api/email
+     */
+    public function setEmail2($email, array $options = array()) {
+        $options['email'] = $email;
+        return $this->apiPost('email', $options);
+    }
+
 
     /**
      * Schedule a mass mail blast
