@@ -1,5 +1,7 @@
 <?php
 
-class Sailthru_Client_Exception extends Exception { 
-    
+class Sailthru_Client_Exception extends Exception {
+
 }
+
+?>
