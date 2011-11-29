@@ -484,6 +484,42 @@ class Sailthru_Client {
 	}
 
 	/**
+	 * Create a list.
+	 *
+	 * @todo Implement smart list type with query
+	 * @param $list string name of the list to create
+	 * @param $type string type of list, natural or smart
+	 * @param $primary boolean set as primary or non-primary
+	 * @param $query string query criteria for smart list (not currently implemented)
+	 * @link http://docs.sailthru.com/api/list
+	 */
+	public function createList($list, $type = 'natural', $primary = true, $query = null)
+	{
+		return $this->updateList($list, $type, $primary, $query);
+	}
+
+	/**
+	 * Update a list.
+	 *
+	 * @todo Implement smart list type with query
+	 * @param $list string name of the list to create
+	 * @param $type string type of list, natural or smart
+	 * @param $primary boolean set as primary or non-primary
+	 * @param $query string query criteria for smart list (not currently implemented)
+	 * @link http://docs.sailthru.com/api/list
+	 */
+	public function updateList($list, $type = 'natural', $primary = true, $query = null)
+	{
+		$data = array(
+			'list'    => $list,
+			'type'    => $type,
+			'primary' => (int)$primary,
+		);
+
+		return $this->apiPost('list', $data);
+	}
+
+	/**
 	 * Upload a list.
 	 *
 	 * The list import job is queued and will happen shortly after the API request.
