@@ -493,7 +493,7 @@ class Sailthru_Client {
 	 * @param $query string query criteria for smart list (not currently implemented)
 	 * @link http://docs.sailthru.com/api/list
 	 */
-	public function createList($list, $type = 'natural', $primary = true, $query = null)
+	public function createList($list, $type = 'natural', $primary = false, $query = null)
 	{
 		return $this->updateList($list, $type, $primary, $query);
 	}
@@ -508,7 +508,7 @@ class Sailthru_Client {
 	 * @param $query string query criteria for smart list (not currently implemented)
 	 * @link http://docs.sailthru.com/api/list
 	 */
-	public function updateList($list, $type = 'natural', $primary = true, $query = null)
+	public function updateList($list, $type = 'natural', $primary = false, $query = null)
 	{
 		$data = array(
 			'list'    => $list,
