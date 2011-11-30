@@ -486,7 +486,6 @@ class Sailthru_Client {
 	/**
 	 * Create a list.
 	 *
-	 * @todo Implement smart list type with query
 	 * @param $list string name of the list to create
 	 * @param $type string type of list, natural or smart
 	 * @param $primary boolean set as primary or non-primary
@@ -501,7 +500,6 @@ class Sailthru_Client {
 	/**
 	 * Update a list.
 	 *
-	 * @todo Implement smart list type with query
 	 * @param $list string name of the list to create
 	 * @param $type string type of list, natural or smart
 	 * @param $primary boolean set as primary or non-primary
@@ -515,6 +513,11 @@ class Sailthru_Client {
 			'type'    => $type,
 			'primary' => (int)$primary,
 		);
+
+		if ($query != null)
+		{
+			$data['query'] = $query;
+		}
 
 		return $this->apiPost('list', $data);
 	}
