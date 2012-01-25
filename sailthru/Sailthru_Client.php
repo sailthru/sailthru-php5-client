@@ -56,6 +56,8 @@ class Sailthru_Client {
     */
     private $fileUpload = false;
 
+    private $httpHeaders = array("User-Agent: Sailthru API PHP5 Client");
+
 
     /**
      * Instantiate a new client; constructor optionally takes overrides for api_uri and whether
@@ -66,7 +68,7 @@ class Sailthru_Client {
      * @param string $api_uri
      * @param boolean $show_version
      */
-    public function  __construct($api_key, $secret, $api_uri = false, $show_version = true) {
+    public function  __construct($api_key, $secret, $api_uri = false) {
         $this->api_key = $api_key;
         $this->secret = $secret;
         if ($api_uri !== false) {
@@ -74,10 +76,11 @@ class Sailthru_Client {
         }
 
         $this->http_request_type = function_exists('curl_init') ? 'httpRequestCurl' : 'httpRequestWithoutCurl';
-        $this->user_agent_string = "Sailthru API PHP5 Client";
-        if ($show_version) {
-         $this->user_agent_string .= " PHP Version: " . phpversion();
-        }
+    }
+
+    public function setHttpHeaders(array $headers) {
+        $this->httpHeaders = array_merge($this->httpHeaders, $headers);
+        return true;
     }
 
 
@@ -1070,7 +1073,8 @@ class Sailthru_Client {
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_HEADER, false);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array("User-Agent: {$this->user_agent_string}"));
+
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $this->httpHeaders);
         $data = curl_exec($ch);
         $this->lastResponseInfo = curl_getinfo($ch);
         if (!$data) {
