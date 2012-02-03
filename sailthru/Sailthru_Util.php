@@ -1,4 +1,5 @@
 <?php
+
 class Sailthru_Util {
     /**
      * Returns an MD5 hash of the signature string for an API call.
@@ -12,6 +13,7 @@ class Sailthru_Util {
     public static function getSignatureHash($params, $secret) {
         return md5(self::getSignatureString($params, $secret));
     }
+
 
     /**
      * Returns the unhashed signature string (secret + sorted list of param values) for an API call.
@@ -29,6 +31,7 @@ class Sailthru_Util {
         $string = $secret . implode('', $values);
         return $string;
     }
+
 
     /**
      * Extracts the values of a set of parameters, recursing into nested assoc arrays.
@@ -51,4 +54,3 @@ class Sailthru_Util {
         }
     }
 }
-?>
