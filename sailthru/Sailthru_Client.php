@@ -535,28 +535,7 @@ class Sailthru_Client {
         return $this->apiDelete('list', array('list' => $list));
     }
 
-
-    /**
-     *
-     * Fetch email contacts from a user's address book on one of the major email websites. Currently supports AOL, Gmail, Hotmail, and Yahoo! Mail.
-     *
-     * @param String $email
-     * @param String $password
-     * @param boolean $include_names
-     * @link http://docs.sailthru.com/api/contacts
-     */
-    public function importContacts($email, $password, $include_names = true) {
-        $data = array(
-            'email' => $email,
-            'password' => $password
-        );
-        if ($include_names === true) {
-            $data['names'] = 1;
-        }
-        return $this->apiPost('contacts', $data);
-    }
-
-
+    
     /**
      *
      * Push a new piece of content to Sailthru, triggering any applicable alerts.
