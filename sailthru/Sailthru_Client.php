@@ -477,55 +477,62 @@ class Sailthru_Client {
 
 
     /**
-     * Download a list. Obviously, this can potentially be a very large download.
-     * 'txt' is default format since, its more compact as compare to others
-     * @param String $list
-     * @param String $format
-     * @return txt | json | xml
+     * Get information about a list.
+     *
+     * @param string $list
+     * @return array
      * @link http://docs.sailthru.com/api/list
      */
-    public function getList($list, $format = "txt") {
-        $data = array(
-            'list' => $list,
-            'format' => $format
-        );
-        return $this->apiGet('list', $data);
+    public function getList($list) {
+        return $this->apiGet('list', array('list' => $list));
     }
 
 
     /**
-     * Get all lists metadata of a user
+     * Get information about all lists
+     *
+     * @param string $list
+     * @param string $emails
+     * @return array
+     * @link http://docs.sailthru.com/api/list
      */
     public function getLists() {
-        return $this->apiGet('list', array('list' => ""));
+        return $this->apiGet('list');
     }
 
 
     /**
-     * Upload a list. The list import job is queued and will happen shortly after the API request.
-     * @param String $list
-     * @param String $emails
+     * Create a list, or update a list.
+     *
+     * @param string $list
+     * @param string $list
+     * @param string $type
+     * @param bool $primary
+     * @param array $query
+     * @return array
      * @link http://docs.sailthru.com/api/list
+     * @link http://docs.sailthru.com/api/query
      */
-    public function saveList($list, $emails) {
+    public function saveList($list, $type = null, $primary = null, $query = array()) {
         $data = array(
-            'list' => $list,
-            'emails' => $emails
+            'list'    => $list,
+            'type'    => $type,
+            'primary' => $primary ? 1 : 0,
+            'query'   => $query,
         );
         return $this->apiPost('list', $data);
     }
 
 
     /**
-     * Deletes a list
-     * @param String $list
+     * Deletes a list.
+     *
+     * @param string $list
+     * @return array
      * @link http://docs.sailthru.com/api/list
      */
     public function deleteList($list) {
-        $data = array(
-            'list' => $list
-        );
-        return $this->apiDelete('list', $data);
+        return $this->apiDelete('list', array('list' => $list));
     }
 
 
