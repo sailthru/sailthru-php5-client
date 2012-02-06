@@ -1,3 +1,6 @@
+## 1.09 (October 31, 2011)
+  - Purchase API call
+
 ## 1.08 (September 07, 2011)
   - Added getBlasts() for querying blasts meta-data
   - update job methods: processUpdateJob(), processUpdateJobFromUrl(), processUpdateJobFromFile() and processUpdateJobFromEmails()
