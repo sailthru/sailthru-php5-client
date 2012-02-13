@@ -704,7 +704,7 @@ class Sailthru_Client {
      * Make Stats API Request
      * @param array $data
      */
-    protected function stats(array $data) {
+    public function stats(array $data) {
         return $this->apiGet('stats', $data);
     }
 
@@ -1116,7 +1116,12 @@ class Sailthru_Client {
      * @return string
      */
     protected function httpRequest($url, $data, $method = 'POST') {
-        return $this->{$this->http_request_type}($url, $data, $method);
+        $response = $this->{$this->http_request_type}($url, $data, $method);
+        $json = json_decode($response, true);
+        if ($json === NULL) {
+            throw new Sailthru_Client_Exception("Response: {$response} is not a valid JSON");
+        }
+        return $json;
     }
 
 
@@ -1139,10 +1144,7 @@ class Sailthru_Client {
             }
         }
         $payload = $this->prepareJsonPayload($data, $binary_data);
-        $result = $this->httpRequest("$this->api_uri/$action", $payload, 'POST');
-        #$unserialized = @unserialize($result);
-        #return $unserialized ? $unserialized : $result;
-        return json_decode($result, true);
+        return $this->httpRequest("$this->api_uri/$action", $payload, 'POST');
     }
 
 
@@ -1154,8 +1156,7 @@ class Sailthru_Client {
      * @return array
      */
     public function apiGet($action, $data, $method = 'GET') {
-        $result = $this->httpRequest("{$this->api_uri}/{$action}", $this->prepareJsonPayload($data), $method);
-        return json_decode($result, true);
+        return $this->httpRequest("{$this->api_uri}/{$action}", $this->prepareJsonPayload($data), $method);
     }
 
 
