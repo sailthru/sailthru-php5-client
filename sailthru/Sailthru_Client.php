@@ -699,6 +699,26 @@ class Sailthru_Client {
         return $this->stats($data);
     }
 
+    /**
+     * Retrieve information about a particular send or aggregated information from all of templates over a specified date range.
+     * @param array $data
+     */    
+    public function stats_send($template=null, $start_date = null, $end_date = null, array $data = array()) {
+        $data['stat'] = 'send';
+
+        if (!is_null($template)) {
+            $data['template'] = $template;
+        }
+        if (!is_null($start_date)) {
+            $data['start_date'] = $start_date;
+        }
+        if (!is_null($end_date)) {
+            $data['end_date'] = $end_date;
+        }
+
+        return $this->stats($data);
+    }
+
 
     /**
      * Make Stats API Request
