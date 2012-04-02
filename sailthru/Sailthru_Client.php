@@ -1218,4 +1218,24 @@ class Sailthru_Client {
         }
         return $payload;
     }
+
+    /**
+     * Get a preview of a template.
+     * @param type $template
+     * @param type $email
+     * @param type $vars
+     * @return type 
+     * @link http://docs.sailthru.com/api/preview
+     */
+    public function previewTemplate($template, $email, $vars = array()) {
+        $post = array();
+        $post['template'] = $template;
+        $post['email'] = $email;
+        
+        $post['vars'] = $vars;
+        $post['test_vars'] = $vars;
+        
+        $result = $this->apiPost('preview', $post);
+        return $result;
+    }
 }
