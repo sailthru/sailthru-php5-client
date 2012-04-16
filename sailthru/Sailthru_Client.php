@@ -1209,7 +1209,7 @@ class Sailthru_Client {
     protected function prepareJsonPayload(array $data, array $binary_data = array()) {
         $payload =  array(
             'api_key' => $this->api_key,
-            'format' => 'json', //fuck XML
+            'format' => 'json', //<3 XML
             'json' => json_encode($data)
         );
         $payload['sig'] = Sailthru_Util::getSignatureHash($payload, $this->secret);
