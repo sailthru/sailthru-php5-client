@@ -1025,6 +1025,52 @@ class Sailthru_Client {
 
 
     /**
+     * Save existing user
+     * @param String $id
+     * @param Array $options
+     */
+    public function saveUser($id, array $options = array()) {
+        $data = $options;
+        $data['id'] = $id;
+        return $this->apiPost('user', $data);
+    }
+
+
+    /**
+     * Creates new user
+     * @param Array $options
+     */ 
+    public function createNewUser(array $options = array()) {
+        unset($options['id']);
+        return $this->apiPost('user', $options);
+    }
+
+    /**
+     * Get user by Sailthru ID
+     * @param String $id
+     * @param Array $fields
+     */ 
+    public function getUseBySid($id, array $fields = array()) {
+        return $this->apiGet('user', array('id' => $id));
+    }
+
+    /**
+     * Get user by specified key
+     * @param String $id
+     * @param String $key
+     * @param Array $fields
+     */ 
+    public function getUserByKey($id, $key, array $fields = array()) {
+        $data  = array(
+            'id' => $id,
+            'key' => $key,
+            'fields' => $fields
+        );
+        return $this->apiGet($data);
+    }
+
+
+    /**
      *
      * Set Horizon cookie
      *
