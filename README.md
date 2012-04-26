@@ -8,6 +8,7 @@ By default, it will make request in `JSON` format.
 It can make requests to following [API calls](http://docs.sailthru.com/api):
 
 * [email](http://docs.sailthru.com/api/email)
+* [user](http://docs.sailthru.com/api/user)
 * [send](http://docs.sailthru.com/api/send)
 * [blast](http://docs.sailthru.com/api/blast)
 * [template](http://docs.sailthru.com/api/template)
@@ -44,6 +45,10 @@ try {
 	// deal with exceptions
 }
 ```
+
+### [send](http://getstarted.sailthru.com/api/send)
+
+See examples folder
 
 ### [send](http://docs.sailthru.com/api/send)
 
