@@ -1066,7 +1066,7 @@ class Sailthru_Client {
             'key' => $key,
             'fields' => $fields
         );
-        return $this->apiGet($data);
+        return $this->apiGet('user', $data);
     }
 
 
