@@ -154,7 +154,7 @@ class Sailthru_Client {
      * @link http://docs.sailthru.com/api/send
      */
     public function cancelSend($send_id) {
-        return $this->apiPost('send', array('send_id' => $send_id), 'DELETE');
+        return $this->apiDelete('send', array('send_id' => $send_id));
     }
 
 
