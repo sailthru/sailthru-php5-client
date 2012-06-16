@@ -19,8 +19,6 @@ It can make requests to following [API calls](http://docs.sailthru.com/api):
 * [stats](http://docs.sailthru.com/api/stats)
 * [purchase](http://docs.sailthru.com/api/purchase)
 * [job](http://docs.sailthru.com/api/job)
-* [horizon](http://docs.sailthru.com/api/horizon)
-
 
 Examples
 ---------
@@ -272,24 +270,6 @@ $response = $sailthruClient->stats_list();
 //get blast stats
 $blast_id = 6752;
 $response = $sailthruClient->stats_blast($blast_id);
-```
-
-### [horizon](http://docs.sailthru.com/api/horizon)
-
-``` php
-//gets horizon data for a user
-$email = ''praj@sailthru.com;
-$hid_only = false;
-$response = $sailthruClient->getHorizon($email, $hid_only);
-
-//sets horizon user data
-$email = 'praj@sailthru.com';
-$tags = array('blue', 'red', 'green');
-$response = $sailthruClient->setHorizon($email, $tags);
-
-//set horizon cookie
-$email = 'praj@sailthru.com';
-$sailthruClient->setHorizonCookie($email);
 ```
 
 ### [job](http://docs.sailthru.com/api/job)
