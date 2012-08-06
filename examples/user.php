@@ -1,4 +1,6 @@
 <?
+include('../sailthru/Sailthru_Client.php');
+
 $api_key = "SAILTHRU-API-KEY";
 $api_secret = "SAILTHRU-API-SECRET";
 
