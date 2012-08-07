@@ -1,5 +1,4 @@
 <?php
-    ini_set('display_errors', 'on');
     require('config.php');
         
     //variables to use
