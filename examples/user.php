@@ -1,46 +1,87 @@
-<?
-include('../sailthru/Sailthru_Client.php');
-
-$api_key = "SAILTHRU-API-KEY";
-$api_secret = "SAILTHRU-API-SECRET";
-
-$client = new Sailthru_Client($api_key, $api_secret);
-try {
-    // create new user profile
-    $response = $client->createNewUser(array('vars' => array('name' => 'Prajwal', 'address'=> 'New York, NY')));
-
-    // update existing user by Sailthru ID
-    $response = $client->saveUser("4e2879472d7acd6d97144f9e", array(
-        'keys' => array(
-            'email' => 'praj@sailthru.com',
-            'twitter' => 'infynyxx',
-            'fb' => 726310296
-        ),
-        'lists' => array(
-            'list-1' => 1,
-            'list-2' => 1,
-            'list-3' => 0
-        )
-    ));
-
-    //update existing user by email
-    $response = $client->saveUser('praj@sailthru.com', array(
-        'key' => 'email',
-        'lists' => array(
-            'list-1' => 0 // optout from list-1
-        )
-    ));
-
-    // get user by Sailthru ID
+<?php
+    ini_set('display_errors', 'on');
+    require('config.php');
+        
+    //variables to use
+    $id = 'support@sailthru.com';
+    $key = 'email';
     $fields = array(
-        'keys' => 1,
-        'vars' => 1,
-        'activity' => 1
+            'keys' => 1,
+            'vars' => 1,
+            'lists' => 1,
+            'engagement' => 1,
+            'optout' => 1
+        );    
+    $keys = array(
+        'email' => 'support@sailthru.com',
+        /*
+         * The variables below have to be enabled to work.
+         * Check out our documentation at http://getstarted.sailthru.com/api/user
+         * or contact your Account Manager to have them enabled.
+         */
+        //'twitter' => 'infynyxx',          
+        //'fb' => 726310296
+        //'extid' => 
     );
-    $response = $client->getUseBySid("4e2879472d7acd6d97144f9e", $fields);
-
-    // get user by Custom key
-    $response = $client->getUserByKey("praj@sailthru.com", 'email', $fields);
-} catch (Sail_Client_Exception $e) {
-    // deal with exception
-}
+    $keysconflict = 'merge';
+    $vars = array(
+            'firstName' => 'Support',
+            'lastName' => 'Sailthru',
+            'phone_number' => '877-812-8689',
+            'website' => 'https://www.sailthru.com/',
+            'address' => '160 Varick Street',
+            'city' => 'New York',
+            'zip' => '10014',
+            'support' => array(
+                        'api-support' => 1,
+                        'user-interface' => 1,
+                        'magento' => 0,
+                        'salesforce' => 0
+            )
+    );
+    $lists = array(
+        'sailthru-everyone' => 1,
+        'sailthru-customer-support' => 0,
+        'sailthru-support' => 0,
+        'sailthru-dev' => 0,
+    );
+    $optout_email = 'none';
+    $login = 'site';
+    
+    
+    
+    //Example using sailthru Library    
+    try {
+        // create new user profile
+        $response = $sailthru->createNewUser(array(
+            'key' => $key, 
+            'fields' => $fields, 
+            'keys' => $keys, 
+            'vars' => $vars, 
+            'lists' => $lists
+            )
+        );
+        //show_response($response);
+        
+        $sid = $response['keys']['sid'];
+        $cookie = $response['keys']['cookie'];
+        
+        //get user by Sailthru ID
+        $response = $sailthru->getUseBySid($sid, $fields);
+        //show_response($response);
+        
+        //get user by Custom key
+        $response = $sailthru->getUserByKey($keys['email'], $key, $fields);
+        //show_response($response); 
+        
+        //update existing user by Sailthru ID
+        $response = $sailthru->saveUser($sid, array('keys' => $keys, 'lists' => $lists));
+        //show_response($response);
+        
+        //update existing user by email
+        $response = $sailthru->saveUser($id, array('key' => 'email', 'lists' => $lists));
+        //show_response($response);
+        
+    } catch (Sail_Client_Exception $e) {
+        // deal with exception
+    }
