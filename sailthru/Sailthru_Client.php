@@ -13,28 +13,28 @@ class Sailthru_Client {
      * Sailthru API Key
      * @var string
      */
-    private $api_key;
+    protected $api_key;
 
     /**
      *
      * Sailthru Secret
      * @var string
      */
-    private $secret;
+    protected $secret;
 
     /**
      *
      * Sailthru API URL, can be different for different users according to their settings
      * @var string
      */
-    private $api_uri = 'https://api.sailthru.com';
+    protected $api_uri = 'https://api.sailthru.com';
 
     /**
      *
      * cURL or non-cURL request
      * @var string
      */
-    private $http_request_type;
+    protected $http_request_type;
 
     /**
      *
