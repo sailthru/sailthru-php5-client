@@ -428,7 +428,7 @@ class Sailthru_Client {
      * @link http://docs.sailthru.com/api/template
      */
     public function getTemplates() {
-        return $this->apiGet('template', array());
+        return $this->apiGet('template');
     }
 
 
@@ -1222,7 +1222,7 @@ class Sailthru_Client {
      * @param array $data
      * @return array
      */
-    public function apiGet($action, $data, $method = 'GET') {
+    public function apiGet($action, $data = array(), $method = 'GET') {
         return $this->httpRequest("{$this->api_uri}/{$action}", $this->prepareJsonPayload($data), $method);
     }
 
