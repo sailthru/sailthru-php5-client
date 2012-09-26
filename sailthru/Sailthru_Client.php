@@ -162,10 +162,11 @@ class Sailthru_Client {
      * Return information about an email address, including replacement vars and lists.
      *
      * @param string $email
+     * @param array $options
      * @link http://docs.sailthru.com/api/email
      */
-    public function getEmail($email) {
-        return $this->apiGet('email', array('email' => $email));
+    public function getEmail($email, array $options = array()) {
+        return $this->apiGet('email', array_merge(array('email' => $email), $options));
     }
 
 
