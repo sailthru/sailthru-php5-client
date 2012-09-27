@@ -1,4 +1,5 @@
 <?php
+require('Sailthru_Util.php');
 /**
  *
  * Makes HTTP Request to Sailthru API server
@@ -1264,5 +1265,25 @@ class Sailthru_Client {
             $payload = array_merge($payload, $binary_data);
         }
         return $payload;
+    }
+    
+    
+    /**
+     * Get a preview of a template.
+     * @param type $template
+     * @param type $email
+     * @param type $vars
+     * @return type 
+     * @link http://docs.sailthru.com/api/preview
+     */
+    public function previewTemplateWithEmail($template, $email, $vars = array()) {
+        $data = array();
+        $data['template'] = $template;
+        $data['email'] = $email;
+        $data['vars'] = $vars;
+        $data['test_vars'] = $vars;
+        
+        $result = $this->apiPost('preview', $data);
+        return $result;
     }
 }
