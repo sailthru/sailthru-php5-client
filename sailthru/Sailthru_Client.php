@@ -1,4 +1,5 @@
 <?php
+require('Sailthru_Util.php');
 /**
  *
  * Makes HTTP Request to Sailthru API server
