@@ -1,5 +1,11 @@
 <?php
-require('Sailthru_Util.php');
+function _autoload($class_name) {
+    $dirname = dirname(dirname(__FILE__)) ;
+    $path = "{$dirname}/sailthru/{$class_name}.php";
+    require $path;
+}
+
+spl_autoload_register("_autoload");
 /**
  *
  * Makes HTTP Request to Sailthru API server
@@ -1268,21 +1274,134 @@ class Sailthru_Client {
     
     
     /**
-     * Get a preview of a template.
+     * Get an HTML preview of a template.
      * @param type $template
      * @param type $email
-     * @param type $vars
-     * @return type 
+     * @return type
      * @link http://docs.sailthru.com/api/preview
      */
-    public function previewTemplateWithEmail($template, $email, $vars = array()) {
+    public function previewTemplateWithHTML($template, $email) {
         $data = array();
         $data['template'] = $template;
         $data['email'] = $email;
-        $data['vars'] = $vars;
-        $data['test_vars'] = $vars;
         
+		$result = $this->apiPost('preview', $data);
+        return $result;
+    }
+
+	    /**
+     * Get an HTML preview of a blast.
+     * @param type $blast_id
+     * @param type $email
+     * @return type
+     * @link http://docs.sailthru.com/api/preview
+     */
+    public function previewBlastWithHTML($blast_id, $email) {
+        $data = array();
+        $data['blast_id'] = $blast_id;
+        $data['email'] = $email;
+
         $result = $this->apiPost('preview', $data);
         return $result;
     }
+
+	    /**
+     * Get an HTML preview of a recurring blast.
+     * @param type $blast_repeat_id
+     * @param type $email
+     * @return type
+     * @link http://docs.sailthru.com/api/preview
+     */
+    public function previewRecurringBlastWithHTML($blast_repeat_id, $email) {
+        $data = array();
+        $data['blast_repeat_id'] = $blast_repeat_id;
+        $data['email'] = $email;
+
+        $result = $this->apiPost('preview', $data);
+        return $result;
+    }
+
+		    /**
+     * Get an HTML preview of content_html.
+     * @param type $content_html
+     * @param type $email
+     * @return type
+     * @link http://docs.sailthru.com/api/preview
+     */
+    public function previewContentWithHTML($content_html, $email) {
+        $data = array();
+        $data['content_html'] = $content_html;
+        $data['email'] = $email;
+
+        $result = $this->apiPost('preview', $data);
+        return $result;
+     * @return type
+    }
+
+    /**
+     * Get an email preview of a template.
+     * @param type $template
+     * @param type $send_email
+     * @return type
+     * @link http://docs.sailthru.com/api/preview
+     */
+    public function previewTemplateWithEmail($template, $send_email) {
+        $data = array();
+        $data['template'] = $template;
+        $data['send_email'] = $send_email;
+        
+		$result = $this->apiPost('preview', $data);
+        return $result;
+    }
+
+	    /**
+     * Get an email preview of a blast.
+     * @param type $blast_id
+     * @param type $send_email
+     * @return type
+     * @link http://docs.sailthru.com/api/preview
+     */
+    public function previewBlastWithEmail($blast_id, $send_email) {
+        $data = array();
+        $data['blast_id'] = $blast_id;
+        $data['send_email'] = $send_email;
+
+        $result = $this->apiPost('preview', $data);
+        return $result;
+    }
+
+	    /**
+     * Get an email preview of a recurring blast.
+     * @param type $blast_repeat_id
+     * @param type $send_email
+     * @return type
+     * @link http://docs.sailthru.com/api/preview
+     */
+    public function previewRecurringBlastWithEmail($blast_repeat_id, $send_email) {
+        $data = array();
+        $data['blast_repeat_id'] = $blast_repeat_id;
+        $data['send_email'] = $send_email;
+
+        $result = $this->apiPost('preview', $data);
+        return $result;
+    }
+
+		    /**
+     * Get an email preview of content_html.
+     * @param type $content_html
+     * @param type $send_email
+     * @return type
+     * @link http://docs.sailthru.com/api/preview
+     */
+    public function previewContentWithEmail($content_html, $send_email) {
+        $data = array();
+        $data['content_html'] = $content_html;
+        $data['send_email'] = $send_email;
+
+        $result = $this->apiPost('preview', $data);
+        return $result;
+     * @return type
+    }
+
+
 }
