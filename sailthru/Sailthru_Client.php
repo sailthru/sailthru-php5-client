@@ -497,7 +497,7 @@ class Sailthru_Client {
      * @link http://docs.sailthru.com/api/list
      */
     public function getLists() {
-        return $this->apiGet('list');
+        return $this->apiGet('list', array());
     }
 
 
@@ -535,7 +535,7 @@ class Sailthru_Client {
         return $this->apiDelete('list', array('list' => $list));
     }
 
-    
+
     /**
      *
      * Push a new piece of content to Sailthru, triggering any applicable alerts.
@@ -702,7 +702,7 @@ class Sailthru_Client {
     /**
      * Retrieve information about a particular send or aggregated information from all of templates over a specified date range.
      * @param array $data
-     */    
+     */
     public function stats_send($template=null, $start_date = null, $end_date = null, array $data = array()) {
         $data['stat'] = 'send';
 
@@ -1039,7 +1039,7 @@ class Sailthru_Client {
     /**
      * Creates new user
      * @param Array $options
-     */ 
+     */
     public function createNewUser(array $options = array()) {
         unset($options['id']);
         return $this->apiPost('user', $options);
@@ -1049,7 +1049,7 @@ class Sailthru_Client {
      * Get user by Sailthru ID
      * @param String $id
      * @param Array $fields
-     */ 
+     */
     public function getUseBySid($id, array $fields = array()) {
         return $this->apiGet('user', array('id' => $id));
     }
@@ -1059,7 +1059,7 @@ class Sailthru_Client {
      * @param String $id
      * @param String $key
      * @param Array $fields
-     */ 
+     */
     public function getUserByKey($id, $key, array $fields = array()) {
         $data  = array(
             'id' => $id,
