@@ -1106,7 +1106,172 @@ class Sailthru_Client {
         }
         return setcookie('sailthru_hid', $data['hid'], $expire, '/', $domain, $secure);
     }
+ 
+    /**
+     * Get an HTML preview of a template.
+     * @param type $template
+     * @param type $email
+     * @return type
+     * @link http://docs.sailthru.com/api/preview
+     */
+    public function previewTemplateWithHTML($template, $email) {
+        $data = array();
+        $data['template'] = $template;
+        $data['email'] = $email;
+        
+		$result = $this->apiPost('preview', $data);
+        return $result;
+    }
 
+    /**
+     * Get an HTML preview of a blast.
+     * @param type $blast_id
+     * @param type $email
+     * @return type
+     * @link http://docs.sailthru.com/api/preview
+     */
+    public function previewBlastWithHTML($blast_id, $email) {
+        $data = array();
+        $data['blast_id'] = $blast_id;
+        $data['email'] = $email;
+
+        $result = $this->apiPost('preview', $data);
+        return $result;
+    }
+
+    /**
+     * Get an HTML preview of a recurring blast.
+     * @param type $blast_repeat_id
+     * @param type $email
+     * @return type
+     * @link http://docs.sailthru.com/api/preview
+     */
+    public function previewRecurringBlastWithHTML($blast_repeat_id, $email) {
+        $data = array();
+        $data['blast_repeat_id'] = $blast_repeat_id;
+        $data['email'] = $email;
+
+        $result = $this->apiPost('preview', $data);
+    }
+
+    /**
+     * Get an HTML preview of content_html.
+     * @param type $content_html
+     * @param type $email
+     * @return type
+     * @link http://docs.sailthru.com/api/preview
+     */
+    public function previewContentWithHTML($content_html, $email) {
+        $data = array();
+        $data['content_html'] = $content_html;
+        $data['email'] = $email;
+
+        $result = $this->apiPost('preview', $data);
+        return $result;
+    }
+
+    /**
+     * Get an email preview of a template.
+     * @param type $template
+     * @param type $send_email
+     * @return type
+     * @link http://docs.sailthru.com/api/preview
+     */
+    public function previewTemplateWithEmail($template, $send_email) {
+        $data = array();
+        $data['template'] = $template;
+        $data['send_email'] = $send_email;
+        
+		$result = $this->apiPost('preview', $data);
+        return $result;
+    }
+
+    /**
+     * Get an email preview of a blast.
+     * @param type $blast_id
+     * @param type $send_email
+     * @return type
+     * @link http://docs.sailthru.com/api/preview
+     */
+    public function previewBlastWithEmail($blast_id, $send_email) {
+        $data = array();
+        $data['blast_id'] = $blast_id;
+        $data['send_email'] = $send_email;
+
+        $result = $this->apiPost('preview', $data);
+        return $result;
+    }
+
+    /**
+     * Get an email preview of a recurring blast.
+     * @param type $blast_repeat_id
+     * @param type $send_email
+     * @return type
+     * @link http://docs.sailthru.com/api/preview
+     */
+    public function previewRecurringBlastWithEmail($blast_repeat_id, $send_email) {
+        $data = array();
+        $data['blast_repeat_id'] = $blast_repeat_id;
+        $data['send_email'] = $send_email;
+
+        $result = $this->apiPost('preview', $data);
+        return $result;
+    }
+
+    /**
+     * Get an email preview of content_html.
+     * @param type $content_html
+     * @param type $send_email
+     * @return type
+     * @link http://docs.sailthru.com/api/preview
+     */
+    public function previewContentWithEmail($content_html, $send_email) {
+        $data = array();
+        $data['content_html'] = $content_html;
+        $data['send_email'] = $send_email;
+
+        $result = $this->apiPost('preview', $data);
+        return $result;
+    }
+
+    /**
+     * Get information on a trigger
+     * @param type $template
+     * @param type $trigger_id
+     * @return type
+     * @link http://docs.sailthru.com/api/trigger
+     */
+    public function getTrigger($template, $trigger_id) {
+        $data = array();
+        $data['template'] = $template;
+        $data['trigger_id'] = $trigger_id;
+
+        $result = $this->apiGet('trigger', $data);
+        return $result;
+    }
+
+    /**
+     * Create a trigger
+     * @param type $template
+     * @param type $time
+     * @param type $time_unit
+     * @param type $event
+     * @param type $zephyr
+     * @return type
+     * @link http://docs.sailthru.com/api/trigger
+     */
+    public function postTrigger($template, $time, $time_unit, $event, $zephyr) {
+        $data = array();
+        $data['template'] = $template;
+        $data['time'] = $time;
+	$data['time_unit'] = $time_unit;
+	$data['event'] = $event;
+	$data['zephyr'] = $zephyr;
+
+	$result = $this->apiPost('trigger', $data);
+      
+	 return $result;
+      }
 
     /**
      * Perform an HTTP request using the curl extension
