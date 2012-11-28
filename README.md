@@ -8,3 +8,5 @@ A simple client library to remotely access the `Sailthru REST API` as per [http:
 
 By default, it will make request in `JSON` format.
 
+To see the order of parameters for each wrapper call, please see: sailthru-php5-client/sailthru/Sailthru_Client.php
+
