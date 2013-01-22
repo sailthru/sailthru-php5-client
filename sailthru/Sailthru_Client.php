@@ -1,11 +1,5 @@
 <?php
-function _autoload($class_name) {
-    $dirname = dirname(dirname(__FILE__));
-    $path = "{$dirname}/sailthru/{$class_name}.php";
-    require $path;
-}
-
-spl_autoload_register("_autoload");
+require('Sailthru_Util.php')
 /**
  *
  * Makes HTTP Request to Sailthru API server
@@ -1260,17 +1254,16 @@ class Sailthru_Client {
      * @return type
      * @link http://docs.sailthru.com/api/trigger
      */
-    public function postTrigger($template, $time, $time_unit, $event, $zephyr) {
-        $data = array();
-        $data['template'] = $template;
-        $data['time'] = $time;
+     public function postTrigger($template, $time, $time_unit, $event, $zephyr) {
+	$data = array();
+	$data['template'] = $template;
+	$data['time'] = $time;
 	$data['time_unit'] = $time_unit;
 	$data['event'] = $event;
 	$data['zephyr'] = $zephyr;
-
+	
 	$result = $this->apiPost('trigger', $data);
-      
-	 return $result;
+	return $result;
       }
 
     /**
