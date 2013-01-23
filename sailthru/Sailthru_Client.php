@@ -58,6 +58,9 @@ class Sailthru_Client {
 
     private $httpHeaders = array("User-Agent: Sailthru API PHP5 Client");
 
+    private $log_path = null;
+
+    private $log_handle = null;
 
     /**
      * Instantiate a new client; constructor optionally takes overrides for api_uri and whether
@@ -81,6 +84,10 @@ class Sailthru_Client {
     public function setHttpHeaders(array $headers) {
         $this->httpHeaders = array_merge($this->httpHeaders, $headers);
         return true;
+    }
+
+    public function setLogPath($log_path) {
+        $this->log_path = $log_path;
     }
 
 
@@ -1184,7 +1191,9 @@ class Sailthru_Client {
      * @return string
      */
     protected function httpRequest($url, $data, $method = 'POST') {
+        $this->log(array("url"=>$url,"request"=>$data['json']),$method." REQUEST");
         $response = $this->{$this->http_request_type}($url, $data, $method);
+        $this->log(array("url"=>$url,"response"=>$response),$method." RESPONSE");
         $json = json_decode($response, true);
         if ($json === NULL) {
             throw new Sailthru_Client_Exception("Response: {$response} is not a valid JSON");
@@ -1264,5 +1273,39 @@ class Sailthru_Client {
             $payload = array_merge($payload, $binary_data);
         }
         return $payload;
+    }
+
+    public function startLogging() {
+        if ($this->log_handle) {
+            return true; ##persistent handle
+        }
+        if (!$this->log_handle && !empty($this->log_path)) {
+            $this->log_handle = fopen($this->log_path,"a");
+            return false;
+        }
+        return false;
+    }
+
+    public function stopLogging() {
+        if ($this->log_handle) {
+            fclose($this->log_handle);
+            $this->log_handle = null;
+        }
+    }
+
+    public function log($data,$tag="INFO") {
+        if (empty($this->log_path)) {
+            return false;
+        }
+        $persistent = $this->startLogging();
+        if (is_array($data) || is_object($data)) {
+            $data = json_encode($data);
+        }
+        $date = new DateTime(null, new DateTimeZone('America/New_York'));
+        fwrite($this->log_handle,"[$tag][".$date->format('Y-m-d H:i:sP')."] $data\n");
+        if (!$persistent) {
+            $this->stopLogging();
+        }
+        return true;
     }
 }
