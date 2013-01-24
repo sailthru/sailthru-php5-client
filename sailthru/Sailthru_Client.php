@@ -1191,6 +1191,7 @@ class Sailthru_Client {
      * @return string
      */
     protected function httpRequest($url, $data, $method = 'POST') {
+        $this->log(array("url"=>$url,"method"=>$method),"API");
         $this->log(array("url"=>$url,"request"=>$data['json']),$method." REQUEST");
         $response = $this->{$this->http_request_type}($url, $data, $method);
         $this->log(array("url"=>$url,"response"=>$response),$method." RESPONSE");
