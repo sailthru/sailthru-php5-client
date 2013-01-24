@@ -1,5 +1,6 @@
 <?php
-require('Sailthru_Util.php')
+require('Sailthru_Util.php');
+require('Sailthru_Client_Exception.php');
 /**
  *
  * Makes HTTP Request to Sailthru API server
@@ -54,7 +55,7 @@ class Sailthru_Client {
 
     /**
      * File Upload Flag variable
-    */
+     */
     private $fileUpload = false;
 
     private $httpHeaders = array("User-Agent: Sailthru API PHP5 Client");
@@ -377,13 +378,13 @@ class Sailthru_Client {
     }
 
     /**
-    * Get info on multiple blasts
-    * @param array $options associative array
-    *       start_date (required)
-    *       end-date (required)
-    *       status
-    * @link http://docs.sailthru.com/api/blast
-    */
+     * Get info on multiple blasts
+     * @param array $options associative array
+     *       start_date (required)
+     *       end-date (required)
+     *       status
+     * @link http://docs.sailthru.com/api/blast
+     */
     public function getBlasts($options) {
         return $this->apiGet('blast', $options);
     }
@@ -553,7 +554,7 @@ class Sailthru_Client {
         $data['title'] = $title;
         $data['url'] = $url;
         if (!is_null($tags)) {
-                $data['tags'] = is_array($tags) ? implode(",", $tags) : $tags;
+            $data['tags'] = is_array($tags) ? implode(",", $tags) : $tags;
         }
         if (!is_null($date)) {
             $data['date'] = $date;
@@ -771,7 +772,7 @@ class Sailthru_Client {
      * @link http://docs.sailthru.com/api/postbacks
      */
     public function receiveOptoutPost() {
-         $params = $_POST;
+        $params = $_POST;
         foreach (array('action', 'email', 'sig') as $k) {
             if (!isset($params[$k])) {
                 return false;
@@ -1100,7 +1101,7 @@ class Sailthru_Client {
         }
         return setcookie('sailthru_hid', $data['hid'], $expire, '/', $domain, $secure);
     }
- 
+
     /**
      * Get an HTML preview of a template.
      * @param type $template
@@ -1112,8 +1113,8 @@ class Sailthru_Client {
         $data = array();
         $data['template'] = $template;
         $data['email'] = $email;
-        
-		$result = $this->apiPost('preview', $data);
+
+        $result = $this->apiPost('preview', $data);
         return $result;
     }
 
@@ -1175,8 +1176,8 @@ class Sailthru_Client {
         $data = array();
         $data['template'] = $template;
         $data['send_email'] = $send_email;
-        
-		$result = $this->apiPost('preview', $data);
+
+        $result = $this->apiPost('preview', $data);
         return $result;
     }
 
@@ -1254,17 +1255,17 @@ class Sailthru_Client {
      * @return type
      * @link http://docs.sailthru.com/api/trigger
      */
-     public function postTrigger($template, $time, $time_unit, $event, $zephyr) {
-	$data = array();
-	$data['template'] = $template;
-	$data['time'] = $time;
-	$data['time_unit'] = $time_unit;
-	$data['event'] = $event;
-	$data['zephyr'] = $zephyr;
-	
-	$result = $this->apiPost('trigger', $data);
-	return $result;
-      }
+    public function postTrigger($template, $time, $time_unit, $event, $zephyr) {
+        $data = array();
+        $data['template'] = $template;
+        $data['time'] = $time;
+        $data['time_unit'] = $time_unit;
+        $data['event'] = $event;
+        $data['zephyr'] = $zephyr;
+
+        $result = $this->apiPost('trigger', $data);
+        return $result;
+    }
 
     /**
      * Perform an HTTP request using the curl extension

@@ -1,5 +1,6 @@
 <?php
-require_once "_autoload.php";
+require(__DIR__ . '/../sailthru/Sailthru_Client.php');
+
 class Sailthru_ClientTest extends PHPUnit_Framework_TestCase {
     public function setUp() {
         $this->api_key = 'my_api_key';

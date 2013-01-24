@@ -1,5 +1,4 @@
 <?php
-require_once "_autoload.php";
 
 class Sailthru_Client_ExceptionTest extends PHPUnit_Framework_TestCase {
     /**
