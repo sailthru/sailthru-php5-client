@@ -1,6 +1,4 @@
 <?php
-require_once('Sailthru_Util.php');
-require_once('Sailthru_Client_Exception.php');
 /**
  *
  * Makes HTTP Request to Sailthru API server
