@@ -478,6 +478,38 @@ class Sailthru_Client {
 
 
     /**
+     * Fetch information about an include
+     *
+     * @param string $include_name
+     */
+    public function getInclude($include_name, array $options = array()) {
+        $options['include'] = $include_name;
+        return $this->apiGet('include', $options);
+    }
+
+
+    /**
+     * Fetch name of all existing includes
+     */
+    public function getIncludes() {
+        return $this->apiGet('include');
+    }
+
+
+    /**
+     * Save an include
+     *
+     * @param string $include_name
+     * @param array $include_fields
+     */
+    public function saveInclude($include_name, array $include_fields = array()) {
+        $data = $include_fields;
+        $data['include'] = $include_name;
+        return $this->apiPost('include', $data);
+    }
+
+
+    /**
      * Get information about a list.
      *
      * @param string $list
