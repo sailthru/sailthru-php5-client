@@ -1070,15 +1070,6 @@ class Sailthru_Client {
 
 
     /**
-     * Creates new user
-     * @param Array $options
-     */
-    public function createNewUser(array $options = array()) {
-        unset($options['id']);
-        return $this->apiPost('user', $options);
-    }
-
-    /**
      * Get user by Sailthru ID
      * @param String $id
      * @param Array $fields
