@@ -1074,7 +1074,7 @@ class Sailthru_Client {
      * @param String $id
      * @param Array $fields
      */
-    public function getUseBySid($id, array $fields = array()) {
+    public function getUserBySid($id, array $fields = array()) {
         return $this->apiGet('user', array('id' => $id));
     }
 
