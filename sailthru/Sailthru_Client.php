@@ -976,7 +976,7 @@ class Sailthru_Client {
      */
     public function processExportListJob($list, $report_email = false, $postback_url = false, $options = array()) {
         $data = array('list' => $list);
-	$data = array_merge($data, $options);
+        $data = array_merge($data, $options);
         return $this->processJob('export_list_data', $data, $report_email, $postback_url);
     }
 
