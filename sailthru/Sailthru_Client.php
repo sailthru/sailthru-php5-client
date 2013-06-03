@@ -860,21 +860,6 @@ class Sailthru_Client {
     }
 
     /**
-     *
-     * Set horizon user data
-     * @param string $email
-     * @param Mixed $tags Null for empty values, or String or arrays
-     */
-    public function setHorizon($email, $tags = null) {
-        $data = array('email' => $email);
-        if (!is_null($tags)) {
-            $data['tag'] = is_array($tags) ? implode(",", $tags) : $tags;
-        }
-        return $this->apiPost('horizon', $data);
-    }
-
-
-    /**
      * Get status of a job
      * @param String $job_id
      */
