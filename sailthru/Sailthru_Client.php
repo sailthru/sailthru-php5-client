@@ -859,23 +859,6 @@ class Sailthru_Client {
         return true;
     }
 
-
-    /**
-     *
-     * Get horizon data
-     * @param string $email horizon user email
-     * @param boolean $hid_only if true, server will only return Horizon Id of the user
-     * @link http://docs.sailthru.com/api/horizon
-     */
-    public function getHorizon($email, $hid_only = false) {
-        $data = array('email' => $email);
-        if ($hid_only === true) {
-            $data['hid_only'] = 1;
-        }
-        return $this->apiGet('horizon', $data);
-    }
-
-
     /**
      *
      * Set horizon user data
