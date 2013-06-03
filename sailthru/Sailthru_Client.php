@@ -859,38 +859,6 @@ class Sailthru_Client {
         return true;
     }
 
-
-    /**
-     *
-     * Get horizon data
-     * @param string $email horizon user email
-     * @param boolean $hid_only if true, server will only return Horizon Id of the user
-     * @link http://docs.sailthru.com/api/horizon
-     */
-    public function getHorizon($email, $hid_only = false) {
-        $data = array('email' => $email);
-        if ($hid_only === true) {
-            $data['hid_only'] = 1;
-        }
-        return $this->apiGet('horizon', $data);
-    }
-
-
-    /**
-     *
-     * Set horizon user data
-     * @param string $email
-     * @param Mixed $tags Null for empty values, or String or arrays
-     */
-    public function setHorizon($email, $tags = null) {
-        $data = array('email' => $email);
-        if (!is_null($tags)) {
-            $data['tag'] = is_array($tags) ? implode(",", $tags) : $tags;
-        }
-        return $this->apiPost('horizon', $data);
-    }
-
-
     /**
      * Get status of a job
      * @param String $job_id
