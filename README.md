@@ -8,3 +8,5 @@ A simple client library to remotely access the `Sailthru REST API` as per [http:
 
 By default, it will make request in `JSON` format.
 
+
+--This fork allows spidering as an optional field in pushContent, something that was missing from the original project.
