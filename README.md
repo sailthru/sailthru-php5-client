@@ -13,3 +13,5 @@ By default, it will make request in `JSON` format.
 Increase timeout from 10 (default) to 30 seconds.
 
     $client = new Sailthru_Client($this->api_key, $this->secret, $this->api_url, array('timeout' => 30000, 'connect_timeout' => 30000));
+
+--This fork allows spidering as an optional field in pushContent, something that was missing from the original project.
