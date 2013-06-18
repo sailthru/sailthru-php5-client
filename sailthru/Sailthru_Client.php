@@ -598,7 +598,9 @@ class Sailthru_Client {
      * @link http://docs.sailthru.com/api/content
      */
     public function pushContent($title, $url, $date = null, $tags = null, $vars = array(), $options = array()) {
+    public function pushContent($title, $url, $date = null, $tags = null, $vars = array(),$spider = 1, $options=array()) {
         $data = $options;
+        $data['spider'] = $spider;
         $data['title'] = $title;
         $data['url'] = $url;
         if (!is_null($tags)) {
