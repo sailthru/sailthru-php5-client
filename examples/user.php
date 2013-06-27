@@ -6,9 +6,6 @@ $api_secret = "SAILTHRU-API-SECRET";
 
 $client = new Sailthru_Client($api_key, $api_secret);
 try {
-    // create new user profile
-    $response = $client->createNewUser(array('vars' => array('name' => 'Prajwal', 'address'=> 'New York, NY')));
-
     // update existing user by Sailthru ID
     $response = $client->saveUser("4e2879472d7acd6d97144f9e", array(
         'keys' => array(
@@ -23,7 +20,7 @@ try {
         )
     ));
 
-    //update existing user by email
+    //update existing user by email or create new user using email address
     $response = $client->saveUser('praj@sailthru.com', array(
         'key' => 'email',
         'lists' => array(
