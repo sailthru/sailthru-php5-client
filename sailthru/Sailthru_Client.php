@@ -690,7 +690,7 @@ class Sailthru_Client {
      * Make a purchase API call with incomplete flag
      * @link http://docs.sailthru.com/api/purchase
      */
-    public function purchaseIncomplete($email, array $items, $message_id, array $options = array()) {
+    public function purchaseIncomplete($email, array $items, $message_id=null, array $options = array()) {
         return $this->purchase($email, $items, 1, $message_id, $options);
     }
 
