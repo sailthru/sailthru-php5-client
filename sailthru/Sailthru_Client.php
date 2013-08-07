@@ -1221,9 +1221,9 @@ class Sailthru_Client {
 
     /**
      * Get information on a trigger
-     * @param type $template
-     * @param type $trigger_id
-     * @return type
+     * @param string $template
+     * @param string $trigger_id
+     * @return array
      * @link http://docs.sailthru.com/api/trigger
      */
     public function getTrigger($template, $trigger_id) {
@@ -1237,12 +1237,12 @@ class Sailthru_Client {
 
     /**
      * Create a trigger
-     * @param type $template
-     * @param type $time
-     * @param type $time_unit
-     * @param type $event
-     * @param type $zephyr
-     * @return type
+     * @param string $template
+     * @param string $time
+     * @param string $time_unit
+     * @param string $event
+     * @param string $zephyr
+     * @return array
      * @link http://docs.sailthru.com/api/trigger
      */
     public function postTrigger($template, $time, $time_unit, $event, $zephyr) {
@@ -1259,10 +1259,10 @@ class Sailthru_Client {
 
     /**
      * Notify Sailthru of an event
-     * @param type $id
-     * @param type $event
-     * @param type $options
-     * @return type
+     * @param string $id
+     * @param string $event
+     * @param array $options
+     * @return array
      * @link http://docs.sailthru.com/api/event
      */
     public function postEvent($id, $event, $options = {}) {
