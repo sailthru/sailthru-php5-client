@@ -1226,10 +1226,12 @@ class Sailthru_Client {
      * @return array
      * @link http://docs.sailthru.com/api/trigger
      */
-    public function getTrigger($template, $trigger_id) {
+    public function getTrigger($template, $trigger_id = null) {
         $data = array();
         $data['template'] = $template;
-        $data['trigger_id'] = $trigger_id;
+        if(!is_null($trigger_id)){
+            $data['trigger_id'] = $trigger_id;
+        }
 
         $result = $this->apiGet('trigger', $data);
         return $result;
@@ -1238,7 +1240,7 @@ class Sailthru_Client {
     /**
      * Create a trigger
      * @param string $template
-     * @param string $time
+     * @param integer $time
      * @param string $time_unit
      * @param string $event
      * @param string $zephyr
