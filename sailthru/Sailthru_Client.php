@@ -1258,6 +1258,23 @@ class Sailthru_Client {
     }
 
     /**
+     * Notify Sailthru of an event
+     * @param type $id
+     * @param type $event
+     * @param type $options
+     * @return type
+     * @link http://docs.sailthru.com/api/event
+     */
+    public function postEvent($id, $event, $options = {}) {
+        $data = $options;
+        $data['id'] = $id;
+        $data['event'] = $event;
+
+        $result = $this->apiPost('event', $data);
+        return $result;
+    }
+
+    /**
      * Perform an HTTP request using the curl extension
      *
      * @param string $url
