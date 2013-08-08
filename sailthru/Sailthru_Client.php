@@ -1276,7 +1276,7 @@ class Sailthru_Client {
     }
 
     /**
-     * Create a trigger
+     * Create a trigger for templates
      * @param string $template
      * @param integer $time
      * @param string $time_unit
@@ -1288,6 +1288,26 @@ class Sailthru_Client {
     public function postTrigger($template, $time, $time_unit, $event, $zephyr) {
         $data = array();
         $data['template'] = $template;
+        $data['time'] = $time;
+        $data['time_unit'] = $time_unit;
+        $data['event'] = $event;
+        $data['zephyr'] = $zephyr;
+
+        $result = $this->apiPost('trigger', $data);
+        return $result;
+    }
+
+    /**
+     * Create a trigger for events
+     * @param integer $time
+     * @param string $time_unit
+     * @param string $event
+     * @param string $zephyr
+     * @return array
+     * @link http://docs.sailthru.com/api/trigger
+     */
+    public function postEventTrigger($event, $time, $time_unit, $zephyr) {
+        $data = array();
         $data['time'] = $time;
         $data['time_unit'] = $time_unit;
         $data['event'] = $event;
