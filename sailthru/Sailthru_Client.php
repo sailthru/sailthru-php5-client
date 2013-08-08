@@ -1220,19 +1220,57 @@ class Sailthru_Client {
     }
 
     /**
+     * Get Triggers
+     * @return array
+     * @link http://docs.sailthru.com/api/trigger
+     */
+    public function getTriggers() {
+        $result = $this->apiGet('trigger');
+        return $result;
+    }
+
+    /**
      * Get information on a trigger
      * @param string $template
      * @param string $trigger_id
      * @return array
      * @link http://docs.sailthru.com/api/trigger
      */
-    public function getTrigger($template, $trigger_id = null) {
+    public function getTriggerByTemplate($template, $trigger_id = null) {
         $data = array();
         $data['template'] = $template;
         if(!is_null($trigger_id)){
             $data['trigger_id'] = $trigger_id;
         }
 
+        $result = $this->apiGet('trigger', $data);
+        return $result;
+    }
+    
+    /**
+     * Get information on a trigger
+     * @param string $event
+     * @return array
+     * @link http://docs.sailthru.com/api/trigger
+     */
+    public function getTriggerByEvent($event) {
+        $data = array();
+        $data['event'] = $event;
+        
+        $result = $this->apiGet('trigger', $data);
+        return $result;
+    }    
+
+    /**
+     * Get information on a trigger
+     * @param string $trigger_id
+     * @return array
+     * @link http://docs.sailthru.com/api/trigger
+     */
+    public function getTriggerById($trigger_id) {
+        $data = array();
+        $data['trigger_id'] = $trigger_id;
+        
         $result = $this->apiGet('trigger', $data);
         return $result;
     }
