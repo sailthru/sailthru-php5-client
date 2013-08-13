@@ -1325,7 +1325,7 @@ class Sailthru_Client {
      * @return array
      * @link http://docs.sailthru.com/api/event
      */
-    public function postEvent($id, $event, $options = {}) {
+    public function postEvent($id, $event, $options = array()) {
         $data = $options;
         $data['id'] = $id;
         $data['event'] = $event;
