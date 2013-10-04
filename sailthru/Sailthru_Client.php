@@ -1074,8 +1074,8 @@ class Sailthru_Client {
      * @return boolean
      */
     public function setHorizonCookie($email, $domain = null, $duration = null, $secure = false) {
-        $data = $this->getHorizon($email, true);
-        if (!isset($data['hid'])) {
+        $data = $this->getUserByKey($email, 'email', array('keys' => 1));
+        if (!isset($data['keys']['cookie'])) {
             return false;
         }
         if (!$domain) {
@@ -1089,7 +1089,7 @@ class Sailthru_Client {
         } else {
             $expire = 0;
         }
-        return setcookie('sailthru_hid', $data['hid'], $expire, '/', $domain, $secure);
+        return setcookie('sailthru_hid', $data['keys']['cookie'], $expire, '/', $domain, $secure);
     }
 
     /**
