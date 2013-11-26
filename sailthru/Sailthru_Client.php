@@ -1438,7 +1438,9 @@ class Sailthru_Client {
         if (!empty ($binary_data_param)) {
             foreach ($binary_data_param as $param) {
                 if (isset($data[$param]) && file_exists($data[$param])) {
-                    $binary_data[$param] = "@{$data[$param]}";
+                    $binary_data[$param] = version_compare(PHP_VERSION, '5.5.0') >= 0 && class_exists('CURLFile')
+                        ? new CURLFile($data[$param])
+                        : "@{$data[$param]}";
                     unset($data[$param]);
                     $this->fileUpload = true;
                 }
