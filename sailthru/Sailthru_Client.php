@@ -1342,7 +1342,7 @@ class Sailthru_Client {
      * @param array $headers
      * @return string
      */
-    private function httpRequestCurl($url, array $data, $method = 'POST') {
+    protected function httpRequestCurl($url, array $data, $method = 'POST') {
         $ch = curl_init();
         if ($method == 'POST') {
             curl_setopt($ch, CURLOPT_POST, true);
@@ -1382,7 +1382,7 @@ class Sailthru_Client {
      * @param array $headers
      * @return string
      */
-    private function httpRequestWithoutCurl($url, $data, $method = 'POST') {
+    protected function httpRequestWithoutCurl($url, $data, $method = 'POST') {
         if ($this->fileUpload === true) {
             $this->fileUpload = false;
             throw new Sailthru_Client_Exception('cURL extension is required for the request with file upload');
