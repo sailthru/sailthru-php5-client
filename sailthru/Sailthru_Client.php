@@ -579,8 +579,8 @@ class Sailthru_Client {
      * @param Mixed $tags Null for empty values, or String or arrays
      * @link http://docs.sailthru.com/api/content
      */
-    public function pushContent($title, $url, $date = null, $tags = null, $vars = array()) {
-        $data = array();
+    public function pushContent($title, $url, $date = null, $tags = null, $vars = array(), $options = array()) {
+        $data = $options;
         $data['title'] = $title;
         $data['url'] = $url;
         if (!is_null($tags)) {
