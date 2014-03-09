@@ -58,6 +58,11 @@ class Sailthru_Client {
 
     private $httpHeaders = array("User-Agent: Sailthru API PHP5 Client");
 
+    private $options = array(
+        'timeout' =>         10000,  // timeout, in milliseconds
+        'connect_timeout' => 10000,  // connection timeout, in milliseconds
+    );
+
 
     /**
      * Instantiate a new client; constructor optionally takes overrides for api_uri and whether
@@ -1342,8 +1347,9 @@ class Sailthru_Client {
      * @param array $headers
      * @return string
      */
-    protected function httpRequestCurl($url, array $data, $method = 'POST') {
+    protected function httpRequestCurl($url, array $data, $method = 'POST', $options = array()) {
         $ch = curl_init();
+        $options = array_merge($this->options, $options);
         if ($method == 'POST') {
             curl_setopt($ch, CURLOPT_POST, true);
             if ($this->fileUpload === true) {
@@ -1361,6 +1367,9 @@ class Sailthru_Client {
         }
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_HEADER, false);
+        curl_setopt($ch, CURLOPT_ENCODING, 'gzip');
+        curl_setopt($ch, CURLOPT_TIMEOUT_MS, $options['timeout']);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $options['connect_timeout']);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
         curl_setopt($ch, CURLOPT_HTTPHEADER, $this->httpHeaders);
