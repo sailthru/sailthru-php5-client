@@ -58,6 +58,11 @@ class Sailthru_Client {
 
     private $httpHeaders = array("User-Agent: Sailthru API PHP5 Client");
 
+    private $options = array(
+        'timeout' =>         10000,  // timeout, in milliseconds
+        'connect_timeout' => 10000,  // connection timeout, in milliseconds
+    );
+
 
     /**
      * Instantiate a new client; constructor optionally takes overrides for api_uri and whether
@@ -1342,8 +1347,9 @@ class Sailthru_Client {
      * @param array $headers
      * @return string
      */
-    protected function httpRequestCurl($url, array $data, $method = 'POST') {
+    protected function httpRequestCurl($url, array $data, $method = 'POST', $options = array()) {
         $ch = curl_init();
+        $options = array_merge($this->options, $options);
         if ($method == 'POST') {
             curl_setopt($ch, CURLOPT_POST, true);
             if ($this->fileUpload === true) {
@@ -1361,6 +1367,9 @@ class Sailthru_Client {
         }
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_HEADER, false);
+        curl_setopt($ch, CURLOPT_ENCODING, 'gzip');
+        curl_setopt($ch, CURLOPT_TIMEOUT_MS, $options['timeout']);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT_MS, $options['connect_timeout']);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
         curl_setopt($ch, CURLOPT_HTTPHEADER, $this->httpHeaders);
@@ -1382,7 +1391,7 @@ class Sailthru_Client {
      * @param array $headers
      * @return string
      */
-    protected function httpRequestWithoutCurl($url, $data, $method = 'POST') {
+    protected function httpRequestWithoutCurl($url, $data, $method = 'POST', $options = array()) {
         if ($this->fileUpload === true) {
             $this->fileUpload = false;
             throw new Sailthru_Client_Exception('cURL extension is required for the request with file upload');
@@ -1416,8 +1425,8 @@ class Sailthru_Client {
      * @param array $headers
      * @return string
      */
-    protected function httpRequest($url, $data, $method = 'POST') {
-        $response = $this->{$this->http_request_type}($url, $data, $method);
+    protected function httpRequest($url, $data, $method = 'POST', $options = array()) {
+        $response = $this->{$this->http_request_type}($url, $data, $method, $options);
         $json = json_decode($response, true);
         if ($json === NULL) {
             throw new Sailthru_Client_Exception("Response: {$response} is not a valid JSON");
@@ -1433,7 +1442,7 @@ class Sailthru_Client {
      * @param array $data
      * @return array
      */
-    public  function apiPost($action, $data, array $binary_data_param = array()) {
+    public  function apiPost($action, $data, array $binary_data_param = array(), $options = array()) {
         $binary_data = array();
         if (!empty ($binary_data_param)) {
             foreach ($binary_data_param as $param) {
@@ -1447,7 +1456,7 @@ class Sailthru_Client {
             }
         }
         $payload = $this->prepareJsonPayload($data, $binary_data);
-        return $this->httpRequest("$this->api_uri/$action", $payload, 'POST');
+        return $this->httpRequest("$this->api_uri/$action", $payload, 'POST', $options);
     }
 
 
@@ -1458,8 +1467,8 @@ class Sailthru_Client {
      * @param array $data
      * @return array
      */
-    public function apiGet($action, $data = array(), $method = 'GET') {
-        return $this->httpRequest("{$this->api_uri}/{$action}", $this->prepareJsonPayload($data), $method);
+    public function apiGet($action, $data = array(), $method = 'GET', $options = array()) {
+        return $this->httpRequest("{$this->api_uri}/{$action}", $this->prepareJsonPayload($data), $method, $options);
     }
 
 
@@ -1470,8 +1479,8 @@ class Sailthru_Client {
      * @param array $data
      * @return array
      */
-    public function apiDelete($action, $data) {
-        return $this->apiGet($action, $data, 'DELETE');
+    public function apiDelete($action, $data, $options) {
+        return $this->apiGet($action, $data, 'DELETE', $options);
     }
 
 
