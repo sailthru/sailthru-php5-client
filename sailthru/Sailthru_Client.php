@@ -1369,7 +1369,7 @@ class Sailthru_Client {
         curl_setopt($ch, CURLOPT_HEADER, false);
         curl_setopt($ch, CURLOPT_ENCODING, 'gzip');
         curl_setopt($ch, CURLOPT_TIMEOUT_MS, $options['timeout']);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $options['connect_timeout']);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT_MS, $options['connect_timeout']);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
         curl_setopt($ch, CURLOPT_HTTPHEADER, $this->httpHeaders);
