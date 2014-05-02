@@ -1479,7 +1479,7 @@ class Sailthru_Client {
      * @param array $data
      * @return array
      */
-    public function apiDelete($action, $data, $options) {
+    public function apiDelete($action, $data, $options = array()) {
         return $this->apiGet($action, $data, 'DELETE', $options);
     }
 
