@@ -1,4 +1,4 @@
 #!/bin/sh
 
 #Run all test classes
-phpunit --configuration phpunit.xml
+phpunit --configuration phpunit.xml.dist
