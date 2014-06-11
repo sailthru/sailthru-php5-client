@@ -1,5 +1,7 @@
 <?php
 require(__DIR__ . '/../sailthru/Sailthru_Client.php');
+require(__DIR__ . '/../sailthru/Sailthru_Client_Exception.php');
+require(__DIR__ . '/../sailthru/Sailthru_Util.php');
 
 class Sailthru_ClientTest extends PHPUnit_Framework_TestCase {
     public function setUp() {
