@@ -1,3 +1,13 @@
+## 1.1.0 (July 16, 2014)
+  - Bump Version number for packagist to pick up
+  - Removed contact import API call
+  - Added stats_send call
+  - Updated cancelSend()
+  - Added Preview and Trigger API calls
+  - Removed createNewUser() call
+  - Removed setHorizon() call
+  - Added Event call
+  - Added options to pushContent()
 ## 1.09 (October 31, 2011)
   - Purchase API call
 
