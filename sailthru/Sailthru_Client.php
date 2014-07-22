@@ -1397,7 +1397,7 @@ class Sailthru_Client {
             throw new Sailthru_Client_Exception('cURL extension is required for the request with file upload');
         }
 
-        $params = array('http' => array('method' => $method));
+        $params = array('http' => array('method' => $method, 'ignore_errors' => true));
         if ($method == 'POST') {
             $params['http']['content'] = is_array($data) ? http_build_query($data, '', '&') : $data;
         } else {
