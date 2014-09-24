@@ -1042,6 +1042,32 @@ class Sailthru_Client {
         return $this->apiPost('user', $data);
     }
 
+     /**
+     * Remotely add or update a user across multiple accounts. 
+     *Must be enabled in by your Account Manager
+     * 
+     *requires email and brand array
+     *
+     * Options:
+     *   vars: add custom vars to user's profile in all accounts
+     *   lists: add the user to specified lists in every account
+     *   key: specify the user key
+     *   keys: set or update the user's keys: email, sid, extid, twitter, & facebook
+     *   optout_email: Set the user's optout status to none, blast, basic, or all
+     *
+     * @param array $brands
+     * @param string $email
+     * @param array $options
+     * @link Emulates http://docs.sailthru.com/api/send
+     */
+    public function multiBrandSaveUser($email, $brands, $options = null) {
+        $data = array();
+        $data['id'] = $email;
+        $data['brands'] = $brands;
+        $data['options'] = $options;
+        $result = $this->apiPost('multibrand/user', $data);
+        return $result;
+    }
 
     /**
      * Get user by Sailthru ID
