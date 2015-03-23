@@ -828,6 +828,32 @@ class Sailthru_Client {
 
     /**
      *
+     * Update postbacks
+     * @return boolean
+     * @link http://docs.sailthru.com/api/postbacks
+     */
+    public function receiveUpdatePost() {
+        $params = $_POST;
+        foreach (array('action', 'sid', 'sig') as $k) {
+            if (!isset($params[$k])) {
+                return false;
+            }
+        }
+
+        if ($params['action'] != 'update') {
+            return false;
+        }
+        $sig = $params['sig'];
+        unset($params['sig']);
+        if ($sig != Sailthru_Util::getSignatureHash($params, $this->secret)) {
+            return false;
+        }
+        return true;
+    }
+    
+    
+    /**
+     *
      * Hard bounce postbacks
      * @return boolean
      * @link http://docs.sailthru.com/api/postbacks
