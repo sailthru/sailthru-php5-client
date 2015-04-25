@@ -8,3 +8,8 @@ A simple client library to remotely access the `Sailthru REST API` as per [http:
 
 By default, it will make request in `JSON` format.
 
+## Optional parameters for connection/read timeout settings
+
+Increase timeout from 10 (default) to 30 seconds.
+
+    $client = new Sailthru_Client($this->api_key, $this->secret, $this->api_url, array('timeout' => 30000, 'connect_timeout' => 30000));

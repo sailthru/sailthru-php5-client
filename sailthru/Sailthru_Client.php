@@ -71,9 +71,10 @@ class Sailthru_Client {
      * @param string $api_key
      * @param string $secret
      * @param string $api_uri
+     * @param array $options - optional parameters for connect/read timeout
      * @param boolean $show_version
      */
-    public function  __construct($api_key, $secret, $api_uri = false) {
+    public function  __construct($api_key, $secret, $api_uri = false, $options = null) {
         $this->api_key = $api_key;
         $this->secret = $secret;
         if ($api_uri !== false) {
@@ -81,6 +82,19 @@ class Sailthru_Client {
         }
 
         $this->http_request_type = function_exists('curl_init') ? 'httpRequestCurl' : 'httpRequestWithoutCurl';
+
+        if ($options) {
+            $this->options['timeout'] = $options['timeout'] ? $options['timeout'] : $this->options['timeout'];
+            $this->options['connect_timeout'] = $options['connect_timeout'] ? $options['connect_timeout'] : $this->options['connect_timeout'];
+        }
+    }
+
+    public function getConnectTimeout() {
+        return $this->options['connect_timeout'];
+    }
+
+    public function getTimeout() {
+        return $this->options['timeout'];
     }
 
     public function setHttpHeaders(array $headers) {
