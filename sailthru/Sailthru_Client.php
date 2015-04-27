@@ -83,7 +83,7 @@ class Sailthru_Client {
 
         $this->http_request_type = function_exists('curl_init') ? 'httpRequestCurl' : 'httpRequestWithoutCurl';
 
-        if ($options) {
+        if (isset($options)) {
             $this->options['timeout']         = isset($options['timeout']) ? (int)$options['timeout'] : $this->options['timeout'];
             $this->options['connect_timeout'] = isset($options['connect_timeout']) ? (int)$options['connect_timeout'] : $this->options['connect_timeout'];
         }
