@@ -58,11 +58,10 @@ class Sailthru_Client {
 
     private $httpHeaders = array("User-Agent: Sailthru API PHP5 Client");
 
-    private $options = array(
-        'timeout' =>         10000,  // timeout, in milliseconds
-        'connect_timeout' => 10000,  // connection timeout, in milliseconds
-    );
+    const DEFAULT_READ_TIMEOUT  = 10000;
+    const DEFAULT_CONNECT_TIMEOUT = 10000;
 
+    private $options = array('timeout' => Sailthru_Client::DEFAULT_READ_TIMEOUT, 'connect_timeout' => Sailthru_Client::DEFAULT_CONNECT_TIMEOUT);
 
     /**
      * Instantiate a new client; constructor optionally takes overrides for api_uri and whether
@@ -84,8 +83,8 @@ class Sailthru_Client {
         $this->http_request_type = function_exists('curl_init') ? 'httpRequestCurl' : 'httpRequestWithoutCurl';
 
         if (isset($options)) {
-            $this->options['timeout']         = isset($options['timeout']) ? (int)$options['timeout'] : $this->options['timeout'];
-            $this->options['connect_timeout'] = isset($options['connect_timeout']) ? (int)$options['connect_timeout'] : $this->options['connect_timeout'];
+            $this->options['timeout']         = isset($options['timeout']) ? (int)$options['timeout'] : Sailthru_Client::DEFAULT_READ_TIMEOUT;
+            $this->options['connect_timeout'] = isset($options['connect_timeout']) ? (int)$options['connect_timeout'] : Sailthru_Client::DEFAULT_CONNECT_TIMEOUT;
         }
     }
 
