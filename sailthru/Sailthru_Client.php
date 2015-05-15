@@ -940,6 +940,21 @@ class Sailthru_Client {
         return $this->processJob('import', $data, $report_email, $postback_url, array('file'));
     }
 
+    /**
+     * Process purchase import job from given file path of an email per line JSON file
+     *
+     * @param String $file_path
+     * @param String $report_email
+     * @param String $postback_url
+     *
+     */
+    public function processPurchaseImportJobFromFile($file_path, $report_email = false, $postback_url = false) {
+        $data = array(
+            'file' => $file_path
+        );
+        return $this->processJob('purchase_import', $data, $report_email, $postback_url, array('file'));
+    }
+
 
     /**
      * Process a snapshot job
