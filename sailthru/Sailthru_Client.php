@@ -903,7 +903,7 @@ class Sailthru_Client {
         if ($postback_url) {
             $data['postback_url'] = $postback_url;
         }
-        return $this->apiPost('job', $data, $binary_data_param);
+        return $this->apiPost('job', $data, $binary_data_param, $options);
     }
 
 
