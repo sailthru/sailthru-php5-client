@@ -54,7 +54,7 @@ class Sailthru_Client {
      * Rate Limit information for last API call
      * @var type
      */
-    private $lastRateLimitInfo = null;
+    private $lastRateLimitInfo = [];
 
     /**
      * File Upload Flag variable
@@ -1620,10 +1620,10 @@ class Sailthru_Client {
             }
 
             if (count($rate_limit_headers) === 3) {
-                break;
+                return $rate_limit_headers;
             }
         }
 
-        return (count($rate_limit_headers) === 3) ? $rate_limit_headers : null;
+        return null;
     }
 }
