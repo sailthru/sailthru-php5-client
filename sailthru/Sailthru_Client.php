@@ -50,6 +50,11 @@ class Sailthru_Client {
      */
     private $lastResponseInfo = null;
 
+    /**
+     * Rate Limit information for last API call
+     * @var type
+     */
+    private $lastRateLimitInfo = [];
 
     /**
      * File Upload Flag variable
@@ -1396,12 +1401,15 @@ class Sailthru_Client {
     /**
      * Perform an HTTP request using the curl extension
      *
-     * @param string $url
+     * @param string $action
      * @param array $data
-     * @param array $headers
+     * @param string $method
+     * @param array $options
      * @return string
+     * @throws Sailthru_Client_Exception
      */
-    protected function httpRequestCurl($url, array $data, $method = 'POST', $options = array()) {
+    protected function httpRequestCurl($action, array $data, $method = 'POST', $options = array()) {
+        $url = $this->api_uri . "/" . $action;
         $ch = curl_init();
         $options = array_merge($this->options, $options);
         if ($method == 'POST') {
@@ -1420,37 +1428,47 @@ class Sailthru_Client {
             }
         }
         curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_HEADER, false);
+        curl_setopt($ch, CURLOPT_HEADER, true);
         curl_setopt($ch, CURLOPT_ENCODING, 'gzip');
         curl_setopt($ch, CURLOPT_TIMEOUT_MS, $options['timeout']);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT_MS, $options['connect_timeout']);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
         curl_setopt($ch, CURLOPT_HTTPHEADER, $this->httpHeaders);
-        $data = curl_exec($ch);
+        $response = curl_exec($ch);
         $this->lastResponseInfo = curl_getinfo($ch);
+
         curl_close($ch);
-        if (!$data) {
+
+        // parse headers and body
+        $parts = explode("\r\n\r\nHTTP/", $response);
+        $parts = (count($parts) > 1 ? 'HTTP/' : '').array_pop($parts); // deal with HTTP/1.1 100 Continue before other headers
+        list($headers, $body) = explode("\r\n\r\n", $parts, 2);
+        $this->lastRateLimitInfo[$action][$method] = self::parseRateLimitHeaders($headers);
+
+        if (!body) {
             throw new Sailthru_Client_Exception("Bad response received from $url");
         }
-        return $data;
+        return $body;
     }
-
 
     /**
      * Adapted from: http://netevil.org/blog/2006/nov/http-post-from-php-without-curl
      *
-     * @param string $url
+     * @param string $action
      * @param array $data
-     * @param array $headers
+     * @param string $method
+     * @param array $options
      * @return string
+     * @throws Sailthru_Client_Exception
      */
-    protected function httpRequestWithoutCurl($url, $data, $method = 'POST', $options = array()) {
+    protected function httpRequestWithoutCurl($action, $data, $method = 'POST', $options = array()) {
         if ($this->fileUpload === true) {
             $this->fileUpload = false;
             throw new Sailthru_Client_Exception('cURL extension is required for the request with file upload');
         }
 
+        $url = $this->api_uri . "/" . $action;
         $params = array('http' => array('method' => $method, 'ignore_errors' => true));
         if ($method == 'POST') {
             $params['http']['content'] = is_array($data) ? http_build_query($data, '', '&') : $data;
@@ -1479,8 +1497,8 @@ class Sailthru_Client {
      * @param array $headers
      * @return string
      */
-    protected function httpRequest($url, $data, $method = 'POST', $options = array()) {
-        $response = $this->{$this->http_request_type}($url, $data, $method, $options);
+    protected function httpRequest($action, $data, $method = 'POST', $options = array()) {
+        $response = $this->{$this->http_request_type}($action, $data, $method, $options);
         $json = json_decode($response, true);
         if ($json === NULL) {
             throw new Sailthru_Client_Exception("Response: {$response} is not a valid JSON");
@@ -1510,7 +1528,7 @@ class Sailthru_Client {
             }
         }
         $payload = $this->prepareJsonPayload($data, $binary_data);
-        return $this->httpRequest("$this->api_uri/$action", $payload, 'POST', $options);
+        return $this->httpRequest($action, $payload, 'POST', $options);
     }
 
 
@@ -1522,7 +1540,7 @@ class Sailthru_Client {
      * @return array
      */
     public function apiGet($action, $data = array(), $method = 'GET', $options = array()) {
-        return $this->httpRequest("{$this->api_uri}/{$action}", $this->prepareJsonPayload($data), $method, $options);
+        return $this->httpRequest($action, $this->prepareJsonPayload($data), $method, $options);
     }
 
 
@@ -1562,5 +1580,50 @@ class Sailthru_Client {
             $payload = array_merge($payload, $binary_data);
         }
         return $payload;
+    }
+
+    /**
+     * get the rate limit information for the very last call with given action and method
+     * @param string $action
+     * @param string $method GET, POST or DELETE
+     * @return array or null
+     */
+    public function getLastRateLimitInfo($action, $method) {
+        $rate_limit_info = $this->lastRateLimitInfo;
+        $method = strtoupper($method);
+        return (isset($rate_limit_info[$action]) && isset($rate_limit_info[$action][$method])) ?
+            $rate_limit_info[$action][$method] : null;
+    }
+
+    /**
+     * parse rate limit headers from http response
+     * @param string $headers
+     * @return array|null
+     */
+    private function parseRateLimitHeaders($headers) {
+        if (headers === null) {
+            return null;
+        }
+
+        $header_lines = explode("\n", $headers);
+        $rate_limit_headers = [];
+        foreach ($header_lines as $hl) {
+            if (strpos($hl, "X-Rate-Limit-Limit") !== FALSE && !isset($rate_limit_headers['limit'])) {
+                list($header_name, $header_value) = explode(":", $hl, 2);
+                $rate_limit_headers['limit'] = intval($header_value);
+            } else if (strpos($hl, "X-Rate-Limit-Remaining") !== FALSE && !isset($rate_limit_headers['remaining'])) {
+                list($header_name, $header_value) = explode(":", $hl, 2);
+                $rate_limit_headers['remaining'] = intval($header_value);
+            } else if (strpos($hl, "X-Rate-Limit-Reset") !== FALSE && !isset($rate_limit_headers['reset'])) {
+                list($header_name, $header_value) = explode(":", $hl, 2);
+                $rate_limit_headers['reset'] = intval($header_value);
+            }
+
+            if (count($rate_limit_headers) === 3) {
+                return $rate_limit_headers;
+            }
+        }
+
+        return null;
     }
 }
