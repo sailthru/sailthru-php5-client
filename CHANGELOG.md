@@ -1,3 +1,6 @@
+## 1.2.1 (May 11th, 2016)
+  - Fix typo, make tests pass
+
 ## 1.2.0 (May 4th, 2016)
   - Added getLastRateLimitInfo() call
 
