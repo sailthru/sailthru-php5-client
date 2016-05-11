@@ -1437,8 +1437,11 @@ class Sailthru_Client {
         curl_setopt($ch, CURLOPT_HTTPHEADER, $this->httpHeaders);
         $response = curl_exec($ch);
         $this->lastResponseInfo = curl_getinfo($ch);
-
         curl_close($ch);
+
+        if (!$response) {
+            throw new Sailthru_Client_Exception("Bad response received from $url");
+        }
 
         // parse headers and body
         $parts = explode("\r\n\r\nHTTP/", $response);
@@ -1446,9 +1449,6 @@ class Sailthru_Client {
         list($headers, $body) = explode("\r\n\r\n", $parts, 2);
         $this->lastRateLimitInfo[$action][$method] = self::parseRateLimitHeaders($headers);
 
-        if (!body) {
-            throw new Sailthru_Client_Exception("Bad response received from $url");
-        }
         return $body;
     }
 
@@ -1601,7 +1601,7 @@ class Sailthru_Client {
      * @return array|null
      */
     private function parseRateLimitHeaders($headers) {
-        if (headers === null) {
+        if ($headers === null) {
             return null;
         }
 
