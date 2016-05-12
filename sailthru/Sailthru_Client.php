@@ -934,7 +934,7 @@ class Sailthru_Client {
         if ($postback_url) {
             $data['postback_url'] = $postback_url;
         }
-        return $this->apiPost('job', $data, $binary_data_param);
+        return $this->apiPost('job', $data, $binary_data_param, $options);
     }
 
 
@@ -1030,11 +1030,13 @@ class Sailthru_Client {
      * @param Array $update
      * @param String $report_email
      * @param String $postback_url
+     * @param array  $options
      */
-    public function processUpdateJob($context, $value, array $update =  array(), $report_email = false, $postback_url = false, array $file_params = array()) {
+    public function processUpdateJob($context, $value, array $update =  array(), $report_email = false, $postback_url = false, array $file_params = array(), array $options = array()) {
         $data = array(
             $context => $value
         );
+        $data = array_merge($data, $options);
         if (count($update) > 0) {
             $data['update'] = $update;
         }
@@ -1060,9 +1062,10 @@ class Sailthru_Client {
      * @param Array $update
      * @param String $report_email
      * @param String $postback_url
+     * @param array  $options
      */
-    public function processUpdateJobFromFile($file, array $update = array(), $report_email = false, $postback_url = false) {
-        return $this->processUpdateJob('file', $file, $update, $report_email, $postback_url, array('file'));
+    public function processUpdateJobFromFile($file, array $update = array(), $report_email = false, $postback_url = false, array $options = array()) {
+        return $this->processUpdateJob('file', $file, $update, $report_email, $postback_url, array('file'), $options);
     }
 
 
