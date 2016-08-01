@@ -909,14 +909,15 @@ class Sailthru_Client {
     /**
      * process job api call
      * @param String $job
-     * @param array $options
+     * @param array $data
      * @param bool|String $report_email
      * @param bool|String $postback_url
      * @param array $binary_data_param
+     * @param array $options
      * @return array
      */
-    protected function processJob($job, array $options = [ ], $report_email = false, $postback_url = false, array $binary_data_param = [ ]) {
-        $data = $options;
+    protected function processJob($job, array $data = [ ], $report_email = false, $postback_url = false, array $binary_data_param = [ ],
+                                  array $options = [ ]) {
         $data['job'] = $job;
         if ($report_email) {
             $data['report_email'] = $report_email;
@@ -924,7 +925,7 @@ class Sailthru_Client {
         if ($postback_url) {
             $data['postback_url'] = $postback_url;
         }
-        return $this->apiPost('job', $data, $binary_data_param);
+        return $this->apiPost('job', $data, $binary_data_param, $options);
     }
 
     /**
@@ -935,12 +936,12 @@ class Sailthru_Client {
      * @param bool|String $postback_url
      * @return array
      */
-    public function processImportJob($list, $emails, $report_email = false, $postback_url = false) {
+    public function processImportJob($list, $emails, $report_email = false, $postback_url = false, array $options = [ ]) {
         $data = [
             'emails' => $emails,
             'list' => $list
         ];
-        return $this->processJob('import', $data, $report_email, $postback_url);
+        return $this->processJob('import', $data, $report_email, $postback_url, [ ], $options);
     }
 
     /**
@@ -950,14 +951,15 @@ class Sailthru_Client {
      * @param $file_path
      * @param bool|String $report_email
      * @param bool|String $postback_url
+     * @param array $options
      * @return array
      */
-    public function processImportJobFromFile($list, $file_path, $report_email = false, $postback_url = false) {
+    public function processImportJobFromFile($list, $file_path, $report_email = false, $postback_url = false, array $options = [ ]) {
         $data = [
             'file' => $file_path,
             'list' => $list
         ];
-        return $this->processJob('import', $data, $report_email, $postback_url, [ 'file' ]);
+        return $this->processJob('import', $data, $report_email, $postback_url, [ 'file' ], $options);
     }
 
     /**
@@ -966,13 +968,14 @@ class Sailthru_Client {
      * @param String $file_path
      * @param bool|String $report_email
      * @param bool|String $postback_url
+     * @param array $options
      * @return array
      */
-    public function processPurchaseImportJobFromFile($file_path, $report_email = false, $postback_url = false) {
+    public function processPurchaseImportJobFromFile($file_path, $report_email = false, $postback_url = false, array $options = [ ]) {
         $data = [
             'file' => $file_path
         ];
-        return $this->processJob('purchase_import', $data, $report_email, $postback_url, [ 'file' ]);
+        return $this->processJob('purchase_import', $data, $report_email, $postback_url, [ 'file' ], $options);
     }
 
     /**
@@ -983,9 +986,9 @@ class Sailthru_Client {
      * @param bool|String $postback_url
      * @return array
      */
-    public function processSnapshotJob(array $query, $report_email = false, $postback_url = false) {
+    public function processSnapshotJob(array $query, $report_email = false, $postback_url = false, array $options = [ ]) {
         $data = [ 'query' => $query ];
-        return $this->processJob('snaphot', $data, $report_email, $postback_url);
+        return $this->processJob('snaphot', $data, $report_email, $postback_url, [ ], $options);
     }
 
     /**
@@ -996,10 +999,9 @@ class Sailthru_Client {
      * @param array $options
      * @return array
      */
-    public function processExportListJob($list, $report_email = false, $postback_url = false, $options = [ ]) {
+    public function processExportListJob($list, $report_email = false, $postback_url = false, array $options = [ ]) {
         $data = [ 'list' => $list ];
-        $data = array_merge($data, $options);
-        return $this->processJob('export_list_data', $data, $report_email, $postback_url);
+        return $this->processJob('export_list_data', $data, $report_email, $postback_url, [ ], $options);
     }
 
     /**
@@ -1007,10 +1009,11 @@ class Sailthru_Client {
      * @param integer $blast_id
      * @param bool|String $report_email
      * @param bool|String $postback_url
+     * @param array $options
      * @return array
      */
-    public function processBlastQueryJob($blast_id, $report_email = false, $postback_url = false) {
-        return $this->processJob('blast_query', [ 'blast_id' => $blast_id ], $report_email, $postback_url);
+    public function processBlastQueryJob($blast_id, $report_email = false, $postback_url = false, array $options = [ ]) {
+        return $this->processJob('blast_query', [ 'blast_id' => $blast_id ], $report_email, $postback_url, [ ], $options);
     }
 
     /**
@@ -1023,14 +1026,15 @@ class Sailthru_Client {
      * @param array $file_params
      * @return array
      */
-    public function processUpdateJob($context, $value, array $update = [ ], $report_email = false, $postback_url = false, array $file_params = [ ]) {
+    public function processUpdateJob($context, $value, array $update = [ ], $report_email = false, $postback_url = false, array $file_params = [ ],
+                                     array $options = [ ]) {
         $data = [
             $context => $value
         ];
         if (count($update) > 0) {
             $data['update'] = $update;
         }
-        return $this->processJob('update', $data, $report_email, $postback_url, $file_params);
+        return $this->processJob('update', $data, $report_email, $postback_url, $file_params, $options);
     }
 
     /**
@@ -1039,10 +1043,11 @@ class Sailthru_Client {
      * @param array $update
      * @param bool|String $report_email
      * @param bool|String $postback_url
+     * @param array $options
      * @return array
      */
-    public function processUpdateJobFromUrl($url, array $update = [ ], $report_email = false, $postback_url = false) {
-        return $this->processUpdateJob('url', $url, $update, $report_email, $postback_url);
+    public function processUpdateJobFromUrl($url, array $update = [ ], $report_email = false, $postback_url = false, array $options = [ ]) {
+        return $this->processUpdateJob('url', $url, $update, $report_email, $postback_url, [ ], $options);
     }
 
     /**
@@ -1051,11 +1056,12 @@ class Sailthru_Client {
      * @param Array $update
      * @param bool|String $report_email
      * @param bool|String $postback_url
+     * @param array $options
      * @return array
      * @internal param String $url
      */
-    public function processUpdateJobFromFile($file, array $update = [ ], $report_email = false, $postback_url = false) {
-        return $this->processUpdateJob('file', $file, $update, $report_email, $postback_url, [ 'file' ]);
+    public function processUpdateJobFromFile($file, array $update = [ ], $report_email = false, $postback_url = false, array $options = [ ]) {
+        return $this->processUpdateJob('file', $file, $update, $report_email, $postback_url, [ 'file' ], $options);
     }
 
     /**
@@ -1065,8 +1071,8 @@ class Sailthru_Client {
      * @param String $report_email
      * @param String $postback_url
      */
-    public function processUpdateJobFromQuery($query, array $update = [ ], $report_email = false, $postback_url = false) {
-        return $this->processUpdateJob('query', $query, $update, $report_email, $postback_url);
+    public function processUpdateJobFromQuery($query, array $update = [ ], $report_email = false, $postback_url = false, array $options = [ ]) {
+        return $this->processUpdateJob('query', $query, $update, $report_email, $postback_url, [ ], $options);
     }
 
     /**
@@ -1077,8 +1083,8 @@ class Sailthru_Client {
      * @param bool|String $postback_url
      * @return array
      */
-    public function processUpdateJobFromEmails($emails, array $update = [ ], $report_email = false, $postback_url = false) {
-        return $this->processUpdateJob('emails', $emails, $update, $report_email, $postback_url);
+    public function processUpdateJobFromEmails($emails, array $update = [ ], $report_email = false, $postback_url = false, array $options = [ ]) {
+        return $this->processUpdateJob('emails', $emails, $update, $report_email, $postback_url, [ ], $options);
     }
 
     /**
