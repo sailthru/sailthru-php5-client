@@ -1461,11 +1461,9 @@ class Sailthru_Client {
             );
         }
         if (isset($json['error'])) {
-            throw new Sailthru_Client_Exception(
-                "Error {$json['error']}. {$json['errormsg']}",
-                Sailthru_Client_Exception::CODE_RESPONSE_ERROR
-            );
+            throw new Sailthru_Client_Exception($json['errormsg'], $json['error']);
         }
+
         return $json;
     }
 
