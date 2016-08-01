@@ -76,7 +76,6 @@ class Sailthru_Client {
      * @param string $secret
      * @param string $api_uri
      * @param array $options - optional parameters for connect/read timeout
-     * @param boolean $show_version
      */
     public function  __construct($api_key, $secret, $api_uri = false, $options = null) {
         $this->api_key = $api_key;
@@ -106,7 +105,6 @@ class Sailthru_Client {
         return true;
     }
 
-
     /**
      * Remotely send an email template to a single email address.
      *
@@ -116,12 +114,13 @@ class Sailthru_Client {
      *   replyto: override Reply-To header
      *   test: send as test email (subject line will be marked, will not count towards stats)
      *
-     * @param string $template_name
+     * @param string $template
      * @param string $email
      * @param array $vars
      * @param array $options
      * @param string $schedule_time
      * @link http://docs.sailthru.com/api/send
+     * @return array API result
      */
     public function send($template, $email, $vars = array(), $options = array(), $schedule_time = null) {
         $post = array();
@@ -147,6 +146,7 @@ class Sailthru_Client {
      * @param array $evars
      * @param array $options
      * @link http://docs.sailthru.com/api/send
+     * @return array API result
      */
     public function multisend($template_name, $emails, $vars = array(), $evars = array(), $options = array()) {
         $post['template'] = $template_name;
@@ -164,6 +164,7 @@ class Sailthru_Client {
      *
      * @param string $send_id
      * @link http://docs.sailthru.com/api/send
+     * @return array API result
      */
     public function getSend($send_id) {
         return $this->apiGet('send', array('send_id' => $send_id));
@@ -175,6 +176,7 @@ class Sailthru_Client {
      *
      * @param string $send_id
      * @link http://docs.sailthru.com/api/send
+     * @return array API result
      */
     public function cancelSend($send_id) {
         return $this->apiDelete('send', array('send_id' => $send_id));
@@ -187,6 +189,7 @@ class Sailthru_Client {
      * @param string $email
      * @param array $options
      * @link http://docs.sailthru.com/api/email
+     * @return array API result
      */
     public function getEmail($email, array $options = array()) {
         return $this->apiGet('email', array_merge(array('email' => $email), $options));
@@ -207,6 +210,7 @@ class Sailthru_Client {
      * @param string $send
      * @param array $send_vars
      * @link http://docs.sailthru.com/api/email
+     * @return array API result
      */
     public function setEmail($email, $vars = array(), $lists = array(), $templates = array(), $verified = 0, $optout = null, $send = null, $send_vars = array()) {
         $data = array('email' => $email);
@@ -233,11 +237,11 @@ class Sailthru_Client {
         return $this->apiPost('email', $data);
     }
 
-
     /**
      * Update / add email address
      *
      * @link http://docs.sailthru.com/api/email
+     * @return array API result
      */
     public function setEmail2($email, array $options = array()) {
         $options['email'] = $email;
@@ -272,6 +276,7 @@ class Sailthru_Client {
      *         test_percent
      *         data_feed_url
      * @link http://docs.sailthru.com/api/blast
+     * @return array API result
      */
     public function scheduleBlast($name, $list, $schedule_time, $from_name,
         $from_email, $subject, $content_html, $content_text, $options = array()
@@ -289,7 +294,6 @@ class Sailthru_Client {
         return $this->apiPost('blast', $data);
     }
 
-
     /**
      * Schedule a mass mail from a template
      *
@@ -298,6 +302,7 @@ class Sailthru_Client {
      * @param String $schedule_time
      * @param Array $options
      * @link http://docs.sailthru.com/api/blast
+     * @return array API result
      **/
     public function scheduleBlastFromTemplate($template, $list, $schedule_time, $options = array()) {
         $data = $options;
@@ -307,7 +312,6 @@ class Sailthru_Client {
         return $this->apiPost('blast', $data);
     }
 
-
     /**
      * Schedule a mass mail blast from previous blast
      *
@@ -315,6 +319,7 @@ class Sailthru_Client {
      * @param String $schedule_time
      * @param array $options
      * @link http://docs.sailthru.com/api/blast
+     * @return array API result
      **/
     public function scheduleBlastFromBlast($blast_id, $schedule_time, $options = array()) {
         $data = $options;
@@ -322,7 +327,6 @@ class Sailthru_Client {
         $data['schedule_time'] = $schedule_time;
         return $this->apiPost('blast', $data);
     }
-
 
     /**
      * updates existing blast
@@ -352,6 +356,7 @@ class Sailthru_Client {
      *         test_percent
      *         data_feed_url
      * @link http://docs.sailthru.com/api/blast
+     * @return array API result
      */
     public function updateBlast($blast_id, $name = null, $list = null,
         $schedule_time = null, $from_name = null, $from_email = null,
@@ -393,6 +398,7 @@ class Sailthru_Client {
      * Get Blast information
      * @param string/integer $blast_id
      * @link http://docs.sailthru.com/api/blast
+     * @return array API result
      */
     public function getBlast($blast_id) {
         return $this->apiGet('blast', array('blast_id' => $blast_id));
@@ -405,6 +411,7 @@ class Sailthru_Client {
      *       end-date (required)
      *       status
      * @link http://docs.sailthru.com/api/blast
+     * @return array API result
      */
     public function getBlasts($options) {
         return $this->apiGet('blast', $options);
@@ -415,6 +422,7 @@ class Sailthru_Client {
      * Delete Blast
      * @param ineteger/string $blast_id
      * @link http://docs.sailthru.com/api/blast
+     * @return array API result
      */
     public function deleteBlast($blast_id) {
         return $this->apiDelete('blast', array('blast_id' => $blast_id));
@@ -425,6 +433,7 @@ class Sailthru_Client {
      * Cancel a scheduled Blast
      * @param ineteger/string $blast_id
      * @link http://docs.sailthru.com/api/blast
+     * @return array API result
      */
     public function cancelBlast($blast_id) {
         $data = array(
@@ -434,12 +443,12 @@ class Sailthru_Client {
         return $this->apiPost('blast', $data);
     }
 
-
     /**
      * Fetch information about a template
      *
      * @param string $template_name
      * @link http://docs.sailthru.com/api/template
+     * @return array API result
      */
     public function getTemplate($template_name, array $options = array()) {
         $options['template'] = $template_name;
@@ -450,6 +459,7 @@ class Sailthru_Client {
     /**
      * Fetch name of all existing templates
      * @link http://docs.sailthru.com/api/template
+     * @return array API result
      */
     public function getTemplates() {
         return $this->apiGet('template');
@@ -460,13 +470,13 @@ class Sailthru_Client {
         return $this->apiGet('template', array('revision' => (int)$revision_id));
     }
 
-
     /**
      * Save a template.
      *
      * @param string $template_name
      * @param array $template_fields
      * @link http://docs.sailthru.com/api/template
+     * @return array API result
      */
     public function saveTemplate($template_name, array $template_fields = array()) {
         $data = $template_fields;
@@ -474,13 +484,13 @@ class Sailthru_Client {
         return $this->apiPost('template', $data);
     }
 
-
     /**
      * Save a template from revision
      *
      * @param string $template_name
      * @param numeric $revision
      * @link http://docs.sailthru.com/api/template
+     * @return array API result
      */
     public function saveTemplateFromRevision($template_name, $revision_id) {
         $revision_id = (int)$revision_id;
@@ -494,16 +504,17 @@ class Sailthru_Client {
      * @param string $template_name
      * @param array $template_fields
      * @link http://docs.sailthru.com/api/template
+     * @return array API result
      */
     public function deleteTemplate($template_name) {
         return $this->apiDelete('template', array('template' => $template_name));
     }
 
-
     /**
      * Fetch information about an include
      *
      * @param string $include_name
+     * @return array API result
      */
     public function getInclude($include_name, array $options = array()) {
         $options['include'] = $include_name;
@@ -513,6 +524,7 @@ class Sailthru_Client {
 
     /**
      * Fetch name of all existing includes
+     * @return array API result
      */
     public function getIncludes() {
         return $this->apiGet('include');
@@ -524,13 +536,13 @@ class Sailthru_Client {
      *
      * @param string $include_name
      * @param array $include_fields
+     * @return array API result
      */
     public function saveInclude($include_name, array $include_fields = array()) {
         $data = $include_fields;
         $data['include'] = $include_name;
         return $this->apiPost('include', $data);
     }
-
 
     /**
      * Get information about a list.
@@ -543,7 +555,6 @@ class Sailthru_Client {
         return $this->apiGet('list', array('list' => $list));
     }
 
-
     /**
      * Get information about all lists
      *
@@ -555,7 +566,6 @@ class Sailthru_Client {
     public function getLists() {
         return $this->apiGet('list', array());
     }
-
 
     /**
      * Create a list, or update a list.
@@ -579,7 +589,6 @@ class Sailthru_Client {
         return $this->apiPost('list', $data);
     }
 
-
     /**
      * Deletes a list.
      *
@@ -601,6 +610,7 @@ class Sailthru_Client {
      * @param String $date
      * @param Mixed $tags Null for empty values, or String or arrays
      * @link http://docs.sailthru.com/api/content
+     * @return array API result
      */
     public function pushContent($title, $url, $date = null, $tags = null, $vars = array(), $options = array()) {
         $data = $options;
@@ -625,6 +635,7 @@ class Sailthru_Client {
      *
      * @link http://docs.sailthru.com/api/alert
      * @param String $email
+     * @return array API result
      */
     public function getAlert($email) {
         $data = array(
@@ -662,6 +673,7 @@ class Sailthru_Client {
      *         min    Minimum-value variables        min[price]=30000
      *         max    Maximum-value match            max[price]=50000
      *         tags   Tag-match                      tags[]=blue
+     * @return array API result
      */
     public function saveAlert($email, $type, $template, $when = null, $options = array()) {
         $data = $options;
@@ -680,6 +692,7 @@ class Sailthru_Client {
      * @link http://docs.sailthru.com/api/alert
      * @param <type> $email
      * @param <type> $alert_id
+     * @return array API result
      */
     public function deleteAlert($email, $alert_id) {
         $data = array(
@@ -693,6 +706,7 @@ class Sailthru_Client {
     /**
      * Record that a user has made a purchase, or has added items to their purchase total.
      * @link http://docs.sailthru.com/api/purchase
+     * @return array API result
      */
     public function purchase($email, array $items, $incomplete = null, $message_id = null, array $options = array()) {
         $data = $options;
@@ -707,10 +721,10 @@ class Sailthru_Client {
         return $this->apiPost('purchase', $data);
     }
 
-
     /**
      * Make a purchase API call with incomplete flag
      * @link http://docs.sailthru.com/api/purchase
+     * @return array API result
      */
     public function purchaseIncomplete($email, array $items, $message_id, array $options = array()) {
         return $this->purchase($email, $items, 1, $message_id, $options);
@@ -722,6 +736,7 @@ class Sailthru_Client {
      * @link http://docs.sailthru.com/api/stats
      * @param String $list
      * @param String $date
+     * @return array API result
      */
     public function stats_list($list = null, $date = null) {
         $data = array();
@@ -740,6 +755,7 @@ class Sailthru_Client {
     /**
      * Retrieve information about a particular blast or aggregated information from all of blasts over a specified date range.
      * @param array $data
+     * @return array API result
      */
     public function stats_blast($blast_id = null, $start_date = null, $end_date = null, array $data = array()) {
         $data['stat'] = 'blast';
@@ -758,6 +774,7 @@ class Sailthru_Client {
     /**
      * Retrieve information about a particular send or aggregated information from all of templates over a specified date range.
      * @param array $data
+     * @return array API result
      */
     public function stats_send($template=null, $start_date = null, $end_date = null, array $data = array()) {
         $data['stat'] = 'send';
@@ -779,6 +796,7 @@ class Sailthru_Client {
     /**
      * Make Stats API Request
      * @param array $data
+     * @return array API result
      */
     public function stats(array $data) {
         return $this->apiGet('stats', $data);
@@ -916,7 +934,6 @@ class Sailthru_Client {
         return $this->apiGet('job', array('job_id' => $job_id));
     }
 
-
     /**
      * process job api call
      * @param String $job
@@ -999,7 +1016,6 @@ class Sailthru_Client {
         return $this->processJob('snaphot', $data, $report_email, $postback_url);
     }
 
-
     /**
      * Process a export list job
      * @param String $list
@@ -1012,7 +1028,6 @@ class Sailthru_Client {
         return $this->processJob('export_list_data', $data, $report_email, $postback_url);
     }
 
-
     /**
      * Export blast data in CSV format
      * @param integer $blast_id
@@ -1022,7 +1037,6 @@ class Sailthru_Client {
     public function processBlastQueryJob($blast_id, $report_email = false, $postback_url = false) {
         return $this->processJob('blast_query', array('blast_id' => $blast_id), $report_email, $postback_url);
     }
-
 
     /**
      * Perform a bulk update of any number of user profiles from given context: String CSV, file, URL or query
@@ -1041,7 +1055,6 @@ class Sailthru_Client {
         return $this->processJob('update', $data, $report_email, $postback_url, $file_params);
     }
 
-
     /**
      * Perform a bulk update of any number of user profiles from given URL
      * @param String $url
@@ -1052,7 +1065,6 @@ class Sailthru_Client {
     public function processUpdateJobFromUrl($url, array $update = array(), $report_email = false, $postback_url = false) {
         return $this->processUpdateJob('url', $url, $update, $report_email, $postback_url);
     }
-
 
     /**
      * Perform a bulk update of any number of user profiles from given file
@@ -1065,7 +1077,6 @@ class Sailthru_Client {
         return $this->processUpdateJob('file', $file, $update, $report_email, $postback_url, array('file'));
     }
 
-
     /**
      * Perform a bulk update of any number of user profiles from a query
      * @param Array $query
@@ -1076,7 +1087,6 @@ class Sailthru_Client {
     public function processUpdateJobFromQuery($query, array $update = array(), $report_email = false, $postback_url = false) {
         return $this->processUpdateJob('query', $query, $update, $report_email, $postback_url);
     }
-
 
     /**
      * Perform a bulk update of any number of user profiles from emails CSV
@@ -1506,7 +1516,6 @@ class Sailthru_Client {
         return $json;
     }
 
-
     /**
      * Perform an API POST (or other) request, using the shared-secret auth hash.
      * if binary_data_param is set, its appends '@' so that cURL can make binary POST request
@@ -1564,7 +1573,6 @@ class Sailthru_Client {
     public function getLastResponseInfo() {
         return $this->lastResponseInfo;
     }
-
 
     /**
      * Prepare JSON payload
