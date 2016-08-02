@@ -14,6 +14,7 @@ Increase timeout from 10 (default) to 30 seconds.
 
     $client = new Sailthru_Client($this->api_key, $this->secret, $this->api_url, array('timeout' => 30000, 'connect_timeout' => 30000));
 
+<<<<<<< HEAD
 ## API Rate Limiting
 
 Here is an example how to check rate limiting and throttle API calls based on that. For more information about Rate Limiting, see [Sailthru Documentation](https://getstarted.sailthru.com/new-for-developers-overview/api/api-technical-details/#Rate_Limiting)
@@ -38,3 +39,6 @@ if ($rate_limit_info) {
     }
 }
 ```
+=======
+--This fork allows spidering as an optional field in pushContent, something that was missing from the original project.
+>>>>>>> origin/master

@@ -602,8 +602,9 @@ class Sailthru_Client {
      * @param Mixed $tags Null for empty values, or String or arrays
      * @link http://docs.sailthru.com/api/content
      */
-    public function pushContent($title, $url, $date = null, $tags = null, $vars = array(), $options = array()) {
+    public function pushContent($title, $url, $date = null, $tags = null, $vars = array(),$spider = 1,$options=array()) {
         $data = $options;
+        $data['spider'] = $spider;
         $data['title'] = $title;
         $data['url'] = $url;
         if (!is_null($tags)) {
@@ -712,7 +713,7 @@ class Sailthru_Client {
      * Make a purchase API call with incomplete flag
      * @link http://docs.sailthru.com/api/purchase
      */
-    public function purchaseIncomplete($email, array $items, $message_id, array $options = array()) {
+    public function purchaseIncomplete($email, array $items, $message_id=null, array $options = array()) {
         return $this->purchase($email, $items, 1, $message_id, $options);
     }
 
