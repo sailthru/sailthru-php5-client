@@ -9,6 +9,5 @@ class Sailthru_Client_Exception extends Exception {
      */
     const CODE_GENERAL = 1000;
     const CODE_RESPONSE_EMPTY = 1002;
-    const CODE_RESPONSE_ERROR = 1003;
-    const CODE_RESPONSE_INVALID = 1004;
+    const CODE_RESPONSE_INVALID = 1003;
 }
