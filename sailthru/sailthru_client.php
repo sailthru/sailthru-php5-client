@@ -1411,6 +1411,8 @@ class Sailthru_Client {
 	 */
 	protected function http_request_curl( $action, array $data, $method = 'POST', $options = [] ) {
 		$url = $this->api_uri . '/' . $action;
+
+		// @codingStandardsIgnoreStart
 		$ch = curl_init();
 		$options = array_merge( $this->options, $options );
 		if ( 'POST' === $method ) {
@@ -1438,6 +1440,7 @@ class Sailthru_Client {
 		$response = curl_exec( $ch );
 		$this->last_response_info = curl_getinfo( $ch );
 		curl_close( $ch );
+		// @codingStandardsIgnoreEnd
 
 		if ( ! $response ) {
 			throw new Sailthru_Client_Exception( "Bad response received from $url" );
