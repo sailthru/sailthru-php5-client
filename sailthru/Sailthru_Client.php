@@ -1140,7 +1140,7 @@ class Sailthru_Client {
 			return false;
 		}
 		if ( ! $domain ) {
-			$domain_parts = explode( '.', $_SERVER['HTTP_HOST'] ); // input var okay
+			$domain_parts = isset( $_SERVER['HTTP_HOST'] ) ? explode( '.', sanitize_text_field( wp_unslash( $_SERVER['HTTP_HOST'] ) ) ) : array(); // input var okay
 			$domain = $domain_parts[ count( $domain_parts ) - 2 ] . '.' . $domain_parts[ count( $domain_parts ) - 1 ];
 		}
 		if ( null === $duration ) {
