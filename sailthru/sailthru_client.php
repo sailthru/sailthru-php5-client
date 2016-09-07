@@ -1400,6 +1400,52 @@ class Sailthru_Client {
 	}
 
 	/**
+	 * Perform an HTTP request using WordPress calls
+	 *
+	 * @param string $action
+	 * @param array $data
+	 * @param string $method
+	 * @param array $options
+	 * @return string
+	 * @throws Sailthru_Client_Exception
+	 */
+	protected function http_request_wordpress( $action, array $data, $method = 'POST', $options = [] ) {
+		if ( true === $this->file_upload ) {
+			throw new Sailthru_Client_Exception( 'Cannot upload file using wp_remote_post()' );
+		}
+
+		$url = $this->api_uri . '/' . $action;
+		$arguments = array( 'method' => $method );
+
+		if ( 'POST' === $method ) {
+			$arguments['timeout'] = $options['timeout'];
+			$arguments['body'] = http_build_query( $data, '', '&' );
+
+			$response = wp_remote_post( $url, $arguments );
+
+		} else {
+			$url .= '?' . http_build_query( $data, '', '&' );
+
+			if ( function_exists( 'vip_safe_wp_remote_get' ) ) {
+				$response = vip_safe_wp_remote_get( $url, $arguments );
+			} else {
+				$response = wp_remote_get( $url, $arguments ); // @codingStandardsIgnoreLine
+			}
+		}
+
+		if ( is_wp_error( $response ) ) {
+			throw new Sailthru_Client_Exception( "Bad response received from $url" );
+		}
+
+		$headers = wp_remote_retrieve_headers( $response );
+		$body = wp_remote_retrieve_body( $response );
+		$this->last_response_info = $response['http_response'];
+		$this->last_rate_limit_info[ $action ][ $method ] = self::parse_rate_limit_headers( $headers );
+
+		return $body;
+	}
+
+	/**
 	 * Perform an HTTP request using the curl extension
 	 *
 	 * @param string $action
