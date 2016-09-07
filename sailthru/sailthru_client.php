@@ -1607,8 +1607,15 @@ class Sailthru_Client {
 			return null;
 		}
 
-		$header_lines = explode( "\n", $headers );
 		$rate_limit_headers = [];
+
+		// Using curl
+		if ( is_string( $headers ) ) {
+			$header_lines = explode( "\n", $headers );
+		} elseif ( is_array( $headers ) ) {
+			$header_lines = $headers;
+		}
+
 		foreach ( $header_lines as $hl ) {
 			if ( strpos( $hl, 'X-Rate-Limit-Limit' ) !== false && ! isset( $rate_limit_headers['limit'] ) ) {
 				list($header_name, $header_value) = explode( ':', $hl, 2 );
