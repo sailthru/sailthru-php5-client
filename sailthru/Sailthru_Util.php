@@ -10,8 +10,8 @@ class Sailthru_Util {
 	 * @param string $secret
 	 * @return string
 	 */
-	public static function getSignatureHash( $params, $secret ) {
-		return md5( self::getSignatureString( $params, $secret ) );
+	public static function get_signature_hash( $params, $secret ) {
+		return md5( self::get_signature_string( $params, $secret ) );
 	}
 
 
@@ -24,9 +24,9 @@ class Sailthru_Util {
 	 * @param string $secret
 	 * @return string
 	 */
-	public static function getSignatureString( $params, $secret ) {
+	public static function get_signature_string( $params, $secret ) {
 		$values = array();
-		self::extractParamValues( $params, $values );
+		self::extract_param_values( $params, $values );
 		sort( $values, SORT_STRING );
 		$string = $secret . implode( '', $values );
 		return $string;
@@ -39,10 +39,10 @@ class Sailthru_Util {
 	 * @param array $params
 	 * @param array $values
 	 */
-	public static function extractParamValues( $params, &$values ) {
+	public static function extract_param_values( $params, &$values ) {
 		foreach ( $params as $k => $v ) {
 			if ( is_array( $v ) || is_object( $v ) ) {
-				self::extractParamValues( $v, $values );
+				self::extract_param_values( $v, $values );
 			} else {
 				if ( is_bool( $v ) ) {
 					//if a value is set as false, invalid hash will generate
