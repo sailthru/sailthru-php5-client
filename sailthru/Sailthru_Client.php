@@ -1473,11 +1473,11 @@ class Sailthru_Client {
 		}
 		$params['http']['header'] = "User-Agent: {$this->user_agent_string}\nContent-Type: application/x-www-form-urlencoded";
 		$ctx = stream_context_create( $params );
-		$fp = @fopen( $url, 'rb', false, $ctx );
+		$fp = fopen( $url, 'rb', false, $ctx );
 		if ( ! $fp ) {
 			throw new Sailthru_Client_Exception( "Unable to open stream: $url" );
 		}
-		$response = @stream_get_contents( $fp );
+		$response = stream_get_contents( $fp );
 		if ( $response === false ) {
 			throw new Sailthru_Client_Exception( "No response received from stream: $url" );
 		}
