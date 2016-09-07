@@ -1575,7 +1575,7 @@ class Sailthru_Client {
 		$payload = [
 			'api_key' => $this->api_key,
 			'format' => 'json',
-			'json' => function_exists( 'wp_json_encode' ) ? wp_json_encode( $data ) : json_encode( $data ), // @codingStandardsIgnoreLine WordPress.XSS.EscapeOutput
+			'json' => function_exists( 'wp_json_encode' ) ? wp_json_encode( $data ) : json_encode( $data ), // @codingStandardsIgnoreLine
 		];
 		$payload['sig'] = Sailthru_Util::get_signature_hash( $payload, $this->secret );
 		if ( ! empty( $binary_data ) ) {
