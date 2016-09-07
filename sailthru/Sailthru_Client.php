@@ -785,7 +785,7 @@ class Sailthru_Client {
 	 * @return boolean
 	 */
 	public function receive_verify_post() {
-		$params = $_POST;
+		$params = $_POST; // input var okay
 		foreach ( [ 'action', 'email', 'send_id', 'sig' ] as $k ) {
 			if ( ! isset( $params[ $k ] ) ) {
 				return false;
@@ -817,7 +817,7 @@ class Sailthru_Client {
 	 * @link http://docs.sailthru.com/api/postbacks
 	 */
 	public function receive_optout_post() {
-		$params = $_POST;
+		$params = $_POST; // input var okay
 		foreach ( [ 'action', 'email', 'sig' ] as $k ) {
 			if ( ! isset( $params[ $k ] ) ) {
 				return false;
@@ -842,7 +842,7 @@ class Sailthru_Client {
 	 * @link http://docs.sailthru.com/api/postbacks
 	 */
 	public function receive_update_post() {
-		$params = $_POST;
+		$params = $_POST; // input var okay
 		foreach ( [ 'action', 'sid', 'sig' ] as $k ) {
 			if ( ! isset( $params[ $k ] ) ) {
 				return false;
@@ -867,7 +867,7 @@ class Sailthru_Client {
 	 * @link http://docs.sailthru.com/api/postbacks
 	 */
 	public function receive_hard_bounce_post() {
-		$params = $_POST;
+		$params = $_POST; // input var okay
 		foreach ( [ 'action', 'email', 'sig' ] as $k ) {
 			if ( ! isset( $params[ $k ] ) ) {
 				return false;
@@ -1140,7 +1140,7 @@ class Sailthru_Client {
 			return false;
 		}
 		if ( ! $domain ) {
-			$domain_parts = explode( '.', $_SERVER['HTTP_HOST'] );
+			$domain_parts = explode( '.', $_SERVER['HTTP_HOST'] ); // input var okay
 			$domain = $domain_parts[ count( $domain_parts ) - 2 ] . '.' . $domain_parts[ count( $domain_parts ) - 1 ];
 		}
 		if ( null === $duration ) {
