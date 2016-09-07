@@ -1141,7 +1141,7 @@ class Sailthru_Client {
 		}
 		if ( ! $domain ) {
 			$domain_parts = explode( '.', $_SERVER['HTTP_HOST'] );
-			$domain = $domain_parts[ sizeof( $domain_parts ) - 2 ] . '.' . $domain_parts[ sizeof( $domain_parts ) - 1 ];
+			$domain = $domain_parts[ count( $domain_parts ) - 2 ] . '.' . $domain_parts[ count( $domain_parts ) - 1 ];
 		}
 		if ( null === $duration ) {
 			$expire = time() + 31556926;
