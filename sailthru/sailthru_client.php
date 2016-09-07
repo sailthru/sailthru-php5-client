@@ -1140,7 +1140,11 @@ class Sailthru_Client {
 			return false;
 		}
 		if ( ! $domain ) {
-			$domain_parts = isset( $_SERVER['HTTP_HOST'] ) ? explode( '.', sanitize_text_field( wp_unslash( $_SERVER['HTTP_HOST'] ) ) ) : array(); // input var okay
+			if ( function_exists( 'sanitize_text_field' ) && function_exists( 'wp_unslash' ) ) {
+				$domain_parts = isset( $_SERVER['HTTP_HOST'] ) ? explode( '.', sanitize_text_field( wp_unslash( $_SERVER['HTTP_HOST'] ) ) ) : array(); // input var okay
+			} else {
+				$domain_parts = explode( '.', $_SERVER['HTTP_HOST'] );
+			}
 			$domain = $domain_parts[ count( $domain_parts ) - 2 ] . '.' . $domain_parts[ count( $domain_parts ) - 1 ];
 		}
 		if ( null === $duration ) {
