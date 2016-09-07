@@ -79,7 +79,7 @@ class Sailthru_Client {
 	public function __construct( $api_key, $secret, $api_uri = false, $options = null ) {
 		$this->api_key = $api_key;
 		$this->secret = $secret;
-		if ( $api_uri !== false ) {
+		if ( false !== $api_uri ) {
 			$this->api_uri = $api_uri;
 		}
 
@@ -220,10 +220,10 @@ class Sailthru_Client {
 			$data['templates'] = $templates;
 		}
 		$data['verified'] = (int) $verified;
-		if ( $optout !== null ) {
+		if ( null !== $optout ) {
 			$data['optout'] = $optout;
 		}
-		if ( $send !== null ) {
+		if ( null !== $send ) {
 			$data['send'] = $send;
 		}
 		if ( ! empty( $send_vars ) ) {
@@ -661,7 +661,7 @@ class Sailthru_Client {
 		$data['email'] = $email;
 		$data['type'] = $type;
 		$data['template'] = $template;
-		if ( $type == 'weekly' || $type == 'daily' ) {
+		if ( 'weekly' == $type || 'daily' == $type ) {
 			$data['when'] = $when;
 		}
 		return $this->api_post( 'alert', $data );
@@ -792,12 +792,12 @@ class Sailthru_Client {
 			}
 		}
 
-		if ( $params['action'] != 'verify' ) {
+		if ( 'verify' != $params['action'] ) {
 			return false;
 		}
 		$sig = $params['sig'];
 		unset( $params['sig'] );
-		if ( $sig != Sailthru_Util::get_signature_hash( $params, $this->secret ) ) {
+		if ( Sailthru_Util::get_signature_hash( $params, $this->secret ) != $sig ) {
 			return false;
 		}
 		$send = $this->get_send( $params['send_id'] );
@@ -824,12 +824,12 @@ class Sailthru_Client {
 			}
 		}
 
-		if ( $params['action'] != 'optout' ) {
+		if ( 'optout' != $params['action'] ) {
 			return false;
 		}
 		$sig = $params['sig'];
 		unset( $params['sig'] );
-		if ( $sig != Sailthru_Util::get_signature_hash( $params, $this->secret ) ) {
+		if ( Sailthru_Util::get_signature_hash( $params, $this->secret ) != $sig ) {
 			return false;
 		}
 		return true;
@@ -849,12 +849,12 @@ class Sailthru_Client {
 			}
 		}
 
-		if ( $params['action'] != 'update' ) {
+		if ( 'update' != $params['action'] ) {
 			return false;
 		}
 		$sig = $params['sig'];
 		unset( $params['sig'] );
-		if ( $sig != Sailthru_Util::get_signature_hash( $params, $this->secret ) ) {
+		if ( Sailthru_Util::get_signature_hash( $params, $this->secret ) != $sig ) {
 			return false;
 		}
 		return true;
@@ -873,12 +873,12 @@ class Sailthru_Client {
 				return false;
 			}
 		}
-		if ( $params['action'] != 'hardbounce' ) {
+		if ( 'hardbounce' != $params['action'] ) {
 			return false;
 		}
 		$sig = $params['sig'];
 		unset( $params['sig'] );
-		if ( $sig != Sailthru_Util::get_signature_hash( $params, $this->secret ) ) {
+		if ( Sailthru_Util::get_signature_hash( $params, $this->secret ) != $sig ) {
 			return false;
 		}
 		if ( isset( $params['send_id'] ) ) {
@@ -1143,7 +1143,7 @@ class Sailthru_Client {
 			$domain_parts = explode( '.', $_SERVER['HTTP_HOST'] );
 			$domain = $domain_parts[ sizeof( $domain_parts ) - 2 ] . '.' . $domain_parts[ sizeof( $domain_parts ) - 1 ];
 		}
-		if ( $duration === null ) {
+		if ( null === $duration ) {
 			$expire = time() + 31556926;
 		} else if ( $duration ) {
 			$expire = time() + $duration;
@@ -1409,9 +1409,9 @@ class Sailthru_Client {
 		$url = $this->api_uri . '/' . $action;
 		$ch = curl_init();
 		$options = array_merge( $this->options, $options );
-		if ( $method == 'POST' ) {
+		if ( 'POST' == $method ) {
 			curl_setopt( $ch, CURLOPT_POST, true );
-			if ( $this->file_upload === true ) {
+			if ( true === $this->file_upload ) {
 				curl_setopt( $ch, CURLOPT_POSTFIELDS, $data );
 				$this->file_upload = false;
 			} else {
@@ -1419,7 +1419,7 @@ class Sailthru_Client {
 			}
 		} else {
 			$url .= '?' . http_build_query( $data, '', '&' );
-			if ( $method != 'GET' ) {
+			if ( 'GET' != $method ) {
 				curl_setopt( $ch, CURLOPT_CUSTOMREQUEST, $method );
 			}
 		}
@@ -1459,14 +1459,14 @@ class Sailthru_Client {
 	 * @throws Sailthru_Client_Exception
 	 */
 	protected function http_request_without_curl( $action, $data, $method = 'POST', $options = [] ) {
-		if ( $this->file_upload === true ) {
+		if ( true === $this->file_upload ) {
 			$this->file_upload = false;
 			throw new Sailthru_Client_Exception( 'cURL extension is required for the request with file upload' );
 		}
 
 		$url = $this->api_uri . '/' . $action;
 		$params = [ 'http' => [ 'method' => $method, 'ignore_errors' => true ] ];
-		if ( $method == 'POST' ) {
+		if ( 'POST' == $method ) {
 			$params['http']['content'] = is_array( $data ) ? http_build_query( $data, '', '&' ) : $data;
 		} else {
 			$url .= '?' . http_build_query( $data, '', '&' );
@@ -1478,7 +1478,7 @@ class Sailthru_Client {
 			throw new Sailthru_Client_Exception( "Unable to open stream: $url" );
 		}
 		$response = stream_get_contents( $fp );
-		if ( $response === false ) {
+		if ( false === $response ) {
 			throw new Sailthru_Client_Exception( "No response received from stream: $url" );
 		}
 		return $response;
@@ -1497,7 +1497,7 @@ class Sailthru_Client {
 	protected function http_request( $action, $data, $method = 'POST', $options = [] ) {
 		$response = $this->{$this->http_request_type}($action, $data, $method, $options);
 		$json = json_decode( $response, true );
-		if ( $json === null ) {
+		if ( null === $json ) {
 			throw new Sailthru_Client_Exception( "Response: {$response} is not a valid JSON" );
 		}
 		return $json;
@@ -1596,7 +1596,7 @@ class Sailthru_Client {
 	 * @return array|null
 	 */
 	private function parse_rate_limit_headers( $headers ) {
-		if ( $headers === null ) {
+		if ( null === $headers ) {
 			return null;
 		}
 
