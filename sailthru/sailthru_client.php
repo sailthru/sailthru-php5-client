@@ -83,7 +83,13 @@ class Sailthru_Client {
 			$this->api_uri = $api_uri;
 		}
 
-		$this->http_request_type = function_exists( 'curl_init' ) ? 'http_request_curl' : 'http_request_without_curl';
+		if ( function_exists( 'wp_remote_get' ) ) {
+			$this->http_request_type = 'http_request_wordpress';
+		} elseif ( function_exists( 'curl_init' ) ) {
+			$this->http_request_type = 'http_request_curl';
+		} else {
+			$this->http_request_type = 'http_request_without_curl';
+		}
 
 		if ( isset( $options ) ) {
 			$this->options['timeout'] = isset( $options['timeout'] ) ? (int) $options['timeout'] : Sailthru_Client::DEFAULT_READ_TIMEOUT;
