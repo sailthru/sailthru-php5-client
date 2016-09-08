@@ -1445,7 +1445,7 @@ class Sailthru_Client {
 			throw new Sailthru_Client_Exception( "Bad response received from $url" );
 		}
 
-		$headers = wp_remote_retrieve_headers( $response );
+		$headers = wp_remote_retrieve_headers( $response )->getAll();
 		$body = wp_remote_retrieve_body( $response );
 		$this->last_response_info = $response['http_response'];
 		$this->last_rate_limit_info[ $action ][ $method ] = self::parse_rate_limit_headers( $headers );
