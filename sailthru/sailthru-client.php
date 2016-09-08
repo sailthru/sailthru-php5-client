@@ -791,7 +791,7 @@ class Sailthru_Client {
 	 * @return boolean
 	 */
 	public function receive_verify_post() {
-		$params = $_POST; // input var okay
+		$params = $_POST; // @codingStandardsIgnoreLine
 		foreach ( [ 'action', 'email', 'send_id', 'sig' ] as $k ) {
 			if ( ! isset( $params[ $k ] ) ) {
 				return false;
@@ -823,7 +823,7 @@ class Sailthru_Client {
 	 * @link http://docs.sailthru.com/api/postbacks
 	 */
 	public function receive_optout_post() {
-		$params = $_POST; // input var okay
+		$params = $_POST; // @codingStandardsIgnoreLine
 		foreach ( [ 'action', 'email', 'sig' ] as $k ) {
 			if ( ! isset( $params[ $k ] ) ) {
 				return false;
@@ -848,7 +848,7 @@ class Sailthru_Client {
 	 * @link http://docs.sailthru.com/api/postbacks
 	 */
 	public function receive_update_post() {
-		$params = $_POST; // input var okay
+		$params = $_POST; // @codingStandardsIgnoreLine
 		foreach ( [ 'action', 'sid', 'sig' ] as $k ) {
 			if ( ! isset( $params[ $k ] ) ) {
 				return false;
@@ -873,7 +873,7 @@ class Sailthru_Client {
 	 * @link http://docs.sailthru.com/api/postbacks
 	 */
 	public function receive_hard_bounce_post() {
-		$params = $_POST; // input var okay
+		$params = $_POST; // @codingStandardsIgnoreLine
 		foreach ( [ 'action', 'email', 'sig' ] as $k ) {
 			if ( ! isset( $params[ $k ] ) ) {
 				return false;
@@ -1160,7 +1160,7 @@ class Sailthru_Client {
 		} else {
 			$expire = 0;
 		}
-		return setcookie( 'sailthru_hid', $data['keys']['cookie'], $expire, '/', $domain, $secure );
+		return setcookie( 'sailthru_hid', $data['keys']['cookie'], $expire, '/', $domain, $secure ); // @codingStandardsIgnoreLine
 	}
 
 	/**
