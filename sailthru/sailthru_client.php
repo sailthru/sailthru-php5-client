@@ -1424,7 +1424,9 @@ class Sailthru_Client {
 		$arguments = array( 'method' => $method );
 
 		if ( 'POST' === $method ) {
-			$arguments['timeout'] = $options['timeout'];
+			if ( isset( $options['timeout'] ) ) {
+				$arguments['timeout'] = $options['timeout'];
+			}
 			$arguments['body'] = http_build_query( $data, '', '&' );
 
 			$response = wp_remote_post( $url, $arguments );
