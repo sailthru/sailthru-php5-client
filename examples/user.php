@@ -38,6 +38,10 @@ try {
 
     // get user by Custom key
     $response = $client->getUserByKey("praj@sailthru.com", 'email', $fields);
+
+    // get last rate limit info
+    $rate_limit_info = $client->getLastRateLimitInfo("user", "GET");
+
 } catch (Sail_Client_Exception $e) {
     // deal with exception
 }
