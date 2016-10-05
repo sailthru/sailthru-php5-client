@@ -1,5 +1,5 @@
 {
-    "name": "RecycledMedia/sailthru-php5-client",
+    "name": "sailthru/sailthru-php5-client",
     "type": "library",
     "description": "Sailthru PHP5 Client",
     "homepage": "http://github.com/sailthru/sailthru-php5-client",
