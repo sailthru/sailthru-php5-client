@@ -279,9 +279,7 @@ class Sailthru_Client {
 	 * @link http://docs.sailthru.com/api/blast
 	 * @return array API result
 	 */
-	public function schedule_blast( $name, $list, $schedule_time, $from_name,
-								  $from_email, $subject, $content_html, $content_text, $options = []
-	) {
+	public function schedule_blast( $name, $list, $schedule_time, $from_name, $from_email, $subject, $content_html, $content_text, $options = [] ) {
 		$data = $options;
 		$data['name'] = $name;
 		$data['list'] = $list;
@@ -922,8 +920,7 @@ class Sailthru_Client {
 	 * @param array $options
 	 * @return array
 	 */
-	protected function process_job( $job, array $data = [], $report_email = false, $postback_url = false, array $binary_data_param = [],
-								  array $options = [] ) {
+	protected function process_job( $job, array $data = [], $report_email = false, $postback_url = false, array $binary_data_param = [], array $options = [] ) {
 		$data['job'] = $job;
 		if ( $report_email ) {
 			$data['report_email'] = $report_email;
@@ -1032,8 +1029,7 @@ class Sailthru_Client {
 	 * @param array $file_params
 	 * @return array
 	 */
-	public function process_update_job( $context, $value, array $update = [], $report_email = false, $postback_url = false, array $file_params = [],
-									 array $options = [] ) {
+	public function process_update_job( $context, $value, array $update = [], $report_email = false, $postback_url = false, array $file_params = [], array $options = [] ) {
 		$data = [
 			$context => $value,
 		];
