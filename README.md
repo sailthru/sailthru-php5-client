@@ -1,6 +1,8 @@
 sailthru-php5-client
 ====================
 
+[![Build Status](https://travis-ci.org/sailthru/sailthru-php5-client.svg?branch=master)](https://travis-ci.org/sailthru/sailthru-php5-client)
+
 For installation instructions, documentation, and examples please visit:
 [http://getstarted.sailthru.com/new-for-developers-overview/api-client-library/php5](http://getstarted.sailthru.com/new-for-developers-overview/api-client-library/php5)
 
