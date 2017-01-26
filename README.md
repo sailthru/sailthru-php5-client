@@ -38,3 +38,13 @@ if ($rate_limit_info) {
     }
 }
 ```
+
+## Tests
+
+You can run the tests locally with:
+
+```shell
+vendor/bin/phpunit
+```
+
+
