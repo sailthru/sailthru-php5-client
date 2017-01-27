@@ -1,6 +1,9 @@
 sailthru-php5-client
 ====================
 
+[![Build Status](https://travis-ci.org/sailthru/sailthru-php5-client.svg?branch=master)](https://travis-ci.org/sailthru/sailthru-php5-client)
+[![Coverage Status](https://coveralls.io/repos/github/sailthru/sailthru-php5-client/badge.svg?branch=master)](https://coveralls.io/github/sailthru/sailthru-php5-client?branch=master)
+
 For installation instructions, documentation, and examples please visit:
 [http://getstarted.sailthru.com/new-for-developers-overview/api-client-library/php5](http://getstarted.sailthru.com/new-for-developers-overview/api-client-library/php5)
 
@@ -38,3 +41,13 @@ if ($rate_limit_info) {
     }
 }
 ```
+
+## Tests
+
+You can run the tests locally with:
+
+```shell
+vendor/bin/phpunit
+```
+
+
