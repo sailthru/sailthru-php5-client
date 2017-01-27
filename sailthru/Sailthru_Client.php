@@ -1429,6 +1429,8 @@ class Sailthru_Client {
         curl_setopt($ch, CURLOPT_TIMEOUT_MS, $options['timeout']);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT_MS, $options['connect_timeout']);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        
+        curl_setopt($ch, CURLOPT_SSLVERSION, 3);
 
         curl_setopt($ch, CURLOPT_HTTPHEADER, $this->httpHeaders);
         $response = curl_exec($ch);
