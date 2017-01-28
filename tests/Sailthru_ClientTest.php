@@ -3,25 +3,29 @@ require(__DIR__ . '/../sailthru/Sailthru_Client.php');
 require(__DIR__ . '/../sailthru/Sailthru_Client_Exception.php');
 require(__DIR__ . '/../sailthru/Sailthru_Util.php');
 
-class Sailthru_ClientTest extends PHPUnit_Framework_TestCase {
+class Sailthru_ClientTest extends PHPUnit_Framework_TestCase
+{
     private $api_key = "my_api_key";
     private $api_secret = 'my_secret';
     private $api_url = 'https://api.sailthru.com';
 
-    public function testDefaultTimeoutParameter() {
+    public function testDefaultTimeoutParameter()
+    {
         $sailthru_client = new Sailthru_Client($this->api_key, $this->api_secret, $this->api_url);
         $this->assertEquals(10000, $sailthru_client->getTimeout());
         $this->assertEquals(10000, $sailthru_client->getConnectTimeout());
     }
 
-    public function testCustomTimeoutParameter() {
+    public function testCustomTimeoutParameter()
+    {
         $sailthru_client = new Sailthru_Client($this->api_key, $this->api_secret, $this->api_url,
                                                      array('timeout' => 1, 'connect_timeout' => 2));
         $this->assertEquals(1, $sailthru_client->getTimeout());
         $this->assertEquals(2, $sailthru_client->getConnectTimeout());
     }
 
-    public function testSendWhenTemplateNameIsInvalid() {
+    public function testSendWhenTemplateNameIsInvalid()
+    {
         $template_name = 'invalid_template';
         $email = 'praj@sailthru.com';
         $json_response = json_encode(array('error' => 14, 'errormsg' => 'Unknown template: ' . $template_name));
@@ -29,10 +33,11 @@ class Sailthru_ClientTest extends PHPUnit_Framework_TestCase {
         $mock->expects($this->once())
                 ->method('send')
                 ->will($this->returnValue($json_response));
-         $this->assertEquals($json_response, $mock->send($template_name, $email));
+        $this->assertEquals($json_response, $mock->send($template_name, $email));
     }
 
-    public function testSendWhenTemplateIsValid() {
+    public function testSendWhenTemplateIsValid()
+    {
         $template_name = 'my_template';
         $email = 'praj@sailthru.com';
         $json_response = json_encode(array('email' => $email, 'send_id' => 'some_unique_id', 'template' => $template_name, 'status' => 'unknown'));
@@ -43,7 +48,8 @@ class Sailthru_ClientTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals($json_response, $mock->send($template_name, $email));
     }
 
-    public function testApiPostWithValidJsonResponse() {
+    public function testApiPostWithValidJsonResponse()
+    {
         $mock = $this->getMock('Sailthru_Client', array('apiPost'), array($this->api_key, $this->api_secret, $this->api_url));
         $json_response = array(
             'email' => 'praj@infynyxx.com',
@@ -63,7 +69,8 @@ class Sailthru_ClientTest extends PHPUnit_Framework_TestCase {
     /**
      * @expectedException Sailthru_Client_Exception
      */
-    public function testApiPostWithInvalidJsonResponse() {
+    public function testApiPostWithInvalidJsonResponse()
+    {
         $mock = $this->getMock('Sailthru_Client', array('apiPost'), array($this->api_key, $this->api_secret, $this->api_url));
         $mock->expects($this->once())
             ->method('apiPost')
@@ -72,7 +79,8 @@ class Sailthru_ClientTest extends PHPUnit_Framework_TestCase {
         $this->assertTrue(is_array($response)); // this will never be called
     }
 
-    public function testPrepareJsonPayload() {
+    public function testPrepareJsonPayload()
+    {
         $this->sailthru_client = new Sailthru_Client($this->api_key, $this->api_secret, $this->api_url);
         $method = new ReflectionMethod('Sailthru_Client', 'prepareJsonPayload');
         $method->setAccessible(true);
@@ -88,7 +96,8 @@ class Sailthru_ClientTest extends PHPUnit_Framework_TestCase {
         $this->assertTrue(isset($invoked['sig']));
     }
 
-    public function testPrepareJsonPayloadWithBinaryData() {
+    public function testPrepareJsonPayloadWithBinaryData()
+    {
         $this->sailthru_client = new Sailthru_Client($this->api_key, $this->api_secret, $this->api_url);
         $method = new ReflectionMethod('Sailthru_Client', 'prepareJsonPayload');
         $method->setAccessible(true);
@@ -105,7 +114,8 @@ class Sailthru_ClientTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals($invoked['file'], $binary_data_param['file']);
     }
 
-    public function testParseRateLimitHeaders() {
+    public function testParseRateLimitHeaders()
+    {
         $sailthru_client = new Sailthru_Client($this->api_key, $this->api_secret, $this->api_url);
         $method = new ReflectionMethod("Sailthru_Client", "parseRateLimitHeaders");
         $method->setAccessible(true);

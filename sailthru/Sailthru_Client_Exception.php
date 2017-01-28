@@ -3,7 +3,8 @@
 /**
  * Handles Sailthru Client Exceptions
  */
-class Sailthru_Client_Exception extends Exception {
+class Sailthru_Client_Exception extends Exception
+{
     /**
      * Sailthru internal error codes.
      */

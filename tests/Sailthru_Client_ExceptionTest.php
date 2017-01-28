@@ -1,10 +1,12 @@
 <?php
 
-class Sailthru_Client_ExceptionTest extends PHPUnit_Framework_TestCase {
+class Sailthru_Client_ExceptionTest extends PHPUnit_Framework_TestCase
+{
     /**
      * @expectedException Sailthru_Client_Exception
      */
-    public function testSailthru_Client_Exception() {
+    public function testSailthru_Client_Exception()
+    {
         $api_key = "invalid_key";
         $api_secret = "invalid_secret";
         $api_url = "https://api.invalid_url.com";
