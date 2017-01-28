@@ -19,6 +19,7 @@ before_script:
 
 script:
   - if [[ "$COVERAGE" -eq 0 ]]; then vendor/bin/phpunit; else mkdir -p build/logs; vendor/bin/phpunit --coverage-clover=build/logs/clover.xml; fi
+  - vendor/bin/php-cs-fixer fix --config=.php_cs.dist -v --dry-run --using-cache=no --path-mode=intersection `git diff --name-only --diff-filter=ACMRTUXB $TRAVIS_COMMIT_RANGE`
 
 after_success:
   - if [[ "$COVERAGE" -gt 0 ]]; then vendor/bin/coveralls; fi
