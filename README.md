@@ -50,4 +50,14 @@ You can run the tests locally with:
 vendor/bin/phpunit
 ```
 
+## Code style
 
+Pull requests to the repository must follow PSR-2.
+  
+To prepare your PR for the travis tests you may run 
+[PHP CS fixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/master/composer.json) 
+which will fix most things automatically:
+
+```shell
+php-cs-fixer fix --config=.php_cs.dist
+```
