@@ -7,18 +7,21 @@ php:
   - 7.1
   - hhvm
 
-env: COVERAGE=0
+env:
+ - COVERAGE=0
+ - CODE_STYLE=0
 
 matrix:
   include:
     - php: 5.6
-      env: COVERAGE=1
+      env: COVERAGE=1 CODE_STYLE=1
 
 before_script:
   - if [[ "$COVERAGE" -eq 0 ]]; then composer install; else composer require satooshi/php-coveralls --dev; fi
 
 script:
   - if [[ "$COVERAGE" -eq 0 ]]; then vendor/bin/phpunit; else mkdir -p build/logs; vendor/bin/phpunit --coverage-clover=build/logs/clover.xml; fi
+  - if [[ "$CODE_STYLE" -gt 0 ]]; vendor/bin/php-cs-fixer fix --config=.php_cs.dist -v --dry-run --using-cache=no --path-mode=intersection `git diff --name-only --diff-filter=ACMRTUXB $TRAVIS_COMMIT_RANGE` fi
 
 after_success:
   - if [[ "$COVERAGE" -gt 0 ]]; then vendor/bin/coveralls; fi
