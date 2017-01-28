@@ -8,7 +8,8 @@
  * XML format is also available but not has not been tested thoroughly
  *
  */
-class Sailthru_Client {
+class Sailthru_Client
+{
     /**
      *
      * Sailthru API Key
@@ -76,7 +77,8 @@ class Sailthru_Client {
      * @param string $api_uri
      * @param array $options - optional parameters for connect/read timeout
      */
-    public function  __construct($api_key, $secret, $api_uri = false, $options = null) {
+    public function __construct($api_key, $secret, $api_uri = false, $options = null)
+    {
         $this->api_key = $api_key;
         $this->secret = $secret;
         if ($api_uri !== false) {
@@ -92,15 +94,18 @@ class Sailthru_Client {
         }
     }
 
-    public function getConnectTimeout() {
+    public function getConnectTimeout()
+    {
         return $this->options['connect_timeout'];
     }
 
-    public function getTimeout() {
+    public function getTimeout()
+    {
         return $this->options['timeout'];
     }
 
-    public function setHttpHeaders(array $headers) {
+    public function setHttpHeaders(array $headers)
+    {
         $this->httpHeaders = array_merge($this->httpHeaders, $headers);
         return true;
     }
@@ -122,7 +127,8 @@ class Sailthru_Client {
      * @link http://docs.sailthru.com/api/send
      * @return array API result
      */
-    public function send($template, $email, $vars = [ ], $options = [ ], $schedule_time = null) {
+    public function send($template, $email, $vars = [ ], $options = [ ], $schedule_time = null)
+    {
         $post = [ ];
         $post['template'] = $template;
         $post['email'] = $email;
@@ -148,7 +154,8 @@ class Sailthru_Client {
      * @link http://docs.sailthru.com/api/send
      * @return array API result
      */
-    public function multisend($template_name, $emails, $vars = [ ], $evars = [ ], $options = [ ]) {
+    public function multisend($template_name, $emails, $vars = [ ], $evars = [ ], $options = [ ])
+    {
         $post['template'] = $template_name;
         $post['email'] = is_array($emails) ? implode(',', $emails) : $emails;
         $post['vars'] = $vars;
@@ -165,7 +172,8 @@ class Sailthru_Client {
      * @link http://docs.sailthru.com/api/send
      * @return array API result
      */
-    public function getSend($send_id) {
+    public function getSend($send_id)
+    {
         return $this->apiGet('send', [ 'send_id' => $send_id ]);
     }
 
@@ -176,7 +184,8 @@ class Sailthru_Client {
      * @link http://docs.sailthru.com/api/send
      * @return array API result
      */
-    public function cancelSend($send_id) {
+    public function cancelSend($send_id)
+    {
         return $this->apiDelete('send', [ 'send_id' => $send_id ]);
     }
 
@@ -188,7 +197,8 @@ class Sailthru_Client {
      * @link http://docs.sailthru.com/api/email
      * @return array API result
      */
-    public function getEmail($email, array $options = [ ]) {
+    public function getEmail($email, array $options = [ ])
+    {
         return $this->apiGet('email', array_merge([ 'email' => $email ], $options));
     }
 
@@ -208,7 +218,8 @@ class Sailthru_Client {
      * @link http://docs.sailthru.com/api/email
      * @return array API result
      */
-    public function setEmail($email, $vars = [ ], $lists = [ ], $templates = [ ], $verified = 0, $optout = null, $send = null, $send_vars = [ ]) {
+    public function setEmail($email, $vars = [ ], $lists = [ ], $templates = [ ], $verified = 0, $optout = null, $send = null, $send_vars = [ ])
+    {
         $data = [ 'email' => $email ];
         if ($vars) {
             $data['vars'] = $vars;
@@ -239,7 +250,8 @@ class Sailthru_Client {
      * @link http://docs.sailthru.com/api/email
      * @return array API result
      */
-    public function setEmail2($email, array $options = [ ]) {
+    public function setEmail2($email, array $options = [ ])
+    {
         $options['email'] = $email;
         return $this->apiPost('email', $options);
     }
@@ -299,7 +311,8 @@ class Sailthru_Client {
      * @link http://docs.sailthru.com/api/blast
      * @return array API result
      **/
-    public function scheduleBlastFromTemplate($template, $list, $schedule_time, $options = [ ]) {
+    public function scheduleBlastFromTemplate($template, $list, $schedule_time, $options = [ ])
+    {
         $data = $options;
         $data['copy_template'] = $template;
         $data['list'] = $list;
@@ -316,7 +329,8 @@ class Sailthru_Client {
      * @link http://docs.sailthru.com/api/blast
      * @return array API result
      **/
-    public function scheduleBlastFromBlast($blast_id, $schedule_time, $options = [ ]) {
+    public function scheduleBlastFromBlast($blast_id, $schedule_time, $options = [ ])
+    {
         $data = $options;
         $data['copy_blast'] = $blast_id;
         $data['schedule_time'] = $schedule_time;
@@ -394,7 +408,8 @@ class Sailthru_Client {
      * @link http://docs.sailthru.com/api/blast
      * @return array API result
      */
-    public function getBlast($blast_id) {
+    public function getBlast($blast_id)
+    {
         return $this->apiGet('blast', [ 'blast_id' => $blast_id ]);
     }
 
@@ -407,7 +422,8 @@ class Sailthru_Client {
      * @link http://docs.sailthru.com/api/blast
      * @return array API result
      */
-    public function getBlasts($options) {
+    public function getBlasts($options)
+    {
         return $this->apiGet('blast', $options);
     }
 
@@ -417,7 +433,8 @@ class Sailthru_Client {
      * @link http://docs.sailthru.com/api/blast
      * @return array API result
      */
-    public function deleteBlast($blast_id) {
+    public function deleteBlast($blast_id)
+    {
         return $this->apiDelete('blast', [ 'blast_id' => $blast_id ]);
     }
 
@@ -427,7 +444,8 @@ class Sailthru_Client {
      * @link http://docs.sailthru.com/api/blast
      * @return array API result
      */
-    public function cancelBlast($blast_id) {
+    public function cancelBlast($blast_id)
+    {
         $data = [
             'blast_id' => $blast_id,
             'schedule_time' => ''
@@ -443,7 +461,8 @@ class Sailthru_Client {
      * @return array API result
      * @link http://docs.sailthru.com/api/template
      */
-    public function getTemplate($template_name, array $options = [ ]) {
+    public function getTemplate($template_name, array $options = [ ])
+    {
         $options['template'] = $template_name;
         return $this->apiGet('template', $options);
     }
@@ -453,11 +472,13 @@ class Sailthru_Client {
      * @link http://docs.sailthru.com/api/template
      * @return array API result
      */
-    public function getTemplates() {
+    public function getTemplates()
+    {
         return $this->apiGet('template');
     }
 
-    public function getTemplateFromRevision($revision_id) {
+    public function getTemplateFromRevision($revision_id)
+    {
         return $this->apiGet('template', [ 'revision' => (int) $revision_id ]);
     }
 
@@ -469,7 +490,8 @@ class Sailthru_Client {
      * @link http://docs.sailthru.com/api/template
      * @return array API result
      */
-    public function saveTemplate($template_name, array $template_fields = [ ]) {
+    public function saveTemplate($template_name, array $template_fields = [ ])
+    {
         $data = $template_fields;
         $data['template'] = $template_name;
         return $this->apiPost('template', $data);
@@ -483,7 +505,8 @@ class Sailthru_Client {
      * @return array API result
      * @link http://docs.sailthru.com/api/template
      */
-    public function saveTemplateFromRevision($template_name, $revision_id) {
+    public function saveTemplateFromRevision($template_name, $revision_id)
+    {
         $revision_id = (int) $revision_id;
         return $this->saveTemplate($template_name, [ 'revision' => $revision_id ]);
     }
@@ -495,7 +518,8 @@ class Sailthru_Client {
      * @return array API result
      * @link http://docs.sailthru.com/api/template
      */
-    public function deleteTemplate($template_name) {
+    public function deleteTemplate($template_name)
+    {
         return $this->apiDelete('template', [ 'template' => $template_name ]);
     }
 
@@ -505,7 +529,8 @@ class Sailthru_Client {
      * @param string $include_name
      * @return array API result
      */
-    public function getInclude($include_name, array $options = [ ]) {
+    public function getInclude($include_name, array $options = [ ])
+    {
         $options['include'] = $include_name;
         return $this->apiGet('include', $options);
     }
@@ -514,7 +539,8 @@ class Sailthru_Client {
      * Fetch name of all existing includes
      * @return array API result
      */
-    public function getIncludes() {
+    public function getIncludes()
+    {
         return $this->apiGet('include');
     }
 
@@ -525,7 +551,8 @@ class Sailthru_Client {
      * @param array $include_fields
      * @return array API result
      */
-    public function saveInclude($include_name, array $include_fields = [ ]) {
+    public function saveInclude($include_name, array $include_fields = [ ])
+    {
         $data = $include_fields;
         $data['include'] = $include_name;
         return $this->apiPost('include', $data);
@@ -538,7 +565,8 @@ class Sailthru_Client {
      * @return array
      * @link http://docs.sailthru.com/api/list
      */
-    public function getList($list) {
+    public function getList($list)
+    {
         return $this->apiGet('list', [ 'list' => $list ]);
     }
 
@@ -547,7 +575,8 @@ class Sailthru_Client {
      * @return array
      * @link http://docs.sailthru.com/api/list
      */
-    public function getLists() {
+    public function getLists()
+    {
         return $this->apiGet('list', [ ]);
     }
 
@@ -563,7 +592,8 @@ class Sailthru_Client {
      * @link http://docs.sailthru.com/api/list
      * @link http://docs.sailthru.com/api/query
      */
-    public function saveList($list, $type = null, $primary = null, $query = [ ]) {
+    public function saveList($list, $type = null, $primary = null, $query = [ ])
+    {
         $data = [
             'list' => $list,
             'type' => $type,
@@ -580,7 +610,8 @@ class Sailthru_Client {
      * @return array
      * @link http://docs.sailthru.com/api/list
      */
-    public function deleteList($list) {
+    public function deleteList($list)
+    {
         return $this->apiDelete('list', [ 'list' => $list ]);
     }
 
@@ -595,7 +626,8 @@ class Sailthru_Client {
      * @link http://docs.sailthru.com/api/content
      * @return array API result
      */
-    public function pushContent($title, $url, $date = null, $tags = null, $vars = [ ], $options = [ ]) {
+    public function pushContent($title, $url, $date = null, $tags = null, $vars = [ ], $options = [ ])
+    {
         $data = $options;
         $data['title'] = $title;
         $data['url'] = $url;
@@ -619,7 +651,8 @@ class Sailthru_Client {
      * @param String $email
      * @return array API result
      */
-    public function getAlert($email) {
+    public function getAlert($email)
+    {
         $data = [
             'email' => $email
         ];
@@ -656,7 +689,8 @@ class Sailthru_Client {
      *         tags   Tag-match                      tags[]=blue
      * @return array API result
      */
-    public function saveAlert($email, $type, $template, $when = null, $options = [ ]) {
+    public function saveAlert($email, $type, $template, $when = null, $options = [ ])
+    {
         $data = $options;
         $data['email'] = $email;
         $data['type'] = $type;
@@ -674,7 +708,8 @@ class Sailthru_Client {
      * @param <type> $alert_id
      * @return array API result
      */
-    public function deleteAlert($email, $alert_id) {
+    public function deleteAlert($email, $alert_id)
+    {
         $data = [
             'email' => $email,
             'alert_id' => $alert_id
@@ -687,7 +722,8 @@ class Sailthru_Client {
      * @link http://docs.sailthru.com/api/purchase
      * @return array API result
      */
-    public function purchase($email, array $items, $incomplete = null, $message_id = null, array $options = [ ]) {
+    public function purchase($email, array $items, $incomplete = null, $message_id = null, array $options = [ ])
+    {
         $data = $options;
         $data['email'] = $email;
         $data['items'] = $items;
@@ -705,7 +741,8 @@ class Sailthru_Client {
      * @link http://docs.sailthru.com/api/purchase
      * @return array API result
      */
-    public function purchaseIncomplete($email, array $items, $message_id, array $options = [ ]) {
+    public function purchaseIncomplete($email, array $items, $message_id, array $options = [ ])
+    {
         return $this->purchase($email, $items, 1, $message_id, $options);
     }
 
@@ -716,7 +753,8 @@ class Sailthru_Client {
      * @param String $date
      * @return array API result
      */
-    public function stats_list($list = null, $date = null) {
+    public function stats_list($list = null, $date = null)
+    {
         $data = [ ];
         if (!is_null($list)) {
             $data['list'] = $list;
@@ -734,7 +772,8 @@ class Sailthru_Client {
      * @param array $data
      * @return array API result
      */
-    public function stats_blast($blast_id = null, $start_date = null, $end_date = null, array $data = [ ]) {
+    public function stats_blast($blast_id = null, $start_date = null, $end_date = null, array $data = [ ])
+    {
         $data['stat'] = 'blast';
         if (!is_null($blast_id)) {
             $data['blast_id'] = $blast_id;
@@ -753,7 +792,8 @@ class Sailthru_Client {
      * @param array $data
      * @return array API result
      */
-    public function stats_send($template = null, $start_date = null, $end_date = null, array $data = [ ]) {
+    public function stats_send($template = null, $start_date = null, $end_date = null, array $data = [ ])
+    {
         $data['stat'] = 'send';
 
         if (!is_null($template)) {
@@ -774,7 +814,8 @@ class Sailthru_Client {
      * @param array $data
      * @return array API result
      */
-    public function stats(array $data) {
+    public function stats(array $data)
+    {
         return $this->apiGet('stats', $data);
     }
 
@@ -784,7 +825,8 @@ class Sailthru_Client {
      * @link http://docs.sailthru.com/api/postbacks
      * @return boolean
      */
-    public function receiveVerifyPost() {
+    public function receiveVerifyPost()
+    {
         $params = $_POST;
         foreach ([ 'action', 'email', 'send_id', 'sig' ] as $k) {
             if (!isset($params[$k])) {
@@ -816,7 +858,8 @@ class Sailthru_Client {
      * @return boolean
      * @link http://docs.sailthru.com/api/postbacks
      */
-    public function receiveOptoutPost() {
+    public function receiveOptoutPost()
+    {
         $params = $_POST;
         foreach ([ 'action', 'email', 'sig' ] as $k) {
             if (!isset($params[$k])) {
@@ -841,7 +884,8 @@ class Sailthru_Client {
      * @return boolean
      * @link http://docs.sailthru.com/api/postbacks
      */
-    public function receiveUpdatePost() {
+    public function receiveUpdatePost()
+    {
         $params = $_POST;
         foreach ([ 'action', 'sid', 'sig' ] as $k) {
             if (!isset($params[$k])) {
@@ -866,7 +910,8 @@ class Sailthru_Client {
      * @return boolean
      * @link http://docs.sailthru.com/api/postbacks
      */
-    public function receiveHardBouncePost() {
+    public function receiveHardBouncePost()
+    {
         $params = $_POST;
         foreach ([ 'action', 'email', 'sig' ] as $k) {
             if (!isset($params[$k])) {
@@ -887,7 +932,7 @@ class Sailthru_Client {
             if (!isset($send['email'])) {
                 return false;
             }
-        } else if (isset($params['blast_id'])) {
+        } elseif (isset($params['blast_id'])) {
             $blast_id = $params['blast_id'];
             $blast = $this->getBlast($blast_id);
             if (isset($blast['error'])) {
@@ -902,7 +947,8 @@ class Sailthru_Client {
      * @param String $job_id
      * @return array
      */
-    public function getJobStatus($job_id) {
+    public function getJobStatus($job_id)
+    {
         return $this->apiGet('job', [ 'job_id' => $job_id ]);
     }
 
@@ -917,7 +963,8 @@ class Sailthru_Client {
      * @return array
      */
     protected function processJob($job, array $data = [ ], $report_email = false, $postback_url = false, array $binary_data_param = [ ],
-                                  array $options = [ ]) {
+                                  array $options = [ ])
+    {
         $data['job'] = $job;
         if ($report_email) {
             $data['report_email'] = $report_email;
@@ -936,7 +983,8 @@ class Sailthru_Client {
      * @param bool|String $postback_url
      * @return array
      */
-    public function processImportJob($list, $emails, $report_email = false, $postback_url = false, array $options = [ ]) {
+    public function processImportJob($list, $emails, $report_email = false, $postback_url = false, array $options = [ ])
+    {
         $data = [
             'emails' => $emails,
             'list' => $list
@@ -954,7 +1002,8 @@ class Sailthru_Client {
      * @param array $options
      * @return array
      */
-    public function processImportJobFromFile($list, $file_path, $report_email = false, $postback_url = false, array $options = [ ]) {
+    public function processImportJobFromFile($list, $file_path, $report_email = false, $postback_url = false, array $options = [ ])
+    {
         $data = [
             'file' => $file_path,
             'list' => $list
@@ -971,7 +1020,8 @@ class Sailthru_Client {
      * @param array $options
      * @return array
      */
-    public function processPurchaseImportJobFromFile($file_path, $report_email = false, $postback_url = false, array $options = [ ]) {
+    public function processPurchaseImportJobFromFile($file_path, $report_email = false, $postback_url = false, array $options = [ ])
+    {
         $data = [
             'file' => $file_path
         ];
@@ -986,7 +1036,8 @@ class Sailthru_Client {
      * @param bool|String $postback_url
      * @return array
      */
-    public function processSnapshotJob(array $query, $report_email = false, $postback_url = false, array $options = [ ]) {
+    public function processSnapshotJob(array $query, $report_email = false, $postback_url = false, array $options = [ ])
+    {
         $data = [ 'query' => $query ];
         return $this->processJob('snaphot', $data, $report_email, $postback_url, [ ], $options);
     }
@@ -999,7 +1050,8 @@ class Sailthru_Client {
      * @param array $options
      * @return array
      */
-    public function processExportListJob($list, $report_email = false, $postback_url = false, array $options = [ ]) {
+    public function processExportListJob($list, $report_email = false, $postback_url = false, array $options = [ ])
+    {
         $data = [ 'list' => $list ];
         return $this->processJob('export_list_data', $data, $report_email, $postback_url, [ ], $options);
     }
@@ -1012,7 +1064,8 @@ class Sailthru_Client {
      * @param array $options
      * @return array
      */
-    public function processBlastQueryJob($blast_id, $report_email = false, $postback_url = false, array $options = [ ]) {
+    public function processBlastQueryJob($blast_id, $report_email = false, $postback_url = false, array $options = [ ])
+    {
         return $this->processJob('blast_query', [ 'blast_id' => $blast_id ], $report_email, $postback_url, [ ], $options);
     }
 
@@ -1027,7 +1080,8 @@ class Sailthru_Client {
      * @return array
      */
     public function processUpdateJob($context, $value, array $update = [ ], $report_email = false, $postback_url = false, array $file_params = [ ],
-                                     array $options = [ ]) {
+                                     array $options = [ ])
+    {
         $data = [
             $context => $value
         ];
@@ -1046,7 +1100,8 @@ class Sailthru_Client {
      * @param array $options
      * @return array
      */
-    public function processUpdateJobFromUrl($url, array $update = [ ], $report_email = false, $postback_url = false, array $options = [ ]) {
+    public function processUpdateJobFromUrl($url, array $update = [ ], $report_email = false, $postback_url = false, array $options = [ ])
+    {
         return $this->processUpdateJob('url', $url, $update, $report_email, $postback_url, [ ], $options);
     }
 
@@ -1060,7 +1115,8 @@ class Sailthru_Client {
      * @return array
      * @internal param String $url
      */
-    public function processUpdateJobFromFile($file, array $update = [ ], $report_email = false, $postback_url = false, array $options = [ ]) {
+    public function processUpdateJobFromFile($file, array $update = [ ], $report_email = false, $postback_url = false, array $options = [ ])
+    {
         return $this->processUpdateJob('file', $file, $update, $report_email, $postback_url, [ 'file' ], $options);
     }
 
@@ -1071,7 +1127,8 @@ class Sailthru_Client {
      * @param String $report_email
      * @param String $postback_url
      */
-    public function processUpdateJobFromQuery($query, array $update = [ ], $report_email = false, $postback_url = false, array $options = [ ]) {
+    public function processUpdateJobFromQuery($query, array $update = [ ], $report_email = false, $postback_url = false, array $options = [ ])
+    {
         return $this->processUpdateJob('query', $query, $update, $report_email, $postback_url, [ ], $options);
     }
 
@@ -1083,7 +1140,8 @@ class Sailthru_Client {
      * @param bool|String $postback_url
      * @return array
      */
-    public function processUpdateJobFromEmails($emails, array $update = [ ], $report_email = false, $postback_url = false, array $options = [ ]) {
+    public function processUpdateJobFromEmails($emails, array $update = [ ], $report_email = false, $postback_url = false, array $options = [ ])
+    {
         return $this->processUpdateJob('emails', $emails, $update, $report_email, $postback_url, [ ], $options);
     }
 
@@ -1093,7 +1151,8 @@ class Sailthru_Client {
      * @param array $options
      * @return array
      */
-    public function saveUser($id, array $options = [ ]) {
+    public function saveUser($id, array $options = [ ])
+    {
         $data = $options;
         $data['id'] = $id;
         return $this->apiPost('user', $data);
@@ -1104,7 +1163,8 @@ class Sailthru_Client {
      * @param String $id
      * @return array
      */
-    public function getUserBySid($id) {
+    public function getUserBySid($id)
+    {
         return $this->apiGet('user', [ 'id' => $id ]);
     }
 
@@ -1115,7 +1175,8 @@ class Sailthru_Client {
      * @param array $fields
      * @return array
      */
-    public function getUserByKey($id, $key, array $fields = [ ]) {
+    public function getUserByKey($id, $key, array $fields = [ ])
+    {
         $data = [
             'id' => $id,
             'key' => $key,
@@ -1134,7 +1195,8 @@ class Sailthru_Client {
      * @param boolean $secure
      * @return boolean
      */
-    public function setHorizonCookie($email, $domain = null, $duration = null, $secure = false) {
+    public function setHorizonCookie($email, $domain = null, $duration = null, $secure = false)
+    {
         $data = $this->getUserByKey($email, 'email', [ 'keys' => 1 ]);
         if (!isset($data['keys']['cookie'])) {
             return false;
@@ -1145,7 +1207,7 @@ class Sailthru_Client {
         }
         if ($duration === null) {
             $expire = time() + 31556926;
-        } else if ($duration) {
+        } elseif ($duration) {
             $expire = time() + $duration;
         } else {
             $expire = 0;
@@ -1160,7 +1222,8 @@ class Sailthru_Client {
      * @return array
      * @link http://docs.sailthru.com/api/preview
      */
-    public function previewTemplateWithHTML($template, $email) {
+    public function previewTemplateWithHTML($template, $email)
+    {
         $data = [ ];
         $data['template'] = $template;
         $data['email'] = $email;
@@ -1176,7 +1239,8 @@ class Sailthru_Client {
      * @return array
      * @link http://docs.sailthru.com/api/preview
      */
-    public function previewBlastWithHTML($blast_id, $email) {
+    public function previewBlastWithHTML($blast_id, $email)
+    {
         $data = [ ];
         $data['blast_id'] = $blast_id;
         $data['email'] = $email;
@@ -1192,7 +1256,8 @@ class Sailthru_Client {
      * @return array
      * @link http://docs.sailthru.com/api/preview
      */
-    public function previewRecurringBlastWithHTML($blast_repeat_id, $email) {
+    public function previewRecurringBlastWithHTML($blast_repeat_id, $email)
+    {
         $data = [ ];
         $data['blast_repeat_id'] = $blast_repeat_id;
         $data['email'] = $email;
@@ -1207,7 +1272,8 @@ class Sailthru_Client {
      * @return array
      * @link http://docs.sailthru.com/api/preview
      */
-    public function previewContentWithHTML($content_html, $email) {
+    public function previewContentWithHTML($content_html, $email)
+    {
         $data = [ ];
         $data['content_html'] = $content_html;
         $data['email'] = $email;
@@ -1223,7 +1289,8 @@ class Sailthru_Client {
      * @return array
      * @link http://docs.sailthru.com/api/preview
      */
-    public function previewTemplateWithEmail($template, $send_email) {
+    public function previewTemplateWithEmail($template, $send_email)
+    {
         $data = [ ];
         $data['template'] = $template;
         $data['send_email'] = $send_email;
@@ -1239,7 +1306,8 @@ class Sailthru_Client {
      * @return array
      * @link http://docs.sailthru.com/api/preview
      */
-    public function previewBlastWithEmail($blast_id, $send_email) {
+    public function previewBlastWithEmail($blast_id, $send_email)
+    {
         $data = [ ];
         $data['blast_id'] = $blast_id;
         $data['send_email'] = $send_email;
@@ -1255,7 +1323,8 @@ class Sailthru_Client {
      * @return array
      * @link http://docs.sailthru.com/api/preview
      */
-    public function previewRecurringBlastWithEmail($blast_repeat_id, $send_email) {
+    public function previewRecurringBlastWithEmail($blast_repeat_id, $send_email)
+    {
         $data = [ ];
         $data['blast_repeat_id'] = $blast_repeat_id;
         $data['send_email'] = $send_email;
@@ -1271,7 +1340,8 @@ class Sailthru_Client {
      * @return array
      * @link http://docs.sailthru.com/api/preview
      */
-    public function previewContentWithEmail($content_html, $send_email) {
+    public function previewContentWithEmail($content_html, $send_email)
+    {
         $data = [ ];
         $data['content_html'] = $content_html;
         $data['send_email'] = $send_email;
@@ -1285,7 +1355,8 @@ class Sailthru_Client {
      * @return array
      * @link http://docs.sailthru.com/api/trigger
      */
-    public function getTriggers() {
+    public function getTriggers()
+    {
         $result = $this->apiGet('trigger');
         return $result;
     }
@@ -1297,7 +1368,8 @@ class Sailthru_Client {
      * @return array
      * @link http://docs.sailthru.com/api/trigger
      */
-    public function getTriggerByTemplate($template, $trigger_id = null) {
+    public function getTriggerByTemplate($template, $trigger_id = null)
+    {
         $data = [ ];
         $data['template'] = $template;
         if (!is_null($trigger_id)) {
@@ -1314,7 +1386,8 @@ class Sailthru_Client {
      * @return array
      * @link http://docs.sailthru.com/api/trigger
      */
-    public function getTriggerByEvent($event) {
+    public function getTriggerByEvent($event)
+    {
         $data = [ ];
         $data['event'] = $event;
 
@@ -1328,7 +1401,8 @@ class Sailthru_Client {
      * @return array
      * @link http://docs.sailthru.com/api/trigger
      */
-    public function getTriggerById($trigger_id) {
+    public function getTriggerById($trigger_id)
+    {
         $data = [ ];
         $data['trigger_id'] = $trigger_id;
 
@@ -1346,7 +1420,8 @@ class Sailthru_Client {
      * @return array
      * @link http://docs.sailthru.com/api/trigger
      */
-    public function postTrigger($template, $time, $time_unit, $event, $zephyr) {
+    public function postTrigger($template, $time, $time_unit, $event, $zephyr)
+    {
         $data = [ ];
         $data['template'] = $template;
         $data['time'] = $time;
@@ -1367,7 +1442,8 @@ class Sailthru_Client {
      * @return array
      * @link http://docs.sailthru.com/api/trigger
      */
-    public function postEventTrigger($event, $time, $time_unit, $zephyr) {
+    public function postEventTrigger($event, $time, $time_unit, $zephyr)
+    {
         $data = [ ];
         $data['time'] = $time;
         $data['time_unit'] = $time_unit;
@@ -1386,7 +1462,8 @@ class Sailthru_Client {
      * @return array
      * @link http://docs.sailthru.com/api/event
      */
-    public function postEvent($id, $event, $options = [ ]) {
+    public function postEvent($id, $event, $options = [ ])
+    {
         $data = $options;
         $data['id'] = $id;
         $data['event'] = $event;
@@ -1405,7 +1482,8 @@ class Sailthru_Client {
      * @return string
      * @throws Sailthru_Client_Exception
      */
-    protected function httpRequestCurl($action, array $data, $method = 'POST', $options = [ ]) {
+    protected function httpRequestCurl($action, array $data, $method = 'POST', $options = [ ])
+    {
         $url = $this->api_uri . "/" . $action;
         $ch = curl_init();
         $options = array_merge($this->options, $options);
@@ -1461,7 +1539,8 @@ class Sailthru_Client {
      * @return string
      * @throws Sailthru_Client_Exception
      */
-    protected function httpRequestWithoutCurl($action, $data, $method = 'POST', $options = [ ]) {
+    protected function httpRequestWithoutCurl($action, $data, $method = 'POST', $options = [ ])
+    {
         if ($this->fileUpload === true) {
             $this->fileUpload = false;
             throw new Sailthru_Client_Exception(
@@ -1506,10 +1585,11 @@ class Sailthru_Client {
      * @return string
      * @throws Sailthru_Client_Exception
      */
-    protected function httpRequest($action, $data, $method = 'POST', $options = [ ]) {
+    protected function httpRequest($action, $data, $method = 'POST', $options = [ ])
+    {
         $response = $this->{$this->http_request_type}($action, $data, $method, $options);
         $json = json_decode($response, true);
-        if ($json === NULL) {
+        if ($json === null) {
             throw new Sailthru_Client_Exception(
                 "Response: {$response} is not a valid JSON",
                 Sailthru_Client_Exception::CODE_RESPONSE_INVALID
@@ -1532,9 +1612,10 @@ class Sailthru_Client {
      * @param array $options
      * @return array
      */
-    public function apiPost($action, $data, array $binary_data_param = [ ], $options = [ ]) {
+    public function apiPost($action, $data, array $binary_data_param = [ ], $options = [ ])
+    {
         $binary_data = [ ];
-        if (!empty ($binary_data_param)) {
+        if (!empty($binary_data_param)) {
             foreach ($binary_data_param as $param) {
                 if (isset($data[$param]) && file_exists($data[$param])) {
                     $binary_data[$param] = version_compare(PHP_VERSION, '5.5.0') >= 0 && class_exists('CURLFile')
@@ -1556,7 +1637,8 @@ class Sailthru_Client {
      * @param array $data
      * @return array
      */
-    public function apiGet($action, $data = [ ], $method = 'GET', $options = [ ]) {
+    public function apiGet($action, $data = [ ], $method = 'GET', $options = [ ])
+    {
         return $this->httpRequest($action, $this->prepareJsonPayload($data), $method, $options);
     }
 
@@ -1567,7 +1649,8 @@ class Sailthru_Client {
      * @param array $data
      * @return array
      */
-    public function apiDelete($action, $data, $options = [ ]) {
+    public function apiDelete($action, $data, $options = [ ])
+    {
         return $this->apiGet($action, $data, 'DELETE', $options);
     }
 
@@ -1576,14 +1659,16 @@ class Sailthru_Client {
      * returns associative array as per http://us.php.net/curl_getinfo
      * @return array or null
      */
-    public function getLastResponseInfo() {
+    public function getLastResponseInfo()
+    {
         return $this->lastResponseInfo;
     }
 
     /**
      * Prepare JSON payload
      */
-    protected function prepareJsonPayload(array $data, array $binary_data = [ ]) {
+    protected function prepareJsonPayload(array $data, array $binary_data = [ ])
+    {
         $payload = [
             'api_key' => $this->api_key,
             'format' => 'json',
@@ -1602,7 +1687,8 @@ class Sailthru_Client {
      * @param string $method GET, POST or DELETE
      * @return array or null
      */
-    public function getLastRateLimitInfo($action, $method) {
+    public function getLastRateLimitInfo($action, $method)
+    {
         $rate_limit_info = $this->lastRateLimitInfo;
         $method = strtoupper($method);
         return (isset($rate_limit_info[$action]) && isset($rate_limit_info[$action][$method])) ?
@@ -1614,7 +1700,8 @@ class Sailthru_Client {
      * @param string $headers
      * @return array|null
      */
-    private function parseRateLimitHeaders($headers) {
+    private function parseRateLimitHeaders($headers)
+    {
         if ($headers === null) {
             return null;
         }
@@ -1622,13 +1709,13 @@ class Sailthru_Client {
         $header_lines = explode("\n", $headers);
         $rate_limit_headers = [ ];
         foreach ($header_lines as $hl) {
-            if (strpos($hl, "X-Rate-Limit-Limit") !== FALSE && !isset($rate_limit_headers['limit'])) {
+            if (strpos($hl, "X-Rate-Limit-Limit") !== false && !isset($rate_limit_headers['limit'])) {
                 list($header_name, $header_value) = explode(":", $hl, 2);
                 $rate_limit_headers['limit'] = intval($header_value);
-            } else if (strpos($hl, "X-Rate-Limit-Remaining") !== FALSE && !isset($rate_limit_headers['remaining'])) {
+            } elseif (strpos($hl, "X-Rate-Limit-Remaining") !== false && !isset($rate_limit_headers['remaining'])) {
                 list($header_name, $header_value) = explode(":", $hl, 2);
                 $rate_limit_headers['remaining'] = intval($header_value);
-            } else if (strpos($hl, "X-Rate-Limit-Reset") !== FALSE && !isset($rate_limit_headers['reset'])) {
+            } elseif (strpos($hl, "X-Rate-Limit-Reset") !== false && !isset($rate_limit_headers['reset'])) {
                 list($header_name, $header_value) = explode(":", $hl, 2);
                 $rate_limit_headers['reset'] = intval($header_value);
             }
