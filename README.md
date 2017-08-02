@@ -4,7 +4,7 @@
 
 A simple client library to remotely access the `Sailthru REST API`. By default, it will make requests in `JSON` format.
 
-### Documentation
+## Documentation
 
 * [PHP5 Client Documentation](https://getstarted.sailthru.com/developers/api-client/php5/)
 * [API Basics](https://getstarted.sailthru.com/developers/api-basics/introduction/)
@@ -12,7 +12,7 @@ A simple client library to remotely access the `Sailthru REST API`. By default, 
 * [Rate Limiting for Requests](https://getstarted.sailthru.com/new-for-developers-overview/api/api-technical-details/#Rate_Limiting) 
 
 
-###  Installation
+##  Installation
 
 You can clone via GitHub or install via composer.
 ```shell
@@ -23,7 +23,7 @@ or
 composer require sailthru/sailthru-php5-client
 ```
 
-## Examples 
+### Usage
 
 ### Default initialization
 For basic usage, you can initialize with just API Key and Secret
