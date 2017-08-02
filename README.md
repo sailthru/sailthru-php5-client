@@ -9,8 +9,12 @@ A simple client library to remotely access the `Sailthru REST API`. By default, 
 
 ### Documentation
 
-[REST API Documentation](https://getstarted.sailthru.com/developers/api-basics/introduction/)
-[PHP5 Client Documentation](https://getstarted.sailthru.com/developers/api-client/php5/)
+[API Documentation][1]
+[PHP5 Client Documentation][2]
+
+Deeper looks:
+[API Responses and Error Codes][3]
+[Rate Limiting][4]
 
 ###  Installation
 
@@ -28,10 +32,10 @@ For basic usage, you can initialize with just API Key and Secret
     $client = new Sailthru_Client($api_key, $api_secret);
 ```
 
-### Exception-handling
+### Exception Handling
 As of 2.0.0, the client library will throw a `Sailthru_Client_Exception` on API and IO errors, which should be properly handled. 
 
-Error codes 1000, 1001, 10002 are client and IO-related, while 0-99 and XX are API errors. [Learn more about our API Errors](https://getstarted.sailthru.com/developers/api-basics/responses/).
+Error codes 1000, 1001, 10002 are IO-related, while 0-99 and XX are [API errors][2].
 ```php
 try { 
     $client->apiPost('user', [..]);
@@ -50,7 +54,7 @@ $client = new Sailthru_Client($this->api_key, $this->secret, $this->api_url, arr
 
 ### API Rate Limiting
 
-Here is an example how to check rate limiting and throttle API calls based on that. For more information about Rate Limiting, see [Sailthru Documentation](https://getstarted.sailthru.com/new-for-developers-overview/api/api-technical-details/#Rate_Limiting)
+Below shows an example of how to check for Sailthru API rate limiting and throttle requests based on that information. 
 
 ```php
 // get last rate limit info
@@ -83,3 +87,7 @@ vendor/bin/phpunit
 ```
 
 
+[1](https://getstarted.sailthru.com/developers/api-basics/introduction/)
+[2](https://getstarted.sailthru.com/developers/api-client/php5/)
+[3](https://getstarted.sailthru.com/developers/api-basics/responses/)
+[4](https://getstarted.sailthru.com/new-for-developers-overview/api/api-technical-details/#Rate_Limiting)
