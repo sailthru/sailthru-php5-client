@@ -563,12 +563,13 @@ class Sailthru_Client {
      * @link http://docs.sailthru.com/api/list
      * @link http://docs.sailthru.com/api/query
      */
-    public function saveList($list, $type = null, $primary = null, $query = [ ]) {
+    public function saveList($list, $type = null, $primary = null, $query = [ ], $vars = []) {
         $data = [
             'list' => $list,
             'type' => $type,
             'primary' => $primary ? 1 : 0,
             'query' => $query,
+            'vars' => $vars,
         ];
         return $this->apiPost('list', $data);
     }
