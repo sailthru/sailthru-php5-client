@@ -23,7 +23,7 @@ or
 composer require sailthru/sailthru-php5-client
 ```
 
-### Usage
+## Usage
 
 ### Default initialization
 For basic usage, you can initialize with just API Key and Secret
