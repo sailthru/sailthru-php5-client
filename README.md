@@ -1,20 +1,15 @@
 # sailthru-php5-client
+A simple client library to remotely access the `Sailthru REST API`. By default, it will make requests in `JSON` format.
 
 [![Build Status](https://travis-ci.org/sailthru/sailthru-php5-client.svg?branch=master)](https://travis-ci.org/sailthru/sailthru-php5-client)
 [![Coverage Status](https://coveralls.io/repos/github/sailthru/sailthru-php5-client/badge.svg?branch=master)](https://coveralls.io/github/sailthru/sailthru-php5-client?branch=master)
 
-
-## About
-A simple client library to remotely access the `Sailthru REST API`. By default, it will make requests in `JSON` format.
-
 ### Documentation
 
-[API Documentation][1]
-[PHP5 Client Documentation][2]
-
-Deeper looks:
-[API Responses and Error Codes][3]
-[Rate Limiting][4]
+[PHP5 Client Documentation](https://getstarted.sailthru.com/developers/api-client/php5/)
+[API Basics](https://getstarted.sailthru.com/developers/api-basics/introduction/)
+[API Responses and Error Codes](https://getstarted.sailthru.com/developers/api-basics/responses/)
+[Rate Limiting for Requests](https://getstarted.sailthru.com/new-for-developers-overview/api/api-technical-details/#Rate_Limiting)
 
 ###  Installation
 
@@ -35,7 +30,7 @@ For basic usage, you can initialize with just API Key and Secret
 ### Exception Handling
 As of 2.0.0, the client library will throw a `Sailthru_Client_Exception` on API and IO errors, which should be properly handled. 
 
-Error codes 1000, 1001, 10002 are IO-related, while 0-99 and XX are [API errors][2].
+Error codes 1000, 1001, 10002 are IO-related, while 0-99 and XX are API errors.
 ```php
 try { 
     $client->apiPost('user', [..]);
@@ -85,9 +80,3 @@ cd sailthru-php5-client
 composer install
 vendor/bin/phpunit
 ```
-
-
-[1](https://getstarted.sailthru.com/developers/api-basics/introduction/)
-[2](https://getstarted.sailthru.com/developers/api-client/php5/)
-[3](https://getstarted.sailthru.com/developers/api-basics/responses/)
-[4](https://getstarted.sailthru.com/new-for-developers-overview/api/api-technical-details/#Rate_Limiting)
