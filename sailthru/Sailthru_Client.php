@@ -1516,7 +1516,7 @@ class Sailthru_Client {
                 Sailthru_Client_Exception::CODE_RESPONSE_INVALID
             );
         }
-        if (isset($json['error'])) {
+        if (!empty($json['error'])) {
             throw new Sailthru_Client_Exception($json['errormsg'], $json['error']);
         }
 
