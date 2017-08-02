@@ -1,8 +1,8 @@
 # sailthru-php5-client
-A simple client library to remotely access the `Sailthru REST API`. By default, it will make requests in `JSON` format.
-
 [![Build Status](https://travis-ci.org/sailthru/sailthru-php5-client.svg?branch=master)](https://travis-ci.org/sailthru/sailthru-php5-client)
 [![Coverage Status](https://coveralls.io/repos/github/sailthru/sailthru-php5-client/badge.svg?branch=master)](https://coveralls.io/github/sailthru/sailthru-php5-client?branch=master)
+
+A simple client library to remotely access the `Sailthru REST API`. By default, it will make requests in `JSON` format.
 
 ### Documentation
 
@@ -16,6 +16,9 @@ A simple client library to remotely access the `Sailthru REST API`. By default, 
 You can clone via GitHub or install via composer.
 ```shell
 git clone git@github.com:sailthru/sailthru-php5-client.git
+```
+or
+```shell
 composer require sailthru/sailthru-php5-client
 ```
 
