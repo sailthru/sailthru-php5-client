@@ -6,10 +6,11 @@ A simple client library to remotely access the `Sailthru REST API`. By default, 
 
 ### Documentation
 
-[PHP5 Client Documentation](https://getstarted.sailthru.com/developers/api-client/php5/)
-[API Basics](https://getstarted.sailthru.com/developers/api-basics/introduction/)
-[API Responses and Error Codes](https://getstarted.sailthru.com/developers/api-basics/responses/)
-[Rate Limiting for Requests](https://getstarted.sailthru.com/new-for-developers-overview/api/api-technical-details/#Rate_Limiting)
+* [PHP5 Client Documentation](https://getstarted.sailthru.com/developers/api-client/php5/)
+* [API Basics](https://getstarted.sailthru.com/developers/api-basics/introduction/)
+* [API Responses and Error Codes](https://getstarted.sailthru.com/developers/api-basics/responses/)
+* [Rate Limiting for Requests](https://getstarted.sailthru.com/new-for-developers-overview/api/api-technical-details/#Rate_Limiting) 
+
 
 ###  Installation
 
