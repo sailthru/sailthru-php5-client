@@ -1,25 +1,28 @@
 dist: trusty
 language: php
-php:
-  - 5.4
-  - 5.5
-  - 5.6
-  - 7.0
-  - 7.1
-  - hhvm
 
-env: COVERAGE=0
+env:
+  global:
+    - TASK_COVERAGE=0
+    - TASK_CODE_STYLE=0
 
 matrix:
-  include:
-    - php: 5.6
-      env: COVERAGE=1
+    include:
+        - php: 7.0
+        - php: 7.1
+        - php: 5.4
+        - php: 5.5
+        - php: 5.6
+          env: TASK_COVERAGE=1 TASK_CODE_STYLE=1
+        - php: hhvm
 
 before_script:
-  - if [[ "$COVERAGE" -eq 0 ]]; then composer install; else composer require satooshi/php-coveralls --dev; fi
+  - if [ $TASK_COVERAGE == 1 ]; then composer install; else composer require satooshi/php-coveralls --dev; fi
+  - if [ $TASK_CODE_STYLE == 1 ]; then composer require friendsofphp/php-cs-fixer ^2.0 --no-interaction --dev; fi
 
 script:
-  - if [[ "$COVERAGE" -eq 0 ]]; then vendor/bin/phpunit; else mkdir -p build/logs; vendor/bin/phpunit --coverage-clover=build/logs/clover.xml; fi
+  - if [ $TASK_COVERAGE == 0 ]; then vendor/bin/phpunit; else mkdir -p build/logs; vendor/bin/phpunit --coverage-clover=build/logs/clover.xml; fi
+  - if [ $TASK_CODE_STYLE == 1 ]; then vendor/bin/php-cs-fixer fix --config=.php_cs.dist -v --dry-run --using-cache=no --path-mode=intersection `git diff --name-only --diff-filter=ACMRTUXB $TRAVIS_COMMIT_RANGE`; fi
 
 after_success:
-  - if [[ "$COVERAGE" -gt 0 ]]; then vendor/bin/coveralls; fi
+  - if [ $TASK_COVERAGE == 1 ]; then vendor/bin/coveralls; fi

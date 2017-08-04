@@ -1,4 +1,4 @@
-<?
+<?php
 require('_autoload.php');
 
 $api_key = "SAILTHRU-API-KEY";
@@ -41,7 +41,6 @@ try {
 
     // get last rate limit info
     $rate_limit_info = $client->getLastRateLimitInfo("user", "GET");
-
 } catch (Sail_Client_Exception $e) {
     // deal with exception
 }
