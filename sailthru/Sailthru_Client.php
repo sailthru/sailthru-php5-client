@@ -592,13 +592,14 @@ class Sailthru_Client
      * @link http://docs.sailthru.com/api/list
      * @link http://docs.sailthru.com/api/query
      */
-    public function saveList($list, $type = null, $primary = null, $query = [ ])
+    public function saveList($list, $type = null, $primary = null, $query = [ ], $vars = []) 
     {
         $data = [
             'list' => $list,
             'type' => $type,
             'primary' => $primary ? 1 : 0,
             'query' => $query,
+            'vars' => $vars,
         ];
         return $this->apiPost('list', $data);
     }
@@ -1595,7 +1596,7 @@ class Sailthru_Client
                 Sailthru_Client_Exception::CODE_RESPONSE_INVALID
             );
         }
-        if (isset($json['error'])) {
+        if (!empty($json['error'])) {
             throw new Sailthru_Client_Exception($json['errormsg'], $json['error']);
         }
 
