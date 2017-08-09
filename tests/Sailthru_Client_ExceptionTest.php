@@ -9,6 +9,6 @@ class Sailthru_Client_ExceptionTest extends PHPUnit_Framework_TestCase {
         $api_secret = "invalid_secret";
         $api_url = "https://api.invalid_url.com";
         $sailthruClient = new Sailthru_Client($api_key, $api_secret, $api_url);
-        $sailthruClient->getEmail("praj@sailthru.com");
+        $sailthruClient->getUser("praj@sailthru.com");
     }
 }
