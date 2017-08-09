@@ -179,71 +179,7 @@ class Sailthru_Client {
     public function cancelSend($send_id) {
         return $this->apiDelete('send', [ 'send_id' => $send_id ]);
     }
-
-    /**
-     * Return information about an email address, including replacement vars and lists.
-     *
-     * @param string $email
-     * @param array $options
-     * @link http://docs.sailthru.com/api/email
-     * @return array API result
-     */
-    public function getEmail($email, array $options = [ ]) {
-        return $this->apiGet('email', array_merge([ 'email' => $email ], $options));
-    }
-
-    /**
-     * Set replacement vars and/or list subscriptions for an email address.
-     *
-     * $lists should be an assoc array mapping list name => 1 for subscribed, 0 for unsubscribed
-     *
-     * @param string $email
-     * @param array $vars
-     * @param array $lists
-     * @param array $templates
-     * @param integer $verified 1 or 0
-     * @param string $optout
-     * @param string $send
-     * @param array $send_vars
-     * @link http://docs.sailthru.com/api/email
-     * @return array API result
-     */
-    public function setEmail($email, $vars = [ ], $lists = [ ], $templates = [ ], $verified = 0, $optout = null, $send = null, $send_vars = [ ]) {
-        $data = [ 'email' => $email ];
-        if ($vars) {
-            $data['vars'] = $vars;
-        }
-        if ($lists) {
-            $data['lists'] = $lists;
-        }
-        if ($templates) {
-            $data['templates'] = $templates;
-        }
-        $data['verified'] = (int) $verified;
-        if ($optout !== null) {
-            $data['optout'] = $optout;
-        }
-        if ($send !== null) {
-            $data['send'] = $send;
-        }
-        if (!empty($send_vars)) {
-            $data['send_vars'] = $send_vars;
-        }
-
-        return $this->apiPost('email', $data);
-    }
-
-    /**
-     * Update / add email address
-     *
-     * @link http://docs.sailthru.com/api/email
-     * @return array API result
-     */
-    public function setEmail2($email, array $options = [ ]) {
-        $options['email'] = $email;
-        return $this->apiPost('email', $options);
-    }
-
+    
     /**
      * Schedule a mass mail blast
      *
