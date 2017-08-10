@@ -1443,7 +1443,7 @@ class Sailthru_Client {
         if (false === $response) {
             // There's a curl error! throw an exception which gives us some details
             throw new Sailthru_Client_Exception(
-                sprintf('Error with curl transport from url %s: %s', $url, $errorMessage),
+                sprintf('Error with curl transport: %s', $errorMessage),
                 Sailthru_Client_Exception::CODE_TRANSPORT_ERROR
             );
         }

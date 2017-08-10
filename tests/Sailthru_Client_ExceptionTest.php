@@ -2,7 +2,7 @@
 
 class Sailthru_Client_ExceptionTest extends PHPUnit_Framework_TestCase {
     public function testSailthru_Client_Exception_IsThrownWithCurlError() {
-        $expectedExceptionMessage = 'Error with curl transport from url';
+        $expectedExceptionMessage = 'Error with curl transport';
 
         $this->setExpectedException(
             'Sailthru_Client_Exception',
