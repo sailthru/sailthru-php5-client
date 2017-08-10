@@ -5,7 +5,7 @@ class Sailthru_Client_ExceptionTest extends PHPUnit_Framework_TestCase {
         $expectedExceptionMessage = 'Error with curl transport from url';
 
         $this->setExpectedException(
-            Sailthru_Client_Exception::class,
+            'Sailthru_Client_Exception',
             $expectedExceptionMessage,
             1003
         );
@@ -24,7 +24,7 @@ class Sailthru_Client_ExceptionTest extends PHPUnit_Framework_TestCase {
         $expectedExceptionMessage = 'Bad response received from';
 
         $this->setExpectedException(
-            Sailthru_Client_Exception::class,
+            'Sailthru_Client_Exception',
             $expectedExceptionMessage,
             1002
         );
