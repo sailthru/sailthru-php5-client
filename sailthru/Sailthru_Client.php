@@ -1370,16 +1370,8 @@ class Sailthru_Client {
         if (false === $response) {
             // There's a curl error! throw an exception which gives us some details
             throw new Sailthru_Client_Exception(
-                "Curl error: $errorMessage",
+                "Curl error: {$errorMessage}",
                 Sailthru_Client_Exception::CODE_HTTP_ERROR
-            );
-        }
-
-        if (!$response) {
-            // We have an empty (well, falsey) response for the server, but not a curl error
-            throw new Sailthru_Client_Exception(
-                "Bad response received from $url",
-                Sailthru_Client_Exception::CODE_RESPONSE_EMPTY
             );
         }
 
@@ -1423,15 +1415,15 @@ class Sailthru_Client {
         $fp = @fopen($url, 'rb', false, $ctx);
         if (!$fp) {
             throw new Sailthru_Client_Exception(
-                "Unable to open stream: $url",
-                Sailthru_Client_Exception::CODE_GENERAL
+                "Stream error: unable to open stream: {$url}",
+                Sailthru_Client_Exception::CODE_HTTP_ERROR
             );
         }
         $response = @stream_get_contents($fp);
         if ($response === false) {
             throw new Sailthru_Client_Exception(
-                "No response received from stream: $url",
-                Sailthru_Client_Exception::CODE_RESPONSE_EMPTY
+                "Stream error: Failed to read from stream: {$url}",
+                Sailthru_Client_Exception::CODE_HTTP_ERROR
             );
         }
         return $response;
@@ -1444,17 +1436,17 @@ class Sailthru_Client {
      * @param array $data
      * @param string $method
      * @param array $options
-     * @return string
+     * @return array
      * @throws Sailthru_Client_Exception
      */
     protected function httpRequest($action, $data, $method = 'POST', $options = [ ]) {
         $response = $this->{$this->http_request_type}($action, $data, $method, $options);
         $json = json_decode($response, true);
         if ($json === NULL) {
-            throw new Sailthru_Client_Exception(
-                "Response: {$response} is not a valid JSON",
-                Sailthru_Client_Exception::CODE_RESPONSE_INVALID
-            );
+            $exception_msg = empty($response)
+                ? "Empty response"
+                : "Response: {$response} is not a valid JSON";
+            throw new Sailthru_Client_Exception($exception_msg, Sailthru_Client_Exception::CODE_RESPONSE_INVALID);
         }
         if (!empty($json['error'])) {
             throw new Sailthru_Client_Exception($json['errormsg'], $json['error']);
