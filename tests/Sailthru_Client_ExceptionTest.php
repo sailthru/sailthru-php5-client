@@ -15,7 +15,7 @@ class Sailthru_Client_ExceptionTest extends PHPUnit_Framework_TestCase {
         $api_url = "http://foo.invalid"; // .invalid is reserved as an invalid TLD, see https://en.wikipedia.org/wiki/.invalid
 
         $sailthruClient = new Sailthru_Client($api_key, $api_secret, $api_url);
-        $sailthruClient->getEmail("praj@sailthru.com");
+        $sailthruClient->getUser("praj@sailthru.com");
     }
 
     public function testSailthru_Client_Exception_IsThrownWithEmptyResponse() {

@@ -181,70 +181,6 @@ class Sailthru_Client {
     }
 
     /**
-     * Return information about an email address, including replacement vars and lists.
-     *
-     * @param string $email
-     * @param array $options
-     * @link http://docs.sailthru.com/api/email
-     * @return array API result
-     */
-    public function getEmail($email, array $options = [ ]) {
-        return $this->apiGet('email', array_merge([ 'email' => $email ], $options));
-    }
-
-    /**
-     * Set replacement vars and/or list subscriptions for an email address.
-     *
-     * $lists should be an assoc array mapping list name => 1 for subscribed, 0 for unsubscribed
-     *
-     * @param string $email
-     * @param array $vars
-     * @param array $lists
-     * @param array $templates
-     * @param integer $verified 1 or 0
-     * @param string $optout
-     * @param string $send
-     * @param array $send_vars
-     * @link http://docs.sailthru.com/api/email
-     * @return array API result
-     */
-    public function setEmail($email, $vars = [ ], $lists = [ ], $templates = [ ], $verified = 0, $optout = null, $send = null, $send_vars = [ ]) {
-        $data = [ 'email' => $email ];
-        if ($vars) {
-            $data['vars'] = $vars;
-        }
-        if ($lists) {
-            $data['lists'] = $lists;
-        }
-        if ($templates) {
-            $data['templates'] = $templates;
-        }
-        $data['verified'] = (int) $verified;
-        if ($optout !== null) {
-            $data['optout'] = $optout;
-        }
-        if ($send !== null) {
-            $data['send'] = $send;
-        }
-        if (!empty($send_vars)) {
-            $data['send_vars'] = $send_vars;
-        }
-
-        return $this->apiPost('email', $data);
-    }
-
-    /**
-     * Update / add email address
-     *
-     * @link http://docs.sailthru.com/api/email
-     * @return array API result
-     */
-    public function setEmail2($email, array $options = [ ]) {
-        $options['email'] = $email;
-        return $this->apiPost('email', $options);
-    }
-
-    /**
      * Schedule a mass mail blast
      *
      * @param string $name the name to give to this new blast
@@ -1089,24 +1025,18 @@ class Sailthru_Client {
     }
 
     /**
-     * Save existing user
-     * @param String $id
+     * Get user by email or Sailthru ID
+     * @param string $id | email or sailthru ID
+     * @param array $fields
      * @param array $options
      * @return array
      */
-    public function saveUser($id, array $options = [ ]) {
-        $data = $options;
-        $data['id'] = $id;
-        return $this->apiPost('user', $data);
-    }
-
-    /**
-     * Get user by Sailthru ID
-     * @param String $id
-     * @return array
-     */
-    public function getUserBySid($id) {
-        return $this->apiGet('user', [ 'id' => $id ]);
+    public function getUser($id, $fields = [ ], $options = [ ]) {
+        $options["id"] = $id;
+        if (!empty($fields)) {
+            $options['fields'] = $fields;
+        }
+        return $this->apiGet("user", $options);
     }
 
     /**
@@ -1114,17 +1044,14 @@ class Sailthru_Client {
      * @param String $id
      * @param String $key
      * @param array $fields
+     * @param array options
      * @return array
      */
-    public function getUserByKey($id, $key, array $fields = [ ]) {
-        $data = [
-            'id' => $id,
-            'key' => $key,
-            'fields' => $fields
-        ];
-        return $this->apiGet('user', $data);
+    public function getUserByKey($id, $key, $fields = [ ], $options = [ ]) {
+        $options["key"] = $key;
+        return $this->getUser($id, $fields, $options);
     }
-
+    
     /**
      *
      * Set Horizon cookie
