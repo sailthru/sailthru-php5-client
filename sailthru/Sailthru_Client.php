@@ -471,11 +471,20 @@ class Sailthru_Client {
      * Get information about a list.
      *
      * @param string $list
+     * @param bool $get_vars
      * @return array
      * @link http://docs.sailthru.com/api/list
      */
-    public function getList($list) {
-        return $this->apiGet('list', [ 'list' => $list ]);
+    public function getList($list, $get_vars = false) {
+        $data = [
+            'list' => $list
+        ];
+        if ($get_vars) {
+            $data['fields'] = [
+                'vars' => 1
+            ];
+        }
+        return $this->apiGet('list', $data);
     }
 
     /**
@@ -495,18 +504,27 @@ class Sailthru_Client {
      * @param string $type
      * @param bool $primary
      * @param array $query
+     * @param array $vars
      * @return array
      * @link http://docs.sailthru.com/api/list
      * @link http://docs.sailthru.com/api/query
      */
     public function saveList($list, $type = null, $primary = null, $query = [ ], $vars = []) {
         $data = [
-            'list' => $list,
-            'type' => $type,
-            'primary' => $primary ? 1 : 0,
-            'query' => $query,
-            'vars' => $vars,
+            'list' => $list
         ];
+        if ($type) {
+            $data['type'] = $type;
+        }
+        if ($primary === null) {
+            $data['primary'] = $primary ? 1 : 0;
+        }
+        if ($query) {
+            $data['query'] = $query;
+        }
+        if ($vars) {
+            $data['vars'] = $vars;
+        }
         return $this->apiPost('list', $data);
     }
 
