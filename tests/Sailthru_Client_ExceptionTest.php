@@ -24,9 +24,10 @@ class Sailthru_Client_ExceptionTest extends PHPUnit_Framework_TestCase {
         $mockHttpType->setAccessible(true);
         $mockHttpType->setValue($sailthruClient, "httpRequestWithoutCurl");
 
+        $expectedExceptionMessage = 'Stream error: ';
         $this->setExpectedException(
             'Sailthru_Client_Exception',
-            'Stream error: ',
+            $expectedExceptionMessage,
             1002
         );
         $sailthruClient->getUser("praj@sailthru.com");
@@ -37,7 +38,6 @@ class Sailthru_Client_ExceptionTest extends PHPUnit_Framework_TestCase {
         $this->markTestSkipped('This cannot be tested without either mocking curl or having a public server which returns us an empty response.');
 
         $expectedExceptionMessage = 'Bad response received from';
-
         $this->setExpectedException(
             'Sailthru_Client_Exception',
             $expectedExceptionMessage,
