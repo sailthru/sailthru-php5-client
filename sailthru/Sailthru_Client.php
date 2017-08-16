@@ -509,19 +509,14 @@ class Sailthru_Client {
      * @link http://docs.sailthru.com/api/list
      * @link http://docs.sailthru.com/api/query
      */
-    public function saveList($list, $type = null, $primary = null, $query = [ ], $vars = []) {
+    public function saveList($list, $type = null, $primary = null, $query = [ ], $vars = [ ]) {
         $data = [
-            'list' => $list
+            'list' => $list,
+            'type' => $type,
+            'primary' => $primary ? 1 : 0,
+            'query' => $query,
+            'vars' => $vars
         ];
-        if ($type) {
-            $data['type'] = $type;
-        }
-        if ($primary === null) {
-            $data['primary'] = $primary ? 1 : 0;
-        }
-        if ($query) {
-            $data['query'] = $query;
-        }
         if ($vars) {
             $data['vars'] = $vars;
         }
