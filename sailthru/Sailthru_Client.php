@@ -517,9 +517,6 @@ class Sailthru_Client {
             'query' => $query,
             'vars' => $vars
         ];
-        if ($vars) {
-            $data['vars'] = $vars;
-        }
         return $this->apiPost('list', $data);
     }
 
