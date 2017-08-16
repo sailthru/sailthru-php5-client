@@ -477,13 +477,9 @@ class Sailthru_Client {
      */
     public function getList($list, $get_vars = false) {
         $data = [
-            'list' => $list
+            'list' => $list,
+            'fields' => [ 'vars' => $get_vars ? 1 : 0 ],
         ];
-        if ($get_vars) {
-            $data['fields'] = [
-                'vars' => 1
-            ];
-        }
         return $this->apiGet('list', $data);
     }
 
@@ -515,8 +511,10 @@ class Sailthru_Client {
             'type' => $type,
             'primary' => $primary ? 1 : 0,
             'query' => $query,
-            'vars' => $vars
         ];
+        if ($vars) {
+            $data['vars'] = $vars;
+        }
         return $this->apiPost('list', $data);
     }
 
