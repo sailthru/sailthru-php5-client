@@ -181,70 +181,6 @@ class Sailthru_Client {
     }
 
     /**
-     * Return information about an email address, including replacement vars and lists.
-     *
-     * @param string $email
-     * @param array $options
-     * @link http://docs.sailthru.com/api/email
-     * @return array API result
-     */
-    public function getEmail($email, array $options = [ ]) {
-        return $this->apiGet('email', array_merge([ 'email' => $email ], $options));
-    }
-
-    /**
-     * Set replacement vars and/or list subscriptions for an email address.
-     *
-     * $lists should be an assoc array mapping list name => 1 for subscribed, 0 for unsubscribed
-     *
-     * @param string $email
-     * @param array $vars
-     * @param array $lists
-     * @param array $templates
-     * @param integer $verified 1 or 0
-     * @param string $optout
-     * @param string $send
-     * @param array $send_vars
-     * @link http://docs.sailthru.com/api/email
-     * @return array API result
-     */
-    public function setEmail($email, $vars = [ ], $lists = [ ], $templates = [ ], $verified = 0, $optout = null, $send = null, $send_vars = [ ]) {
-        $data = [ 'email' => $email ];
-        if ($vars) {
-            $data['vars'] = $vars;
-        }
-        if ($lists) {
-            $data['lists'] = $lists;
-        }
-        if ($templates) {
-            $data['templates'] = $templates;
-        }
-        $data['verified'] = (int) $verified;
-        if ($optout !== null) {
-            $data['optout'] = $optout;
-        }
-        if ($send !== null) {
-            $data['send'] = $send;
-        }
-        if (!empty($send_vars)) {
-            $data['send_vars'] = $send_vars;
-        }
-
-        return $this->apiPost('email', $data);
-    }
-
-    /**
-     * Update / add email address
-     *
-     * @link http://docs.sailthru.com/api/email
-     * @return array API result
-     */
-    public function setEmail2($email, array $options = [ ]) {
-        $options['email'] = $email;
-        return $this->apiPost('email', $options);
-    }
-
-    /**
      * Schedule a mass mail blast
      *
      * @param string $name the name to give to this new blast
@@ -535,11 +471,16 @@ class Sailthru_Client {
      * Get information about a list.
      *
      * @param string $list
+     * @param bool $get_vars
      * @return array
      * @link http://docs.sailthru.com/api/list
      */
-    public function getList($list) {
-        return $this->apiGet('list', [ 'list' => $list ]);
+    public function getList($list, $get_vars = false) {
+        $data = [
+            'list' => $list,
+            'fields' => [ 'vars' => $get_vars ? 1 : 0 ],
+        ];
+        return $this->apiGet('list', $data);
     }
 
     /**
@@ -559,18 +500,21 @@ class Sailthru_Client {
      * @param string $type
      * @param bool $primary
      * @param array $query
+     * @param array $vars
      * @return array
      * @link http://docs.sailthru.com/api/list
      * @link http://docs.sailthru.com/api/query
      */
-    public function saveList($list, $type = null, $primary = null, $query = [ ], $vars = []) {
+    public function saveList($list, $type = null, $primary = null, $query = [ ], $vars = [ ]) {
         $data = [
             'list' => $list,
             'type' => $type,
             'primary' => $primary ? 1 : 0,
             'query' => $query,
-            'vars' => $vars,
         ];
+        if ($vars) {
+            $data['vars'] = $vars;
+        }
         return $this->apiPost('list', $data);
     }
 
@@ -1089,24 +1033,18 @@ class Sailthru_Client {
     }
 
     /**
-     * Save existing user
-     * @param String $id
+     * Get user by email or Sailthru ID
+     * @param string $id | email or sailthru ID
+     * @param array $fields
      * @param array $options
      * @return array
      */
-    public function saveUser($id, array $options = [ ]) {
-        $data = $options;
-        $data['id'] = $id;
-        return $this->apiPost('user', $data);
-    }
-
-    /**
-     * Get user by Sailthru ID
-     * @param String $id
-     * @return array
-     */
-    public function getUserBySid($id) {
-        return $this->apiGet('user', [ 'id' => $id ]);
+    public function getUser($id, $fields = [ ], $options = [ ]) {
+        $options["id"] = $id;
+        if (!empty($fields)) {
+            $options['fields'] = $fields;
+        }
+        return $this->apiGet("user", $options);
     }
 
     /**
@@ -1114,17 +1052,14 @@ class Sailthru_Client {
      * @param String $id
      * @param String $key
      * @param array $fields
+     * @param array options
      * @return array
      */
-    public function getUserByKey($id, $key, array $fields = [ ]) {
-        $data = [
-            'id' => $id,
-            'key' => $key,
-            'fields' => $fields
-        ];
-        return $this->apiGet('user', $data);
+    public function getUserByKey($id, $key, $fields = [ ], $options = [ ]) {
+        $options["key"] = $key;
+        return $this->getUser($id, $fields, $options);
     }
-
+    
     /**
      *
      * Set Horizon cookie
@@ -1434,12 +1369,17 @@ class Sailthru_Client {
         curl_setopt($ch, CURLOPT_HTTPHEADER, $this->httpHeaders);
         $response = curl_exec($ch);
         $this->lastResponseInfo = curl_getinfo($ch);
+
+        // Get the curl error message if there is one
+        $errorMessage = false === $response ? curl_error($ch) : null;
+
         curl_close($ch);
 
-        if (!$response) {
+        if (false === $response) {
+            // There's a curl error! throw an exception which gives us some details
             throw new Sailthru_Client_Exception(
-                "Bad response received from $url",
-                Sailthru_Client_Exception::CODE_RESPONSE_EMPTY
+                "Curl error: {$errorMessage}",
+                Sailthru_Client_Exception::CODE_HTTP_ERROR
             );
         }
 
@@ -1483,15 +1423,15 @@ class Sailthru_Client {
         $fp = @fopen($url, 'rb', false, $ctx);
         if (!$fp) {
             throw new Sailthru_Client_Exception(
-                "Unable to open stream: $url",
-                Sailthru_Client_Exception::CODE_GENERAL
+                "Stream error: unable to open stream: {$url}",
+                Sailthru_Client_Exception::CODE_HTTP_ERROR
             );
         }
         $response = @stream_get_contents($fp);
         if ($response === false) {
             throw new Sailthru_Client_Exception(
-                "No response received from stream: $url",
-                Sailthru_Client_Exception::CODE_RESPONSE_EMPTY
+                "Stream error: Failed to read from stream: {$url}",
+                Sailthru_Client_Exception::CODE_HTTP_ERROR
             );
         }
         return $response;
@@ -1504,17 +1444,17 @@ class Sailthru_Client {
      * @param array $data
      * @param string $method
      * @param array $options
-     * @return string
+     * @return array
      * @throws Sailthru_Client_Exception
      */
     protected function httpRequest($action, $data, $method = 'POST', $options = [ ]) {
         $response = $this->{$this->http_request_type}($action, $data, $method, $options);
         $json = json_decode($response, true);
         if ($json === NULL) {
-            throw new Sailthru_Client_Exception(
-                "Response: {$response} is not a valid JSON",
-                Sailthru_Client_Exception::CODE_RESPONSE_INVALID
-            );
+            $exception_msg = empty($response)
+                ? "Empty response"
+                : "Response: {$response} is not a valid JSON";
+            throw new Sailthru_Client_Exception($exception_msg, Sailthru_Client_Exception::CODE_RESPONSE_INVALID);
         }
         if (!empty($json['error'])) {
             throw new Sailthru_Client_Exception($json['errormsg'], $json['error']);
