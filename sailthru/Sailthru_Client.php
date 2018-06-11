@@ -1434,6 +1434,10 @@ class Sailthru_Client {
         curl_setopt($ch, CURLOPT_HTTPHEADER, $this->httpHeaders);
         $response = curl_exec($ch);
         $this->lastResponseInfo = curl_getinfo($ch);
+
+        if ($err = curl_error($ch)) {
+            throw new Sailthru_Client_Exception("Curl Error: " . $err);
+        }
         curl_close($ch);
 
         if (!$response) {
