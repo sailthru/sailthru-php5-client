@@ -11,7 +11,7 @@ A simple client library to remotely access the `Sailthru REST API` as per [http:
 
 By default, it will make request in `JSON` format.
 
-## Optional parameters for connection/read timeout settings
+## Optional parameters for connection/read timeout settings..
 
 Increase timeout from 10 (default) to 30 seconds.
 
