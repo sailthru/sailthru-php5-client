@@ -1,8 +1,10 @@
 <?php
 
-class Sailthru_UtilTest extends PHPUnit_Framework_TestCase {
+class Sailthru_UtilTest extends \PHPUnit\Framework\TestCase {
 
-    public function setUp() {
+    private $params;
+
+    public function setUp(): void {
         $this->params = array(
             'item1' => 'value1',
             'item2' => 'value2',
@@ -12,14 +14,14 @@ class Sailthru_UtilTest extends PHPUnit_Framework_TestCase {
         );
     }
     
-    public function testExtractParamValues() {
+    public function testExtractParamValues(): void {
         $expected = array('value1', 'value2', 'value3', 'value4', 0, 1);
         $actual = array();
         Sailthru_Util::extractParamValues($this->params, $actual);
         $this->assertEquals(array_values($expected), $actual);
     }
 
-    public function testGetSignatureString() {
+    public function testGetSignatureString(): void {
         $expected_arr = array('value1', 'value2', 'value3', 'value4', 0, 1);
         $secret = "ABCXYZ";
         $expected_str = $secret;

@@ -8,8 +8,6 @@
          convertWarningsToExceptions="true"
          processIsolation="false"
          stopOnFailure="false"
-         syntaxCheck="true"
-         strict="true"
          verbose="false">
     <testsuites>
         <testsuite name="Sailthru Unit Test Suite">

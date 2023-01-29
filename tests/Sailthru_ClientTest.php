@@ -3,10 +3,11 @@ require(__DIR__ . '/../sailthru/Sailthru_Client.php');
 require(__DIR__ . '/../sailthru/Sailthru_Client_Exception.php');
 require(__DIR__ . '/../sailthru/Sailthru_Util.php');
 
-class Sailthru_ClientTest extends PHPUnit_Framework_TestCase {
+class Sailthru_ClientTest extends \PHPUnit\Framework\TestCase {
     private $api_key = "my_api_key";
     private $api_secret = 'my_secret';
     private $api_url = 'https://api.sailthru.com';
+    private $sailthru_client;
 
     public function testDefaultTimeoutParameter() {
         $sailthru_client = new Sailthru_Client($this->api_key, $this->api_secret, $this->api_url);
@@ -25,7 +26,7 @@ class Sailthru_ClientTest extends PHPUnit_Framework_TestCase {
         $template_name = 'invalid_template';
         $email = 'praj@sailthru.com';
         $json_response = json_encode(array('error' => 14, 'errormsg' => 'Unknown template: ' . $template_name));
-        $mock = $this->getMock('Sailthru_Client', array('send'), array($this->api_key, $this->api_secret, $this->api_url));
+        $mock = $this->createMock('Sailthru_Client', array('send'), array($this->api_key, $this->api_secret, $this->api_url));
         $mock->expects($this->once())
                 ->method('send')
                 ->will($this->returnValue($json_response));
@@ -36,7 +37,7 @@ class Sailthru_ClientTest extends PHPUnit_Framework_TestCase {
         $template_name = 'my_template';
         $email = 'praj@sailthru.com';
         $json_response = json_encode(array('email' => $email, 'send_id' => 'some_unique_id', 'template' => $template_name, 'status' => 'unknown'));
-        $mock = $this->getMock('Sailthru_Client', array('send'), array($this->api_key, $this->api_secret, $this->api_url));
+        $mock = $this->createMock('Sailthru_Client', array('send'), array($this->api_key, $this->api_secret, $this->api_url));
         $mock->expects($this->once())
                 ->method('send')
                 ->will($this->returnvalue($json_response));
@@ -44,7 +45,7 @@ class Sailthru_ClientTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testApiPostWithValidJsonResponse() {
-        $mock = $this->getMock('Sailthru_Client', array('apiPost'), array($this->api_key, $this->api_secret, $this->api_url));
+        $mock = $this->createMock('Sailthru_Client', array('apiPost'), array($this->api_key, $this->api_secret, $this->api_url));
         $json_response = array(
             'email' => 'praj@infynyxx.com',
             'profile_id' => '4f284c28a3a627b6389bfb4c',
@@ -59,17 +60,14 @@ class Sailthru_ClientTest extends PHPUnit_Framework_TestCase {
         $this->assertTrue(is_array($mock->apiPost('email', $json_response)));
     }
 
-    
-    /**
-     * @expectedException Sailthru_Client_Exception
-     */
     public function testApiPostWithInvalidJsonResponse() {
-        $mock = $this->getMock('Sailthru_Client', array('apiPost'), array($this->api_key, $this->api_secret, $this->api_url));
+        $mock = $this->createMock('Sailthru_Client', array('apiPost'), array($this->api_key, $this->api_secret, $this->api_url));
         $mock->expects($this->once())
             ->method('apiPost')
-            ->will($this->throwException(new Sailthru_Client_Exception()));
+            ->will($this->throwException(new Sailthru_Client_Exception));
+	$this->expectException(Sailthru_Client_Exception::class);
         $response = $mock->apiPost('email', array('email' => 'praj@infynyxx.com'));
-        $this->assertTrue(is_array($response)); // this will never be called
+	$this->assertTrue(is_array($response)); // this will never be called
     }
 
     public function testPrepareJsonPayload() {
