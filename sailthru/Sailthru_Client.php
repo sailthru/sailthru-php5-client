@@ -926,6 +926,11 @@ class Sailthru_Client {
         if ($postback_url) {
             $data['postback_url'] = $postback_url;
         }
+        // ADDED in fork
+        if ($options) {
+            $data = array_merge ($data, $options);
+        }
+        // end added in fork
         return $this->apiPost('job', $data, $binary_data_param, $options);
     }
 
