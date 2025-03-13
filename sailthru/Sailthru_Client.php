@@ -436,6 +436,29 @@ class Sailthru_Client {
     }
 
     /**
+     * Get Recurring Blast information
+     * @param string /integer $recurring_blast_id
+     * @link http://docs.sailthru.com/api/blast_repeat
+     * @return array API result
+     */
+    public function getRecurringBlast($recurring_blast_id) {
+        return $this->apiGet('blast_repeat', [ 'repeat_id' => $recurring_blast_id ]);
+    }
+
+    /**
+     * Get info on multiple recurring blasts
+     * @param array $options associative array
+     *       start_date (required)
+     *       end-date (required)
+     *       status
+     * @link http://docs.sailthru.com/api/blast_repeat
+     * @return array API result
+     */
+    public function getRecurringBlasts($options) {
+        return $this->apiGet('blast_repeat', $options);
+    }
+
+    /**
      * Fetch information about a template
      *
      * @param string $template_name
@@ -926,6 +949,11 @@ class Sailthru_Client {
         if ($postback_url) {
             $data['postback_url'] = $postback_url;
         }
+        // ADDED in fork
+        if ($options) {
+            $data = array_merge ($data, $options);
+        }
+        // end added in fork
         return $this->apiPost('job', $data, $binary_data_param, $options);
     }
 
