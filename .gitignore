@@ -2,4 +2,6 @@
 composer.lock
 phpunit.xml
 vendor/
+.phpunit.cache/
+dist/
 

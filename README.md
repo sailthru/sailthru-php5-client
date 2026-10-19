@@ -1,8 +1,7 @@
 sailthru-php5-client
 ====================
 
-[![Build Status](https://travis-ci.org/sailthru/sailthru-php5-client.svg?branch=master)](https://travis-ci.org/sailthru/sailthru-php5-client)
-[![Coverage Status](https://coveralls.io/repos/github/sailthru/sailthru-php5-client/badge.svg?branch=master)](https://coveralls.io/github/sailthru/sailthru-php5-client?branch=master)
+[![Code check](https://github.com/sailthru/sailthru-php5-client/actions/workflows/code-check.yml/badge.svg)](https://github.com/sailthru/sailthru-php5-client/actions/workflows/code-check.yml)
 
 For installation instructions, documentation, and examples please visit:
 [http://getstarted.sailthru.com/new-for-developers-overview/api-client-library/php5](http://getstarted.sailthru.com/new-for-developers-overview/api-client-library/php5)
@@ -44,10 +43,18 @@ if ($rate_limit_info) {
 
 ## Tests
 
-You can run the tests locally with:
+Use PHP 8.2+ and Composer 2:
 
 ```shell
-vendor/bin/phpunit
+composer install
+composer verify
 ```
 
+`verify` runs unit tests and installs a Composer archive into a temporary consumer
+for a local request with dummy credentials. Use `composer test` or
+`composer test:package` to run checks separately; `composer test:package -- dist`
+retains the checked archive. These commands do not publish.
 
+CI tests PHP 8.2, 8.3, 8.4, 8.5, and the latest stable release on PRs, pushes to
+`master`, weekly, and manual runs. The historical repository name does not describe
+this test coverage.

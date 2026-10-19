@@ -1,0 +1,38 @@
+name: Code check
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+  schedule:
+    # Check runtime compatibility every Monday at 04:57 UTC.
+    - cron: '57 4 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: PHP ${{ matrix.php }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.2', '8.3', '8.4', '8.5', 'latest']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: curl, dom, mbstring, xml, xmlwriter
+          coverage: none
+          tools: composer:v2
+        env:
+          update: true
+          fail-fast: true
+      - name: Install test dependencies
+        run: composer install --no-interaction --prefer-dist
+      - name: Run tests and built-package smoke check
+        run: composer verify

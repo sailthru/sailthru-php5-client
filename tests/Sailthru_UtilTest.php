@@ -1,8 +1,11 @@
 <?php
 
-class Sailthru_UtilTest extends PHPUnit_Framework_TestCase {
+use PHPUnit\Framework\TestCase;
 
-    public function setUp() {
+class Sailthru_UtilTest extends TestCase {
+    private $params;
+
+    protected function setUp(): void {
         $this->params = array(
             'item1' => 'value1',
             'item2' => 'value2',
