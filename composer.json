@@ -5,9 +5,17 @@
     "homepage": "http://github.com/sailthru/sailthru-php5-client",
     "license": "MIT",
     "require-dev": {
-        "phpunit/phpunit": "~4.8"
+        "phpunit/phpunit": "^11.5"
     },
     "autoload": {
         "classmap": ["sailthru/"]
+    },
+    "scripts": {
+        "test": "phpunit",
+        "test:package": "@php scripts/test-package.php",
+        "verify": ["@test", "@test:package"]
+    },
+    "archive": {
+        "exclude": ["/vendor", "/tests", "/scripts", "/.github", "/composer.lock", "/phpunit.xml*", "/.phpunit.cache"]
     }
 }

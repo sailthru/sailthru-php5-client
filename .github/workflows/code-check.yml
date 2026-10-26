@@ -1,0 +1,56 @@
+name: Code check
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+  schedule:
+    # Check runtime compatibility every Monday at 04:57 UTC.
+    - cron: '57 4 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  discover:
+    name: Discover runtimes
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      versions: ${{ steps.versions.outputs.versions }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test discovery and list stable runtimes
+        id: versions
+        uses: actions/github-script@v7
+        with:
+          script: |
+            require('node:child_process').execFileSync(process.execPath,
+              ['--test', '.github/scripts/runtime-matrix.test.cjs'], {stdio: 'inherit'});
+            await require('./.github/scripts/runtime-matrix.cjs')({core});
+
+  test:
+    needs: discover
+    name: PHP ${{ matrix.php }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ${{ fromJSON(needs.discover.outputs.versions) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: curl, dom, mbstring, xml, xmlwriter
+          coverage: none
+          tools: composer:v2
+        env:
+          update: true
+          fail-fast: true
+      - name: Install test dependencies
+        run: composer install --no-interaction --prefer-dist
+      - name: Run tests and built-package smoke check
+        run: composer verify
