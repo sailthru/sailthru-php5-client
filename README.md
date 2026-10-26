@@ -55,6 +55,6 @@ for a local request with dummy credentials. Use `composer test` or
 `composer test:package` to run checks separately; `composer test:package -- dist`
 retains the checked archive. These commands do not publish.
 
-CI tests PHP 8.2, 8.3, 8.4, 8.5, and the latest stable release on PRs, pushes to
-`master`, weekly, and manual runs. The historical repository name does not describe
+CI discovers every stable PHP release line from 8.2 through the latest on PRs,
+pushes to `master`, weekly, and manual runs. The historical repository name does not describe
 this test coverage.

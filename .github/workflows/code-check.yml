@@ -13,14 +13,32 @@ permissions:
   contents: read
 
 jobs:
+  discover:
+    name: Discover runtimes
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      versions: ${{ steps.versions.outputs.versions }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test discovery and list stable runtimes
+        id: versions
+        uses: actions/github-script@v7
+        with:
+          script: |
+            require('node:child_process').execFileSync(process.execPath,
+              ['--test', '.github/scripts/runtime-matrix.test.cjs'], {stdio: 'inherit'});
+            await require('./.github/scripts/runtime-matrix.cjs')({core});
+
   test:
+    needs: discover
     name: PHP ${{ matrix.php }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
     strategy:
       fail-fast: false
       matrix:
-        php: ['8.2', '8.3', '8.4', '8.5', 'latest']
+        php: ${{ fromJSON(needs.discover.outputs.versions) }}
     steps:
       - uses: actions/checkout@v4
       - uses: shivammathur/setup-php@v2
